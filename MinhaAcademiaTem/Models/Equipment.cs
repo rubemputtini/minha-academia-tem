@@ -25,5 +25,8 @@ namespace MinhaAcademiaTem.Models
         [ForeignKey("GymId")]
         [JsonIgnore]
         public Gym? Gym { get; set; }
+
+        [Required(ErrorMessage = "O grupo muscular é obrigatório.")]
+        public MuscleGroup MuscleGroup { get; set; }
     }
 }
