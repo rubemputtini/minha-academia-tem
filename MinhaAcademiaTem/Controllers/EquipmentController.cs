@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MinhaAcademiaTem.Data;
+using MinhaAcademiaTem.Helpers;
 using MinhaAcademiaTem.Models;
 
 namespace MinhaAcademiaTem.Controllers
@@ -32,7 +33,7 @@ namespace MinhaAcademiaTem.Controllers
 
             if (equipment == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Equipamento não encontrado." });
             }
 
             return Ok(equipment);
@@ -42,14 +43,28 @@ namespace MinhaAcademiaTem.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateEquipment([FromBody] Equipment equipment)
         {
-            if (ModelState.IsValid)
+            var gymExists = await _context.Gyms.AnyAsync(g => g.GymId == equipment.GymId);
+
+            if (!gymExists)
+            {
+                return BadRequest(new { message = "ID da academia não existe." });
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return ApiResponseHelper.GenerateErrorResponse(ModelState);
+            }
+
+            try
             {
                 _context.Equipments.Add(equipment);
                 await _context.SaveChangesAsync();
-                return Ok(equipment);
+                return CreatedAtAction(nameof(GetEquipment), new { id = equipment.EquipmentId }, equipment);
             }
-
-            return BadRequest(ModelState);
+            catch (DbUpdateException ex)
+            {
+                return StatusCode(500, new { message = "Erro ao salvar o equipamento.", details = ex.InnerException?.Message });
+            }
         }
 
         // PUT: api/equipment/{id}
@@ -76,7 +91,7 @@ namespace MinhaAcademiaTem.Controllers
             {
                 if (!EquipmentExists(id))
                 {
-                    return NotFound();
+                    return NotFound(new { message = "Equipamento não encontrado." });
                 }
                 else
                 {
@@ -95,7 +110,7 @@ namespace MinhaAcademiaTem.Controllers
 
             if (equipment == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Equipamento não encontrado." });
             }
 
             _context.Equipments.Remove(equipment);

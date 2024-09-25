@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MinhaAcademiaTem.Data;
+using MinhaAcademiaTem.Helpers;
 using MinhaAcademiaTem.Models;
 
 namespace MinhaAcademiaTem.Controllers
@@ -32,7 +33,7 @@ namespace MinhaAcademiaTem.Controllers
 
             if (gym == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Academia não encontrada." });
             }
 
             return Ok(gym);
@@ -42,13 +43,15 @@ namespace MinhaAcademiaTem.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateGym([FromBody] Gym gym)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Gyms.Add(gym);
-                await _context.SaveChangesAsync();
-                return Ok(gym);
+                return ApiResponseHelper.GenerateErrorResponse(ModelState);
             }
-            return BadRequest(ModelState);
+
+            _context.Gyms.Add(gym);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetGym), new { id = gym.GymId }, gym);
         }
 
         // PUT: api/gym/{id}
@@ -57,12 +60,12 @@ namespace MinhaAcademiaTem.Controllers
         {
             if (id != gym.GymId)
             {
-                return BadRequest("Academia não correspondente.");
+                return BadRequest(new { message = "O ID da academia no corpo da requisição não corresponde ao ID na URL." });
             }
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return ApiResponseHelper.GenerateErrorResponse(ModelState);
             }
 
             _context.Entry(gym).State = EntityState.Modified;
@@ -70,20 +73,19 @@ namespace MinhaAcademiaTem.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                return NoContent();
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!GymExists(id))
                 {
-                    return NotFound();
+                    return NotFound(new { message = "A academia com o ID fornecido não foi encontrada." });
                 }
                 else
                 {
                     throw;
                 }
             }
-
-            return NoContent();
         }
 
         // DELETE: api/gym/{id}
@@ -94,20 +96,21 @@ namespace MinhaAcademiaTem.Controllers
 
             if (gym == null)
             {
-                return NotFound();
+                return NotFound(new { message = "A academia com o ID fornecido não foi encontrada." });
             }
 
             _context.Gyms.Remove(gym);
 
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new { message = "Academia excluída com sucesso." });
         }
 
         private bool GymExists(int id)
         {
             return _context.Gyms.Any(g => g.GymId == id);
         }
+
     }
 
 }

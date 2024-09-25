@@ -4,8 +4,8 @@ logs
 npm-debug.log*
 
 # Visual Studio
-.vs/
-.vscode/
+**/.vs/
+**/*.sln
 *.suo
 *.user
 *.userosscache
@@ -81,7 +81,6 @@ Temporary Items
 .apdisk
 
 # JetBrains Rider
-.idea/
 .idea/
 *.sln.iml
 
