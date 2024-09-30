@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace MinhaAcademiaTem.Helpers
@@ -11,6 +12,12 @@ namespace MinhaAcademiaTem.Helpers
                                           .Select(e => e.ErrorMessage)
                                           .ToList();
             return new BadRequestObjectResult(new { Message = "Erro de validação.", Details = errors });
+        }
+
+        public static IActionResult GenerateErrorResponse(IEnumerable<IdentityError> errors)
+        {
+            var errorMessages = errors.Select(e => e.Description).ToList();
+            return new BadRequestObjectResult(new { Message = "Erro de validação.", Details = errorMessages });
         }
     }
 }

@@ -7,7 +7,7 @@ using MinhaAcademiaTem.Models;
 namespace MinhaAcademiaTem.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class GymController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -17,7 +17,6 @@ namespace MinhaAcademiaTem.Controllers
             _context = context;
         }
 
-        // GET: api/gym
         [HttpGet]
         public async Task<IActionResult> GetGyms()
         {
@@ -25,7 +24,6 @@ namespace MinhaAcademiaTem.Controllers
             return Ok(gyms);
         }
 
-        // GET: api/gym/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetGym(int id)
         {
@@ -39,7 +37,6 @@ namespace MinhaAcademiaTem.Controllers
             return Ok(gym);
         }
 
-        // POST: api/gym
         [HttpPost]
         public async Task<IActionResult> CreateGym([FromBody] Gym gym)
         {
@@ -54,7 +51,6 @@ namespace MinhaAcademiaTem.Controllers
             return CreatedAtAction(nameof(GetGym), new { id = gym.GymId }, gym);
         }
 
-        // PUT: api/gym/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateGym(int id, [FromBody] Gym gym)
         {
@@ -88,7 +84,6 @@ namespace MinhaAcademiaTem.Controllers
             }
         }
 
-        // DELETE: api/gym/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGym(int id)
         {
