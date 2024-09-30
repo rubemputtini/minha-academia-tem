@@ -21,21 +21,36 @@ namespace MinhaAcademiaTem.Controllers
         [HttpGet]
         public async Task<IActionResult> GetEquipments()
         {
-            var equipments = await _context.Equipments.ToListAsync();
-            return Ok(equipments);
+            try
+            {
+                var equipments = await _context.Equipments.ToListAsync();
+                return Ok(equipments);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Erro ao obter equipamentos.", details = ex.Message });
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEquipment(int id)
         {
-            var equipment = await _context.Equipments.FindAsync(id);
-
-            if (equipment == null)
+            try
             {
-                return NotFound(new { message = "Equipamento não encontrado." });
-            }
+                var equipment = await _context.Equipments.FindAsync(id);
 
-            return Ok(equipment);
+                if (equipment == null)
+                {
+                    return NotFound(new { message = "Equipamento não encontrado." });
+                }
+
+                return Ok(equipment);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Erro ao obter equipamento.", details = ex.Message });
+            }
         }
 
         [HttpPost]
@@ -62,6 +77,10 @@ namespace MinhaAcademiaTem.Controllers
             catch (DbUpdateException ex)
             {
                 return StatusCode(500, new { message = "Erro ao salvar o equipamento.", details = ex.InnerException?.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Erro inesperado ao criar equipamento.", details = ex.Message });
             }
         }
 
@@ -95,6 +114,10 @@ namespace MinhaAcademiaTem.Controllers
                     throw;
                 }
             }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Erro inesperado ao atualizar equipamento.", details = ex.Message });
+            }
 
             return NoContent();
         }
@@ -102,17 +125,24 @@ namespace MinhaAcademiaTem.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEquipment(int id)
         {
-            var equipment = await _context.Equipments.FindAsync(id);
-
-            if (equipment == null)
+            try
             {
-                return NotFound(new { message = "Equipamento não encontrado." });
+                var equipment = await _context.Equipments.FindAsync(id);
+
+                if (equipment == null)
+                {
+                    return NotFound(new { message = "Equipamento não encontrado." });
+                }
+
+                _context.Equipments.Remove(equipment);
+                await _context.SaveChangesAsync();
+
+                return NoContent();
             }
-
-            _context.Equipments.Remove(equipment);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Erro ao excluir equipamento.", details = ex.Message });
+            }
         }
 
         private bool EquipmentExists(int id)

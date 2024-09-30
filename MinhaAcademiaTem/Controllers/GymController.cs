@@ -20,21 +20,35 @@ namespace MinhaAcademiaTem.Controllers
         [HttpGet]
         public async Task<IActionResult> GetGyms()
         {
-            var gyms = await _context.Gyms.Include(g => g.Equipments).ToListAsync();
-            return Ok(gyms);
+            try
+            {
+                var gyms = await _context.Gyms.Include(g => g.Equipments).ToListAsync();
+                return Ok(gyms);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Erro ao obter academias.", details = ex.Message });
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetGym(int id)
         {
-            var gym = await _context.Gyms.Include(g => g.Equipments).FirstOrDefaultAsync(g => g.GymId == id);
-
-            if (gym == null)
+            try
             {
-                return NotFound(new { message = "Academia não encontrada." });
-            }
+                var gym = await _context.Gyms.Include(g => g.Equipments).FirstOrDefaultAsync(g => g.GymId == id);
 
-            return Ok(gym);
+                if (gym == null)
+                {
+                    return NotFound(new { message = "Academia não encontrada." });
+                }
+
+                return Ok(gym);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Erro ao obter a academia.", details = ex.Message });
+            }
         }
 
         [HttpPost]
@@ -45,10 +59,21 @@ namespace MinhaAcademiaTem.Controllers
                 return ApiResponseHelper.GenerateErrorResponse(ModelState);
             }
 
-            _context.Gyms.Add(gym);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Gyms.Add(gym);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetGym), new { id = gym.GymId }, gym);
+                return CreatedAtAction(nameof(GetGym), new { id = gym.GymId }, gym);
+            }
+            catch (DbUpdateException ex)
+            {
+                return StatusCode(500, new { message = "Erro ao salvar a academia.", details = ex.InnerException?.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Erro inesperado ao criar academia.", details = ex.Message });
+            }
         }
 
         [HttpPut("{id}")]
@@ -82,30 +107,39 @@ namespace MinhaAcademiaTem.Controllers
                     throw;
                 }
             }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Erro inesperado ao atualizar academia.", details = ex.Message });
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGym(int id)
         {
-            var gym = await _context.Gyms.Include(g => g.Equipments).FirstOrDefaultAsync(g => g.GymId == id);
-
-            if (gym == null)
+            try
             {
-                return NotFound(new { message = "A academia com o ID fornecido não foi encontrada." });
+                var gym = await _context.Gyms.Include(g => g.Equipments).FirstOrDefaultAsync(g => g.GymId == id);
+
+                if (gym == null)
+                {
+                    return NotFound(new { message = "A academia com o ID fornecido não foi encontrada." });
+                }
+
+                _context.Gyms.Remove(gym);
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new { message = "Academia excluída com sucesso." });
             }
-
-            _context.Gyms.Remove(gym);
-
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Academia excluída com sucesso." });
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Erro ao excluir academia.", details = ex.Message });
+            }
         }
 
         private bool GymExists(int id)
         {
             return _context.Gyms.Any(g => g.GymId == id);
         }
-
     }
-
 }
