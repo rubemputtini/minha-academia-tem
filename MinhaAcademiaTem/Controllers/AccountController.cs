@@ -90,7 +90,7 @@ namespace MinhaAcademiaTem.Controllers
         public IActionResult GetAdmin() => Ok(User.Identity.Name);
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request, [FromServices] EmailService emailService)
         {
             var existingUser = await _userManager.FindByEmailAsync(request.Email);
 
@@ -121,6 +121,15 @@ namespace MinhaAcademiaTem.Controllers
             }
 
             await _userManager.AddToRoleAsync(user, role);
+
+            var adminEmail = _configuration["AdminSettings:AdminEmail"];
+
+            emailService.Send(
+                "Administrador",
+                adminEmail,
+                "Um novo usuário foi cadastrado!",
+                $"O usuário {user.Email} foi registrado no sistema."
+                );
 
             return Ok("Usuário registrado com sucesso.");
         }
