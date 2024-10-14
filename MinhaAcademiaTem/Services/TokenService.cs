@@ -8,10 +8,17 @@ namespace MinhaAcademiaTem.Services
 {
     public class TokenService
     {
+        private readonly IConfiguration _configuration;
+
+        public TokenService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public string GenerateToken(User user, string role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(Configuration.JwtKey);
+            var key = Encoding.ASCII.GetBytes(_configuration["JwtKey"]);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
