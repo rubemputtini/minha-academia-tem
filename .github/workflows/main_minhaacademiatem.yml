@@ -44,6 +44,15 @@ jobs:
       
       - name: Update database
         run: dotnet ef database update --project ./MinhaAcademiaTem/MinhaAcademiaTem.csproj
+        env:
+          ConnectionStrings__DefaultConnection: ${{ secrets.ConnectionStrings__DefaultConnection }}
+          StorageConnectionString: ${{ secrets.StorageConnectionString }}
+          AdminSettings__AdminEmail: ${{ secrets.AdminSettings__AdminEmail }}
+          JwtKey: ${{ secrets.JwtKey }}
+          Smtp__Host: ${{ secrets.Smtp__Host }}
+          Smtp__Port: ${{ secrets.Smtp__Port }}
+          Smtp__UserName: ${{ secrets.Smtp__UserName }}
+          Smtp__Password: ${{ secrets.Smtp__Password }}
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp

@@ -16,7 +16,6 @@ npm-debug.log*
 ScaffoldingReadMe.txt
 
 # Config files
-appsettings.json
 appsettings.Development.json
 secrets.json
 
@@ -89,5 +88,3 @@ Temporary Items
 
 # Ambient files
 .env
-
-Configuration.cs
