@@ -45,7 +45,7 @@ jobs:
       - name: Update database
         run: dotnet ef database update --project ./MinhaAcademiaTem/MinhaAcademiaTem.csproj
         env:
-          ConnectionStrings__DefaultConnection: ${{ secrets.ConnectionStrings__DefaultConnection }}
+          ConnectionStrings__DefaultConnection: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
           StorageConnectionString: ${{ secrets.StorageConnectionString }}
           AdminSettings__AdminEmail: ${{ secrets.AdminSettings__AdminEmail }}
           JwtKey: ${{ secrets.JwtKey }}
