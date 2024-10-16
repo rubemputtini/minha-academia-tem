@@ -10,14 +10,14 @@ namespace MinhaAcademiaTem.Models
 
         [Required(ErrorMessage = "O nome da academia é obrigatório.")]
         [StringLength(40, ErrorMessage = "O nome não pode ter mais que 40 caracteres.")]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "A localização é obrigatória.")]
         [StringLength(40, ErrorMessage = "A localização não pode ter mais que 40 caracteres.")]
-        public string Location { get; set; }
+        public string Location { get; set; } = string.Empty;
 
         [JsonIgnore]
-        public ICollection<Equipment>? Equipments { get; set; }
+        public ICollection<Equipment> Equipments { get; set; } = new List<Equipment>();
     }
 
 }

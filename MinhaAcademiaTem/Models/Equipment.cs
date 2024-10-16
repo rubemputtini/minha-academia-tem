@@ -11,13 +11,13 @@ namespace MinhaAcademiaTem.Models
 
         [Required(ErrorMessage = "O nome do equipamento é obrigatório.")]
         [StringLength(60, ErrorMessage = "O nome do equipamento não pode exceder 60 caracteres.")]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [Url(ErrorMessage = "A URL da foto é inválida.")]
-        public string PhotoUrl { get; set; }
+        public string PhotoUrl { get; set; } = string.Empty;
 
         [Url(ErrorMessage = "A URL do vídeo é inválida.")]
-        public string VideoUrl { get; set; }
+        public string VideoUrl { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "O ID da academia é obrigatório.")]
         public int GymId { get; set; }

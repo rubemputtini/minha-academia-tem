@@ -48,7 +48,7 @@ namespace MinhaAcademiaTem.Controllers
 
                 _emailService.Send(
                     "Administrador",
-                    adminEmail,
+                    adminEmail!,
                     $"Relatório da Academia {gym.Name}",
                     emailContent);
 

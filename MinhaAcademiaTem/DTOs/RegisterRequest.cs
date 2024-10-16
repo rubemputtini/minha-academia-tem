@@ -6,9 +6,9 @@ namespace MinhaAcademiaTem.DTOs
     {
         [Required(ErrorMessage = "O E-mail é obrigatório.")]
         [EmailAddress(ErrorMessage = "O formatdo do E-mail é inválido.")]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "A senha é obrigatória.")]
-        public string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
     }
 }

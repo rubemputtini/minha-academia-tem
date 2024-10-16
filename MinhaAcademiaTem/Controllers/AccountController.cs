@@ -53,14 +53,14 @@ namespace MinhaAcademiaTem.Controllers
             return Ok(new LoginResponse
             {
                 Token = token,
-                Email = user.Email,
+                Email = user.Email!,
                 Role = userRole
             });
         }
 
         [Authorize(Roles = "admin")]
         [HttpGet("user")]
-        public IActionResult GetUser() => Ok(User.Identity.Name);
+        public IActionResult GetUser() => Ok(User.Identity!.Name);
 
         [Authorize(Roles = "admin")]
         [HttpGet("users")]
@@ -77,8 +77,8 @@ namespace MinhaAcademiaTem.Controllers
                 userResponses.Add(new UserResponse
                 {
                     Id = user.Id,
-                    Email = user.Email,
-                    Role = roles.FirstOrDefault()
+                    Email = user.Email!,
+                    Role = roles.FirstOrDefault()!
                 });
             }
 
@@ -87,7 +87,7 @@ namespace MinhaAcademiaTem.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpGet("admin")]
-        public IActionResult GetAdmin() => Ok(User.Identity.Name);
+        public IActionResult GetAdmin() => Ok(User.Identity!.Name);
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request, [FromServices] EmailService emailService)
@@ -126,7 +126,7 @@ namespace MinhaAcademiaTem.Controllers
 
             emailService.Send(
                 "Administrador",
-                adminEmail,
+                adminEmail!,
                 "Um novo usuário foi cadastrado!",
                 $"O usuário {user.Email} foi registrado no sistema."
                 );

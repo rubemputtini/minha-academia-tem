@@ -18,14 +18,14 @@ namespace MinhaAcademiaTem.Services
         public string GenerateToken(User user, string role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["JwtKey"]);
+            var key = Encoding.ASCII.GetBytes(_configuration["JwtKey"]!);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new(ClaimTypes.Name, user.UserName),
-                    new(ClaimTypes.Email, user.Email),
+                    new(ClaimTypes.Name, user.UserName!),
+                    new(ClaimTypes.Email, user.Email!),
                     new(ClaimTypes.Role, role)
                 }),
                 Expires = DateTime.UtcNow.AddHours(8),

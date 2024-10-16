@@ -8,7 +8,7 @@ namespace MinhaAcademiaTem.Extensions
     {
         public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            var key = Encoding.ASCII.GetBytes(configuration["JwtKey"]);
+            var key = Encoding.ASCII.GetBytes(configuration["JwtKey"]!);
 
             services.AddAuthentication(x =>
             {
