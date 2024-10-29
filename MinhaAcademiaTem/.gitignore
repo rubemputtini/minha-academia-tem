@@ -1,0 +1,90 @@
+﻿# Logs
+logs
+*.log
+npm-debug.log*
+
+# Visual Studio
+**/.vs/
+*.suo
+*.user
+*.userosscache
+
+# Rider
+.idea/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Config files
+appsettings.Development.json
+secrets.json
+
+# bin/ and obj/ directories
+**/bin/
+**/obj/
+
+# Entity Framework Migrations
+**/Migrations/
+
+# Local NuGet packages
+*.nupkg
+*.snupkg
+
+# DotNetCliTool reference cache
+.dotnet/
+
+# Visual Studio Code
+.vscode/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Mono Auto Generated Files
+mono_crash.*
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# SVN directories
+.svn/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# OSX
+*.DS_Store
+*.AppleDouble
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# ASP.NET Identity Database
+*.mdf
+*.ldf
+*.log
+
+# Ambient files
+.env

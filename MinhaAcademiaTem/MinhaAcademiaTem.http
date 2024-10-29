@@ -1,0 +1,6 @@
+@MinhaAcademiaTem_HostAddress = http://localhost:5069
+
+GET {{MinhaAcademiaTem_HostAddress}}/api/gym
+Accept: application/json
+
+###
