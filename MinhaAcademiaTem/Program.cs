@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigureServices(builder.Configuration);
 builder.Services.ConfigureAuthentication(builder.Configuration);
+builder.Services.ConfigureCors(builder.Configuration);
 
 var app = builder.Build();
 
@@ -13,7 +14,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
+
+app.UseStaticFiles();
+app.UseCors("AllowSpecificOrigins");
 
 app.UseAuthentication();
 app.UseAuthorization();

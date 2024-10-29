@@ -17,7 +17,6 @@ namespace MinhaAcademiaTem.Controllers
             _context = context;
         }
 
-
         [HttpGet]
         public async Task<IActionResult> GetEquipments()
         {

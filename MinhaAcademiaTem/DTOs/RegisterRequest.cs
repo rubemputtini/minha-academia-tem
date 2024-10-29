@@ -5,7 +5,7 @@ namespace MinhaAcademiaTem.DTOs
     public class RegisterRequest
     {
         [Required(ErrorMessage = "O E-mail é obrigatório.")]
-        [EmailAddress(ErrorMessage = "O formatdo do E-mail é inválido.")]
+        [EmailAddress(ErrorMessage = "O formato do E-mail é inválido.")]
         public string Email { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "A senha é obrigatória.")]
