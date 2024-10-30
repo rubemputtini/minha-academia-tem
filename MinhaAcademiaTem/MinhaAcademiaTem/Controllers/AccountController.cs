@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MinhaAcademiaTem.Data;
 using MinhaAcademiaTem.DTOs;
 using MinhaAcademiaTem.Helpers;
 using MinhaAcademiaTem.Models;
@@ -18,14 +19,16 @@ namespace MinhaAcademiaTem.Controllers
         private readonly TokenService _tokenService;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
+        private readonly ApplicationDbContext _dbContext;
 
-        public AccountController(SignInManager<User> signInManager, UserManager<User> userManager, TokenService tokenService, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public AccountController(SignInManager<User> signInManager, UserManager<User> userManager, TokenService tokenService, RoleManager<IdentityRole> roleManager, IConfiguration configuration, ApplicationDbContext dbContext)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _tokenService = tokenService;
             _roleManager = roleManager;
             _configuration = configuration;
+            _dbContext = dbContext;
         }
 
         [HttpPost("login")]
@@ -85,6 +88,34 @@ namespace MinhaAcademiaTem.Controllers
             return Ok(userResponses);
         }
 
+        [Authorize]
+        [HttpGet("details")]
+        public async Task<IActionResult> GetUserDetails()
+        {
+            var user = await _userManager.FindByEmailAsync(User.Identity!.Name);
+
+            if (user == null)
+            {
+                return NotFound("Usuário não encontrado.");
+            }
+
+            var report = await _dbContext.Reports
+                .Include(r => r.EquipmentSelections)
+                .ThenInclude(es => es.Equipment)
+                .FirstOrDefaultAsync(r => r.UserId == user.Id);
+
+            var userDetails = new UserDetailsResponse
+            {
+                Name = user.UserName!,
+                Email = user.Email!,
+                GymName = user.GymName!,
+                GymLocation = user.GymLocation!,
+                SelectedExercises = report?.EquipmentSelections.Select(es => es.Equipment.Name).ToList() ?? new List<string>()
+            };
+
+            return Ok(userDetails);
+        }
+
         [Authorize(Roles = "admin")]
         [HttpGet("admin")]
         public IActionResult GetAdmin() => Ok(User.Identity!.Name);
@@ -103,7 +134,9 @@ namespace MinhaAcademiaTem.Controllers
             {
                 UserName = request.Email,
                 Email = request.Email,
-                IsAdmin = request.Email == _configuration["AdminSettings:AdminEmail"]
+                IsAdmin = request.Email == _configuration["AdminSettings:AdminEmail"],
+                GymName = request.GymName,
+                GymLocation = request.GymLocation
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);

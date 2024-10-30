@@ -9,5 +9,8 @@ namespace MinhaAcademiaTem.DTOs
 
         [Required(ErrorMessage = "O nome do usuário é obrigatório.")]
         public string UserName { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Os IDs dos equipamentos são obrigatórios.")]
+        public List<int> EquipmentIds { get; set; } = new List<int>();
     }
 }

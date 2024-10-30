@@ -32,16 +32,39 @@ namespace MinhaAcademiaTem.Controllers
 
             try
             {
-                var gym = await _context.Gyms
-                    .Include(g => g.Equipments)
-                    .FirstOrDefaultAsync(g => g.Name == request.GymName);
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == request.UserName);
+                
+                if (user == null)
+                {
+                    return NotFound(new { message = "Usuário não encontrado." });
+                }
 
+                var gym = await _context.Gyms.FirstOrDefaultAsync(g => g.Name == request.GymName);
+                
                 if (gym == null)
                 {
                     return NotFound(new { message = "Academia não encontrada." });
                 }
 
-                var equipmentList = string.Join(", ", gym.Equipments.Select(e => e.Name));
+                var report = new Report
+                {
+                    UserId = user.Id,
+                    GymId = gym.GymId,
+                    EquipmentSelections = request.EquipmentIds.Select(eId => new EquipmentSelection { EquipmentId = eId }).ToList(),
+                };
+
+                var previousReports = _context.Reports.Where(r => r.UserId == user.Id && r.GymId == gym.GymId);
+                _context.Reports.RemoveRange(previousReports);
+
+                _context.Reports.Add(report);
+                await _context.SaveChangesAsync();
+
+                var equipmentNames = await _context.Equipments
+                    .Where(e => request.EquipmentIds.Contains(e.EquipmentId))
+                    .Select(e => e.Name)
+                    .ToListAsync();
+
+                var equipmentList = string.Join(", ", equipmentNames);
                 var emailContent = $"A academia {gym.Name} cadastrada pelo usuário {request.UserName} possui os seguintes equipamentos: {equipmentList}";
                 var adminEmail = _configuration["AdminSettings:AdminEmail"];
 

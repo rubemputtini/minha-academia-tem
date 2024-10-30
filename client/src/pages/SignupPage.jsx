@@ -1,20 +1,21 @@
 import { useState } from 'react';
-import { register } from '../services/api';
+import { register } from '../services/authService';
 import { useNavigate } from 'react-router-dom';
-import AuthForm from '../components/forms/AuthForm';
-import Footer from '../components/Footer';
+import SignupForm from '../components/forms/SignupForm';
 
 const SignupPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [gymName, setGymName] = useState('');
+    const [gymLocation, setGymLocation] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            await register(email, password);
-            navigate("/login");
+            await register(email, password, gymName, gymLocation);
+            navigate("/equipamentos");
 
         } catch (error) {
             const errorMsg = error.response?.data || 'Erro ao cadastrar, tente novamente.';
@@ -22,9 +23,13 @@ const SignupPage = () => {
         }
     };
 
+    const handleLoginRedirect = () => {
+        navigate('/login');
+    };
+
     return (
         <>
-            <AuthForm
+            <SignupForm
                 title="Cadastro"
                 buttonText="Registrar"
                 onSubmit={handleRegister}
@@ -32,9 +37,13 @@ const SignupPage = () => {
                 setEmail={setEmail}
                 password={password}
                 setPassword={setPassword}
+                gymName={gymName}
+                setGymName={setGymName}
+                gymLocation={gymLocation}
+                setGymLocation={setGymLocation}
                 errorMessage={errorMessage}
+                onLoginRedirect={handleLoginRedirect}
             />
-            <Footer />
         </>
     );
 };

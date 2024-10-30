@@ -3,28 +3,46 @@
   "WorkspaceRootPath": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|c:\\users\\rstp\\documents\\rubem\\dev\\minha-academia-tem\\minhaacademiatem\\minhaacademiatem\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|solutionrelative:minhaacademiatem\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|c:\\users\\rstp\\documents\\rubem\\dev\\minha-academia-tem\\minhaacademiatem\\minhaacademiatem\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|solutionrelative:minhaacademiatem\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|c:\\users\\rstp\\documents\\rubem\\dev\\minha-academia-tem\\minhaacademiatem\\minhaacademiatem\\dtos\\registerrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|solutionrelative:minhaacademiatem\\dtos\\registerrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|c:\\users\\rstp\\documents\\rubem\\dev\\minha-academia-tem\\minhaacademiatem\\minhaacademiatem\\dtos\\loginresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|solutionrelative:minhaacademiatem\\dtos\\loginresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|c:\\users\\rstp\\documents\\rubem\\dev\\minha-academia-tem\\minhaacademiatem\\minhaacademiatem\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|solutionrelative:minhaacademiatem\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|c:\\users\\rstp\\documents\\rubem\\dev\\minha-academia-tem\\minhaacademiatem\\minhaacademiatem\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|solutionrelative:minhaacademiatem\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|c:\\users\\rstp\\documents\\rubem\\dev\\minha-academia-tem\\minhaacademiatem\\minhaacademiatem\\controllers\\reportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|solutionrelative:minhaacademiatem\\controllers\\reportcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|c:\\users\\rstp\\documents\\rubem\\dev\\minha-academia-tem\\minhaacademiatem\\minhaacademiatem\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|solutionrelative:minhaacademiatem\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|c:\\users\\rstp\\documents\\rubem\\dev\\minha-academia-tem\\minhaacademiatem\\minhaacademiatem\\dtos\\gymreportrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|solutionrelative:minhaacademiatem\\dtos\\gymreportrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|c:\\users\\rstp\\documents\\rubem\\dev\\minha-academia-tem\\minhaacademiatem\\minhaacademiatem\\controllers\\equipmentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|solutionrelative:minhaacademiatem\\controllers\\equipmentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/MinhaAcademiaDB/True/SqlTable/dbo.Equipments.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/MinhaAcademiaDB/True/SqlTable/dbo.Gyms.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|c:\\users\\rstp\\documents\\rubem\\dev\\minha-academia-tem\\minhaacademiatem\\minhaacademiatem\\dtos\\userdetailsresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|solutionrelative:minhaacademiatem\\dtos\\userdetailsresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|c:\\users\\rstp\\documents\\rubem\\dev\\minha-academia-tem\\minhaacademiatem\\minhaacademiatem\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|solutionrelative:minhaacademiatem\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|c:\\users\\rstp\\documents\\rubem\\dev\\minha-academia-tem\\minhaacademiatem\\minhaacademiatem\\models\\equipmentselection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|solutionrelative:minhaacademiatem\\models\\equipmentselection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|c:\\users\\rstp\\documents\\rubem\\dev\\minha-academia-tem\\minhaacademiatem\\minhaacademiatem\\models\\report.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AD15A34-C34D-4318-80ED-D14436B724F7}|MinhaAcademiaTem\\MinhaAcademiaTem.csproj|solutionrelative:minhaacademiatem\\models\\report.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,34 +52,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 30,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "LoginResponse.cs",
-              "DocumentMoniker": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\DTOs\\LoginResponse.cs",
-              "RelativeDocumentMoniker": "MinhaAcademiaTem\\DTOs\\LoginResponse.cs",
-              "ToolTip": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\DTOs\\LoginResponse.cs",
-              "RelativeToolTip": "MinhaAcademiaTem\\DTOs\\LoginResponse.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-29T15:18:26.43Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "User.cs",
-              "DocumentMoniker": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\Models\\User.cs",
-              "RelativeDocumentMoniker": "MinhaAcademiaTem\\Models\\User.cs",
-              "ToolTip": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\Models\\User.cs",
-              "RelativeToolTip": "MinhaAcademiaTem\\Models\\User.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-29T12:31:34.621Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -70,9 +62,48 @@
               "RelativeDocumentMoniker": "MinhaAcademiaTem\\DTOs\\RegisterRequest.cs",
               "ToolTip": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\DTOs\\RegisterRequest.cs",
               "RelativeToolTip": "MinhaAcademiaTem\\DTOs\\RegisterRequest.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-29T12:29:25.739Z",
+              "WhenOpened": "2024-10-30T18:56:26.958Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ReportController.cs",
+              "DocumentMoniker": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\Controllers\\ReportController.cs",
+              "RelativeDocumentMoniker": "MinhaAcademiaTem\\Controllers\\ReportController.cs",
+              "ToolTip": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\Controllers\\ReportController.cs",
+              "RelativeToolTip": "MinhaAcademiaTem\\Controllers\\ReportController.cs",
+              "ViewState": "AQIAAAcAAAAAAAAAAAAAwFYAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-30T17:08:44.238Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "GymReportRequest.cs",
+              "DocumentMoniker": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\DTOs\\GymReportRequest.cs",
+              "RelativeDocumentMoniker": "MinhaAcademiaTem\\DTOs\\GymReportRequest.cs",
+              "ToolTip": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\DTOs\\GymReportRequest.cs",
+              "RelativeToolTip": "MinhaAcademiaTem\\DTOs\\GymReportRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-30T17:06:55.521Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "MinhaAcademiaTem\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "MinhaAcademiaTem\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAyAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-30T17:04:49.563Z",
               "EditorCaption": ""
             },
             {
@@ -157,41 +188,87 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "EquipmentController.cs",
-              "DocumentMoniker": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\Controllers\\EquipmentController.cs",
-              "RelativeDocumentMoniker": "MinhaAcademiaTem\\Controllers\\EquipmentController.cs",
-              "ToolTip": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\Controllers\\EquipmentController.cs",
-              "RelativeToolTip": "MinhaAcademiaTem\\Controllers\\EquipmentController.cs",
-              "ViewState": "AQIAAAMAAAAAAAAAAAAAAAoAAAA1AAAA",
+              "DocumentIndex": 9,
+              "Title": "EquipmentSelection.cs",
+              "DocumentMoniker": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\Models\\EquipmentSelection.cs",
+              "RelativeDocumentMoniker": "MinhaAcademiaTem\\Models\\EquipmentSelection.cs",
+              "ToolTip": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\Models\\EquipmentSelection.cs",
+              "RelativeToolTip": "MinhaAcademiaTem\\Models\\EquipmentSelection.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-21T14:41:23.434Z",
+              "WhenOpened": "2024-10-30T17:03:20.239Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 10,
+              "Title": "Report.cs",
+              "DocumentMoniker": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\Models\\Report.cs",
+              "RelativeDocumentMoniker": "MinhaAcademiaTem\\Models\\Report.cs",
+              "ToolTip": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\Models\\Report.cs",
+              "RelativeToolTip": "MinhaAcademiaTem\\Models\\Report.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABoAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-30T17:01:15.294Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "dbo.Equipments [Data]",
+              "DocumentMoniker": "ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/MinhaAcademiaDB/True/SqlTable/dbo.Equipments.sql",
+              "ToolTip": "dbo.Equipments [Data]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2024-10-30T15:06:28.6Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "dbo.Gyms [Data]",
+              "DocumentMoniker": "ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/MinhaAcademiaDB/True/SqlTable/dbo.Gyms.sql",
+              "ToolTip": "dbo.Gyms [Data]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2024-10-30T15:06:20.217Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\Models\\User.cs",
+              "RelativeDocumentMoniker": "MinhaAcademiaTem\\Models\\User.cs",
+              "ToolTip": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\Models\\User.cs",
+              "RelativeToolTip": "MinhaAcademiaTem\\Models\\User.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAA/AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-30T14:45:18.812Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "UserDetailsResponse.cs",
+              "DocumentMoniker": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\DTOs\\UserDetailsResponse.cs",
+              "RelativeDocumentMoniker": "MinhaAcademiaTem\\DTOs\\UserDetailsResponse.cs",
+              "ToolTip": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\DTOs\\UserDetailsResponse.cs",
+              "RelativeToolTip": "MinhaAcademiaTem\\DTOs\\UserDetailsResponse.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-30T14:40:57.542Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "AccountController.cs",
               "DocumentMoniker": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\Controllers\\AccountController.cs",
               "RelativeDocumentMoniker": "MinhaAcademiaTem\\Controllers\\AccountController.cs",
               "ToolTip": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\Controllers\\AccountController.cs",
               "RelativeToolTip": "MinhaAcademiaTem\\Controllers\\AccountController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAHMAAAA3AAAA",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAwwGwAAAAmAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-19T17:55:51.307Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\Program.cs",
-              "RelativeDocumentMoniker": "MinhaAcademiaTem\\Program.cs",
-              "ToolTip": "C:\\Users\\rstp\\Documents\\Rubem\\Dev\\minha-academia-tem\\MinhaAcademiaTem\\MinhaAcademiaTem\\Program.cs",
-              "RelativeToolTip": "MinhaAcademiaTem\\Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-17T17:37:11.61Z",
               "EditorCaption": ""
             }
           ]

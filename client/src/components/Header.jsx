@@ -8,6 +8,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
+import { logout } from '../services/authService';
 
 const Header = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -22,10 +23,13 @@ const Header = () => {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem("token");
+        logout();
+        navigate("/login");
+    };
 
-        navigate("/");
-        console.log("Usuário deslogado");
+    const handleAccountClick = () => {
+        handleClose();
+        navigate("/conta");
     };
 
     return (
@@ -61,7 +65,7 @@ const Header = () => {
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
                         >
-                            <MenuItem onClick={handleClose}>Conta</MenuItem>
+                            <MenuItem onClick={handleAccountClick}>Conta</MenuItem>
                             <MenuItem onClick={handleLogout}>Logout</MenuItem>
                         </Menu>
                     </div>

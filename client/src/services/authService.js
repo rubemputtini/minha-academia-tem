@@ -17,11 +17,13 @@ export const login = async (email, password) => {
     }
 };
 
-export const register = async (email, password) => {
+export const register = async (email, password, gymName, gymLocation) => {
     try {
         const response = await axios.post(`${API_URL}/Account/register`, {
           email,
           password,
+          gymName,
+          gymLocation
         });
 
         return response.data;
@@ -32,4 +34,9 @@ export const register = async (email, password) => {
          
          throw new Error(errorMessage);
       } 
+};
+
+export const logout = () => {
+    localStorage.removeItem("token");
+    console.log("Usuário deslogado");
 };

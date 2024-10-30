@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { login } from '../services/api';
+import { login } from '../services/authService';
 import { useNavigate } from 'react-router-dom';
 import AuthForm from '../components/forms/AuthForm';
 import Footer from '../components/Footer';
