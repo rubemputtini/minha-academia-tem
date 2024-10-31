@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { API_URL } from '../utils/constants'
+import { clearToken } from './auth';
 
 export const login = async (email, password) => {
     try {
@@ -37,6 +38,6 @@ export const register = async (email, password, gymName, gymLocation) => {
 };
 
 export const logout = () => {
-    localStorage.removeItem("token");
+    clearToken();
     console.log("Usuário deslogado");
 };

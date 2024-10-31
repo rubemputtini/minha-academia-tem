@@ -32,11 +32,20 @@ const Header = () => {
         navigate("/conta");
     };
 
+    const handleHomeClick = () => {
+        navigate("/");
+    }
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" sx={{ backgroundColor: 'black' }}>
                 <Toolbar>
-                    <Typography variant="h7" component="div" sx={{ flexGrow: 1 }}>
+                    <Typography
+                        variant="h7"
+                        component="div"
+                        sx={{ flexGrow: 1 }}
+                        onClick={handleHomeClick}
+                    >
                         Minha Academia TEM?
                     </Typography>
                     <div>

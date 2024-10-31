@@ -3,6 +3,7 @@ import { login } from '../services/authService';
 import { useNavigate } from 'react-router-dom';
 import AuthForm from '../components/forms/AuthForm';
 import Footer from '../components/Footer';
+import { setToken } from '../services/auth';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -13,12 +14,10 @@ const LoginPage = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const { token, email: userEmail, role } = await login(email, password);
-            console.log('Login com sucesso:', { userEmail, role });
+            const { token, role } = await login(email, password);
+            console.log('Login com sucesso:', { email, role });
 
-            // Armazena o token em localStorage ou sessionStorage
-            localStorage.setItem('token', token);
-            localStorage.setItem('userEmail', userEmail);
+            setToken(token);
 
             navigate("/equipamentos");
         } catch (error) {
