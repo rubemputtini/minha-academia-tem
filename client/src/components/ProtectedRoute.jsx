@@ -1,14 +1,14 @@
 import { Navigate } from 'react-router-dom';
 import { isLoggedIn } from '../services/auth';
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({ children, publicRoute = false }) => {
+    const loggedIn = isLoggedIn();
 
-    if (!isLoggedIn()) {
-        return <Navigate to="/signup" replace />;
+    if (publicRoute) {
+        return loggedIn ? <Navigate to="/equipamentos" replace /> : children;
     }
 
-    return children;
+    return loggedIn ? children : <Navigate to="/signup" replace />;
 };
-
 
 export default ProtectedRoute;

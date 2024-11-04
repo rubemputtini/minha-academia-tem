@@ -13,7 +13,7 @@ export const login = async (email, password) => {
         return response.data;
 
     } catch (error) {
-        console.error("Erro ao registrar: ", error.response?.data || error.message);
+        console.error("Erro ao fazer login: ", error.response?.data || error.message);
         throw error;
     }
 };

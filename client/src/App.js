@@ -4,17 +4,29 @@ import SignupPage from './pages/SignupPage';
 import EquipmentSelectionPage from './pages/EquipmentSelectionPage';
 import AccountPage from './pages/AccountPage';
 import ProtectedRoute from './components/ProtectedRoute';
-import { isLoggedIn } from './services/auth'
 
 function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Navigate to={isLoggedIn() ? "/equipamentos" : "/signup"} replace />} />
+                <Route path="/" element={<Navigate to="/signup" replace />} />
                 
-                <Route path="/login" element={isLoggedIn() ? <Navigate to="/equipamentos" replace /> : <LoginPage />} />
-                <Route path="/signup" element={isLoggedIn() ? <Navigate to="/equipamentos" replace /> : <SignupPage />} />
-                
+                <Route 
+                    path="/login" 
+                    element={
+                        <ProtectedRoute publicRoute>
+                            <LoginPage />
+                        </ProtectedRoute>
+                    } 
+                />
+                <Route 
+                    path="/signup" 
+                    element={
+                        <ProtectedRoute publicRoute>
+                            <SignupPage />
+                        </ProtectedRoute>
+                    } 
+                />               
                 <Route 
                     path="/equipamentos" 
                     element={
