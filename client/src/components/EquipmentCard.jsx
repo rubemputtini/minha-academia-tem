@@ -1,9 +1,9 @@
 import ActionButton from './buttons/ActionButton';
 
-const EquipmentCard = ({ equipment, onSelection, onBack, showBackButton, currentSelection }) => {
+const EquipmentCard = ({ equipment, onSelection, onBack, showBackButton, currentSelection, showCheckmark }) => {
     return (
         <div className="bg-[#1E1E1E] rounded-xl shadow-lg overflow-hidden p-6 h-[600px] flex flex-col justify-between items-center max-w-lg mx-auto relative">
-            {currentSelection !== undefined && (
+            {showCheckmark && currentSelection !== undefined && (
                 <div
                     className={`absolute inset-0 flex justify-center items-center text-6xl font-bold text-white ${currentSelection ? 'text-green-500' : 'text-red-500'
                         } animate-fade`}

@@ -24,7 +24,7 @@ namespace MinhaAcademiaTem.Controllers
 
         [HttpPost("send-gym-report")]
         public async Task<IActionResult> SendGymReport([FromBody] GymReportRequest request)
-        {
+        {     
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -50,6 +50,8 @@ namespace MinhaAcademiaTem.Controllers
                 {
                     UserId = user.Id,
                     GymId = gym.GymId,
+                    GymName = gym.Name,
+                    GymLocation = gym.Location,
                     EquipmentSelections = request.EquipmentIds.Select(eId => new EquipmentSelection { EquipmentId = eId }).ToList(),
                 };
 
@@ -67,8 +69,7 @@ namespace MinhaAcademiaTem.Controllers
                 var equipmentList = string.Join(", ", equipmentNames);
                 var emailContent = $"A academia {gym.Name} cadastrada pelo usuário {request.UserName} possui os seguintes equipamentos: {equipmentList}";
                 var adminEmail = _configuration["AdminSettings:AdminEmail"];
-
-
+                
                 _emailService.Send(
                     "Administrador",
                     adminEmail!,
