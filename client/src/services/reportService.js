@@ -9,7 +9,6 @@ export const submitReport = async (userEmail, gymName, equipmentsIds) => {
     };
 
     try {
-        console.log(gymReport)
         await axios.post(`${API_URL}/api/v1/Report/send-gym-report`, gymReport);
         alert('Relatório enviado com sucesso!');
         return true;     

@@ -20,20 +20,20 @@ const EquipmentCard = ({ equipment, onSelection, onBack, showBackButton, current
             <div className="flex flex-col items-center gap-4 w-full">
                 <ActionButton
                     label="SIM 😄"
-                    colorClass="bg-green"
+                    colorClass="bg-green-500"
                     onClick={() => onSelection(true)}
                     isSelected={currentSelection === true}
                 />
                 <ActionButton
                     label="NÃO 🥲"
-                    colorClass="bg-red"
+                    colorClass="bg-red-500"
                     onClick={() => onSelection(false)}
                     isSelected={currentSelection === false}
                 />
                 {showBackButton && (
                     <ActionButton
                         label="VOLTAR 🔙"
-                        colorClass="bg-gray"
+                        colorClass="bg-gray-300"
                         onClick={onBack}
                         isSelected={false}
                     />

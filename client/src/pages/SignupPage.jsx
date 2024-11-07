@@ -14,11 +14,14 @@ const SignupPage = () => {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            await register(email, password, gymName, gymLocation);
-            navigate("/equipamentos");
+            const { token, message, } = await register(email, password, gymName, gymLocation);
+
+            if (token) {
+                navigate("/equipamentos");
+            }
 
         } catch (error) {
-            const errorMsg = error.response?.data || 'Erro ao cadastrar, tente novamente.';
+            const errorMsg = error.message || 'Erro ao cadastrar, tente novamente.';
             setErrorMessage(errorMsg);
         }
     };

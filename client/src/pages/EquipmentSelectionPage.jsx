@@ -19,7 +19,6 @@ const EquipmentSelectionPage = () => {
         const loadEquipments = async () => {
             try {
                 const equipmentData = await fetchEquipments();
-                console.log("Dados dos equipamentos:", equipmentData);
                 setEquipments(equipmentData);
                 setSelections(new Array(equipmentData.length).fill(false));
 
@@ -51,7 +50,6 @@ const EquipmentSelectionPage = () => {
                     .map((isSelected, index) => isSelected ? equipments[index].equipmentId : null)
                     .filter(id => id !== null);
 
-                console.log("Equipamentos selecionados:", selectedEquipmentIds);
                 submitReport(userName, gymName, selectedEquipmentIds);
             }
         }, 900);

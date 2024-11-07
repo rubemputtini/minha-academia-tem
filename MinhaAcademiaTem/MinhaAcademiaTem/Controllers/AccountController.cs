@@ -164,7 +164,9 @@ namespace MinhaAcademiaTem.Controllers
                 $"O usuário {user.Email} foi registrado no sistema."
                 );
 
-            return Ok("Usuário registrado com sucesso.");
+            var token = _tokenService.GenerateToken(user, role);
+
+            return Ok(new { message = "Usuário registrado com sucesso.", token });
         }
 
         [Authorize(Roles = "admin")]

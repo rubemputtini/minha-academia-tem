@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_URL } from '../utils/constants'
-import { clearToken } from './auth';
+import { clearToken, setToken } from './auth';
 
 export const login = async (email, password) => {
     try {
@@ -27,7 +27,13 @@ export const register = async (email, password, gymName, gymLocation) => {
           gymLocation
         });
 
-        return response.data;
+        const { token, message} = response.data;
+
+        if (token) {
+          setToken(token);
+        }
+
+        return { token, message };
 
       } catch (error) {
          const errorMessage = error.response?.data?.message || "Erro ao registrar usuário";
