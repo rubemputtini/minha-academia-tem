@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MinhaAcademiaTem.Models
 {
@@ -8,10 +9,16 @@ namespace MinhaAcademiaTem.Models
         public int ReportId { get; set; }
 
         [Required(ErrorMessage = "O ID do usuário é obrigatório.")]
-        public string UserId { get; set; }
+        public string UserId { get; set; } = string.Empty;
+
+        [ForeignKey("UserId")]
+        public User User { get; set; } = new User();
 
         [Required(ErrorMessage = "O ID da academia é obrigatório.")]
         public int GymId { get; set; }
+
+        [ForeignKey("GymId")]
+        public Gym Gym { get; set; } = new Gym();
 
         [Required(ErrorMessage = "O nome da academia é obrigatório.")]
         public string GymName { get; set; } = string.Empty;

@@ -19,13 +19,6 @@ namespace MinhaAcademiaTem.Models
         [Url(ErrorMessage = "A URL do vídeo é inválida.")]
         public string VideoUrl { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "O ID da academia é obrigatório.")]
-        public int GymId { get; set; }
-
-        [ForeignKey("GymId")]
-        [JsonIgnore]
-        public Gym? Gym { get; set; }
-
         [Required(ErrorMessage = "O grupo muscular é obrigatório.")]
         public MuscleGroup MuscleGroup { get; set; }
     }

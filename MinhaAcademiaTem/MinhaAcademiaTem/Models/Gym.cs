@@ -16,8 +16,11 @@ namespace MinhaAcademiaTem.Models
         [StringLength(40, ErrorMessage = "A localização não pode ter mais que 40 caracteres.")]
         public string Location { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "O ID do usuário é obrigatório.")]
+        public string UserId { get; set; } = string.Empty;
+
         [JsonIgnore]
-        public ICollection<Equipment> Equipments { get; set; } = new List<Equipment>();
+        public User User { get; set; } = new User();
     }
 
 }

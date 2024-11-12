@@ -92,12 +92,16 @@ namespace MinhaAcademiaTem.Controllers
         [HttpGet("details")]
         public async Task<IActionResult> GetUserDetails()
         {
-            var user = await _userManager.FindByEmailAsync(User.Identity!.Name);
+            var user = await _userManager.Users
+                .FirstOrDefaultAsync(u => u.Email == User.Identity!.Name);
 
             if (user == null)
             {
                 return NotFound("Usuário não encontrado.");
             }
+
+            var gym = await _dbContext.Gyms
+                .FirstOrDefaultAsync(g => g.UserId == user.Id);
 
             var report = await _dbContext.Reports
                 .Include(r => r.EquipmentSelections)
@@ -108,8 +112,8 @@ namespace MinhaAcademiaTem.Controllers
             {
                 Name = user.UserName!,
                 Email = user.Email!,
-                GymName = user.GymName!,
-                GymLocation = user.GymLocation!,
+                GymName = gym!.Name,
+                GymLocation = gym.Location,
                 SelectedExercises = report?.EquipmentSelections.Select(es => es.Equipment.Name).ToList() ?? new List<string>()
             };
 
@@ -134,9 +138,7 @@ namespace MinhaAcademiaTem.Controllers
             {
                 UserName = request.Email,
                 Email = request.Email,
-                IsAdmin = request.Email == _configuration["AdminSettings:AdminEmail"],
-                GymName = request.GymName,
-                GymLocation = request.GymLocation
+                IsAdmin = request.Email == _configuration["AdminSettings:AdminEmail"]
             };
 
             var result = await _userManager.CreateAsync(user, request.Password);
@@ -154,6 +156,16 @@ namespace MinhaAcademiaTem.Controllers
             }
 
             await _userManager.AddToRoleAsync(user, role);
+
+            var gym = new Gym
+            {
+                Name = request.GymName,
+                Location = request.GymLocation,
+                User = user
+            };
+
+            _dbContext.Gyms.Add(gym);
+            await _dbContext.SaveChangesAsync();
 
             var adminEmail = _configuration["AdminSettings:AdminEmail"];
 

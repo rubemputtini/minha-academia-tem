@@ -54,14 +54,7 @@ namespace MinhaAcademiaTem.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreateEquipment([FromBody] Equipment equipment)
-        {
-            var gymExists = await _context.Gyms.AnyAsync(g => g.GymId == equipment.GymId);
-
-            if (!gymExists)
-            {
-                return BadRequest(new { message = "ID da academia não existe." });
-            }
-
+        {            
             if (!ModelState.IsValid)
             {
                 return ApiResponseHelper.GenerateErrorResponse(ModelState);

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MinhaAcademiaTem.Data;
 using MinhaAcademiaTem.DTOs;
@@ -14,17 +16,20 @@ namespace MinhaAcademiaTem.Controllers
         private readonly ApplicationDbContext _context;
         private readonly EmailService _emailService;
         private readonly IConfiguration _configuration;
+        private readonly UserManager<User> _userManager;
 
-        public ReportController(ApplicationDbContext context, EmailService emailService, IConfiguration configuration)
+        public ReportController(ApplicationDbContext context, EmailService emailService, IConfiguration configuration, UserManager<User> userManager)
         {
             _context = context;
             _emailService = emailService;
             _configuration = configuration;
+            _userManager = userManager;
         }
 
-        [HttpPost("send-gym-report")]
-        public async Task<IActionResult> SendGymReport([FromBody] GymReportRequest request)
-        {     
+        [Authorize]
+        [HttpPost("save-selection")]
+        public async Task<IActionResult> SaveEquipmentSelection([FromBody] EquipmentSelectionRequest request)
+        {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -32,19 +37,91 @@ namespace MinhaAcademiaTem.Controllers
 
             try
             {
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == request.UserName);
-                
+                var userName = User.Identity?.Name;
+
+                if (string.IsNullOrEmpty(userName))
+                {
+                    return Unauthorized(new { message = "Usuário não autenticado." });
+                }
+
+                var user = await _userManager.FindByEmailAsync(userName);
+
                 if (user == null)
                 {
                     return NotFound(new { message = "Usuário não encontrado." });
                 }
 
-                var gym = await _context.Gyms.FirstOrDefaultAsync(g => g.Name == request.GymName);
-                
+                var report = await _context.Reports
+                    .Include(r => r.EquipmentSelections)
+                    .FirstOrDefaultAsync(r => r.UserId == user.Id);
+
+                if (report == null)
+                {
+                    report = new Report
+                    {
+                        UserId = user.Id,
+                        EquipmentSelections = new List<EquipmentSelection>()
+                    };
+
+                    _context.Reports.Add(report);
+                }
+                else
+                {
+                    report.EquipmentSelections.Clear();
+                }
+
+                foreach (var equipmentId in request.EquipmentIds)
+                {
+                    report.EquipmentSelections.Add(new EquipmentSelection
+                    {
+                        EquipmentId = equipmentId
+                    });
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new { message = "Seleção de equipamentos salva com sucesso." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Erro ao salvar a seleção de equipamentos.", details = ex.Message });
+            }
+        }
+
+        [Authorize]
+        [HttpPost("send-gym-report")]
+        public async Task<IActionResult> SendGymReport([FromBody] GymReportRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var userName = User.Identity?.Name;
+
+                if (string.IsNullOrEmpty(userName))
+                {
+                    return Unauthorized(new { message = "Usuário não autenticado." });
+                }
+
+                var user = await _userManager.FindByEmailAsync(userName);
+
+                if (user == null)
+                {
+                    return NotFound(new { message = "Usuário não encontrado." });
+                }
+
+                var gym = await _context.Gyms.FirstOrDefaultAsync(g => g.Name == request.GymName && g.UserId == user.Id);
+
                 if (gym == null)
                 {
                     return NotFound(new { message = "Academia não encontrada." });
                 }
+
+                var previousReports = _context.Reports.Where(r => r.UserId == user.Id && r.GymId == gym.GymId);
+                _context.Reports.RemoveRange(previousReports);
 
                 var report = new Report
                 {
@@ -54,9 +131,6 @@ namespace MinhaAcademiaTem.Controllers
                     GymLocation = gym.Location,
                     EquipmentSelections = request.EquipmentIds.Select(eId => new EquipmentSelection { EquipmentId = eId }).ToList(),
                 };
-
-                var previousReports = _context.Reports.Where(r => r.UserId == user.Id && r.GymId == gym.GymId);
-                _context.Reports.RemoveRange(previousReports);
 
                 _context.Reports.Add(report);
                 await _context.SaveChangesAsync();
@@ -69,7 +143,7 @@ namespace MinhaAcademiaTem.Controllers
                 var equipmentList = string.Join(", ", equipmentNames);
                 var emailContent = $"A academia {gym.Name} cadastrada pelo usuário {request.UserName} possui os seguintes equipamentos: {equipmentList}";
                 var adminEmail = _configuration["AdminSettings:AdminEmail"];
-                
+
                 _emailService.Send(
                     "Administrador",
                     adminEmail!,

@@ -14,7 +14,7 @@ const SignupPage = () => {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            const { token, message, } = await register(email, password, gymName, gymLocation);
+            const { token } = await register(email, password, gymName, gymLocation);
 
             if (token) {
                 navigate("/equipamentos");

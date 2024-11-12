@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MinhaAcademiaTem.Data;
 using MinhaAcademiaTem.Helpers;
 using MinhaAcademiaTem.Models;
+using System.Security.Claims;
 
 namespace MinhaAcademiaTem.Controllers
 {
@@ -22,7 +24,7 @@ namespace MinhaAcademiaTem.Controllers
         {
             try
             {
-                var gyms = await _context.Gyms.Include(g => g.Equipments).ToListAsync();
+                var gyms = await _context.Gyms.ToListAsync();
                 return Ok(gyms);
             }
             catch (Exception ex)
@@ -36,7 +38,7 @@ namespace MinhaAcademiaTem.Controllers
         {
             try
             {
-                var gym = await _context.Gyms.Include(g => g.Equipments).FirstOrDefaultAsync(g => g.GymId == id);
+                var gym = await _context.Gyms.FirstOrDefaultAsync(g => g.GymId == id);
 
                 if (gym == null)
                 {
@@ -51,6 +53,7 @@ namespace MinhaAcademiaTem.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateGym([FromBody] Gym gym)
         {
@@ -61,6 +64,14 @@ namespace MinhaAcademiaTem.Controllers
 
             try
             {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (userId == null)
+                {
+                    return Unauthorized(new { message = "Usuário não autorizado." });
+                }
+
+                gym.UserId = userId;
                 _context.Gyms.Add(gym);
                 await _context.SaveChangesAsync();
 
@@ -118,7 +129,7 @@ namespace MinhaAcademiaTem.Controllers
         {
             try
             {
-                var gym = await _context.Gyms.Include(g => g.Equipments).FirstOrDefaultAsync(g => g.GymId == id);
+                var gym = await _context.Gyms.FirstOrDefaultAsync(g => g.GymId == id);
 
                 if (gym == null)
                 {
