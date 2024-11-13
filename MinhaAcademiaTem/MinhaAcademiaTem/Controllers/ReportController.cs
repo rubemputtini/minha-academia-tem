@@ -96,6 +96,8 @@ namespace MinhaAcademiaTem.Controllers
                             IsAvailable = true
                         })
                         .ToList();
+
+                    report.CreatedAt = DateTime.Now;
                 }
 
                 await _context.SaveChangesAsync();

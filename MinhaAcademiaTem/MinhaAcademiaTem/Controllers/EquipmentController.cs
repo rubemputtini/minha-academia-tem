@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MinhaAcademiaTem.Data;
+using MinhaAcademiaTem.DTOs;
 using MinhaAcademiaTem.Helpers;
 using MinhaAcademiaTem.Models;
 
@@ -22,7 +23,17 @@ namespace MinhaAcademiaTem.Controllers
         {
             try
             {
-                var equipments = await _context.Equipments.ToListAsync();
+                var equipments = await _context.Equipments
+                    .Select(e => new EquipmentResponse
+                    {
+                        EquipmentId = e.EquipmentId,
+                        Name = e.Name,
+                        PhotoUrl = e.PhotoUrl,
+                        VideoUrl = e.VideoUrl,
+                        MuscleGroup = e.MuscleGroup.ToString()
+                    })
+                    .ToListAsync();
+
                 return Ok(equipments);
             }
             catch (Exception ex)

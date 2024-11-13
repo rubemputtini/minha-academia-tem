@@ -6,6 +6,6 @@
         public string Email { get; set; } = string.Empty;
         public string GymName { get; set; } = string.Empty;
         public string GymLocation { get; set; } = string.Empty;
-        public List<string> SelectedExercises { get; set; } = new List<string>();
+        public List<EquipmentResponse> SelectedExercises { get; set; } = new List<EquipmentResponse>();
     }
 }

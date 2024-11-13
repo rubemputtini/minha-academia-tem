@@ -23,3 +23,13 @@ export const errorMessages = {
     "Passwords must have at least one lowercase ('a'-'z').": "A senha deve conter pelo menos uma letra minúscula.",
     "Passwords must have at least one uppercase ('A'-'Z').": "A senha deve conter pelo menos uma letra maiúscula."
 };
+
+export const muscleGroupNames = {
+  Peito: "Peito",
+  Ombro: "Ombro",
+  Costas: "Costas",
+  Pernas: "Pernas",
+  Bíceps: "Bíceps",
+  Tríceps: "Tríceps",
+  Abdômen: "Abdômen"
+};

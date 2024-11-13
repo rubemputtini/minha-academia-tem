@@ -29,7 +29,7 @@ const EquipmentSelectionPage = () => {
         } catch (error) {
             console.error("Erro ao buscar detalhes do usuário:", error);
         }
-    }
+    };
 
     const loadEquipments = useCallback(async () => {
 
@@ -85,7 +85,7 @@ const EquipmentSelectionPage = () => {
             console.log("Falha ao enviar o relatório.");
         }
         setShowConfirmation(false);
-    }
+    };
 
     const closeReportSubmission = () => setReportSubmitted(false);
 
