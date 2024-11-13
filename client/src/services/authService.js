@@ -27,7 +27,7 @@ export const register = async (email, password, gymName, gymLocation) => {
           gymLocation
         });
 
-        const { token, message} = response.data;
+        const { token, message } = response.data;
 
         if (token) {
           setToken(token);
@@ -36,10 +36,15 @@ export const register = async (email, password, gymName, gymLocation) => {
         return { token, message };
 
       } catch (error) {
-         const errorMessage = error.response?.data?.message || "Erro ao registrar usuário";
-         console.error("Erro ao registrar: ", errorMessage);
+        const errorMessage = error.response?.data?.message || "Erro ao registrar usuário";
+        const details = error.response?.data?.details || [];
+
+        console.error("Erro ao registrar: ", errorMessage, details);
          
-         throw new Error(errorMessage);
+        const customError = new Error(errorMessage);
+        customError.details = details;
+
+        throw customError;
       } 
 };
 

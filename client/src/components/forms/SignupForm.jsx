@@ -11,6 +11,7 @@ const SignupForm = ({
     gymLocation,
     setGymLocation,
     errorMessage,
+    errorDetails,
     onLoginRedirect
 }) => (
     <div className="flex justify-center items-center h-screen bg-black">
@@ -60,7 +61,13 @@ const SignupForm = ({
                         required
                     />
                 </div>
-                {errorMessage && (
+                {errorDetails && errorDetails.length > 0 ? (
+                    <ul className="text-red-500 text-xs italic mb-4 list-disc list-inside">
+                        {errorDetails.map((detail, index) => (
+                            <li key={index}>{detail}</li>
+                        ))}
+                    </ul>
+                ) : errorMessage && (
                     <p className="text-red-500 text-xs italic mb-4">{errorMessage}</p>
                 )}
                 <div className="flex items-center justify-center">

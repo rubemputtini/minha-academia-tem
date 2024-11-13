@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { register } from '../services/authService';
 import { useNavigate } from 'react-router-dom';
 import SignupForm from '../components/forms/SignupForm';
+import { errorMessages } from '../utils/constants';
 
 const SignupPage = () => {
     const [email, setEmail] = useState('');
@@ -9,6 +10,7 @@ const SignupPage = () => {
     const [gymName, setGymName] = useState('');
     const [gymLocation, setGymLocation] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [errorDetails, setErrorDetails] = useState('');
     const navigate = useNavigate();
 
     const handleRegister = async (e) => {
@@ -22,7 +24,10 @@ const SignupPage = () => {
 
         } catch (error) {
             const errorMsg = error.message || 'Erro ao cadastrar, tente novamente.';
+            const details = error.details ? error.details.map(detail => errorMessages[detail] || detail) : [];
+
             setErrorMessage(errorMsg);
+            setErrorDetails(details);
         }
     };
 
@@ -45,6 +50,7 @@ const SignupPage = () => {
                 gymLocation={gymLocation}
                 setGymLocation={setGymLocation}
                 errorMessage={errorMessage}
+                errorDetails={errorDetails}
                 onLoginRedirect={handleLoginRedirect}
             />
         </>
