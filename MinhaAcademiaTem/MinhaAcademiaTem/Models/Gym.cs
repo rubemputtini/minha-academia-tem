@@ -20,7 +20,7 @@ namespace MinhaAcademiaTem.Models
         public string UserId { get; set; } = string.Empty;
 
         [JsonIgnore]
-        public User User { get; set; } = new User();
+        public User User { get; set; }
     }
 
 }

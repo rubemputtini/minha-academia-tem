@@ -12,13 +12,13 @@ namespace MinhaAcademiaTem.Models
         public string UserId { get; set; } = string.Empty;
 
         [ForeignKey("UserId")]
-        public User User { get; set; } = new User();
+        public User User { get; set; }
 
         [Required(ErrorMessage = "O ID da academia é obrigatório.")]
         public int GymId { get; set; }
 
         [ForeignKey("GymId")]
-        public Gym Gym { get; set; } = new Gym();
+        public Gym Gym { get; set; } 
 
         [Required(ErrorMessage = "O nome da academia é obrigatório.")]
         public string GymName { get; set; } = string.Empty;

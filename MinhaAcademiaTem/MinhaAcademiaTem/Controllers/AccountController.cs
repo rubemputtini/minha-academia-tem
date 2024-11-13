@@ -108,13 +108,15 @@ namespace MinhaAcademiaTem.Controllers
                 .ThenInclude(es => es.Equipment)
                 .FirstOrDefaultAsync(r => r.UserId == user.Id);
 
+            var selectedExercises = report?.EquipmentSelections.Select(es => es.Equipment.Name).ToList() ?? new List<string>();
+
             var userDetails = new UserDetailsResponse
             {
                 Name = user.UserName!,
                 Email = user.Email!,
                 GymName = gym!.Name,
                 GymLocation = gym.Location,
-                SelectedExercises = report?.EquipmentSelections.Select(es => es.Equipment.Name).ToList() ?? new List<string>()
+                SelectedExercises = selectedExercises
             };
 
             return Ok(userDetails);

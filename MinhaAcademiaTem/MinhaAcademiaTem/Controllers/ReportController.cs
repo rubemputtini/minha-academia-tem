@@ -51,31 +51,51 @@ namespace MinhaAcademiaTem.Controllers
                     return NotFound(new { message = "Usuário não encontrado." });
                 }
 
+                var gym = await _context.Gyms.FirstOrDefaultAsync(g => g.UserId == user.Id);
+
+                if (gym == null)
+                {
+                    return NotFound(new { message = "Academia não encontrada." });
+                }
+
                 var report = await _context.Reports
                     .Include(r => r.EquipmentSelections)
-                    .FirstOrDefaultAsync(r => r.UserId == user.Id);
+                    .FirstOrDefaultAsync(r => r.UserId == user.Id && r.GymId == gym.GymId);
 
                 if (report == null)
                 {
                     report = new Report
                     {
                         UserId = user.Id,
-                        EquipmentSelections = new List<EquipmentSelection>()
+                        GymId = gym.GymId,
+                        GymName = gym.Name,
+                        GymLocation = gym.Location,
+                        EquipmentSelections = request.EquipmentIds
+                            .Select(eId => new EquipmentSelection 
+                            { 
+                                EquipmentId = eId,
+                                UserId = user.Id, 
+                                GymId = gym.GymId,
+                                IsAvailable = true
+                            })
+                            .ToList()
                     };
 
                     _context.Reports.Add(report);
                 }
                 else
                 {
-                    report.EquipmentSelections.Clear();
-                }
+                    _context.EquipmentSelections.RemoveRange(report.EquipmentSelections);
 
-                foreach (var equipmentId in request.EquipmentIds)
-                {
-                    report.EquipmentSelections.Add(new EquipmentSelection
-                    {
-                        EquipmentId = equipmentId
-                    });
+                    report.EquipmentSelections = request.EquipmentIds
+                        .Select(eId => new EquipmentSelection 
+                        { 
+                            EquipmentId = eId, 
+                            UserId = user.Id, 
+                            GymId = gym.GymId,
+                            IsAvailable = true
+                        })
+                        .ToList();
                 }
 
                 await _context.SaveChangesAsync();
@@ -120,23 +140,17 @@ namespace MinhaAcademiaTem.Controllers
                     return NotFound(new { message = "Academia não encontrada." });
                 }
 
-                var previousReports = _context.Reports.Where(r => r.UserId == user.Id && r.GymId == gym.GymId);
-                _context.Reports.RemoveRange(previousReports);
+                var report = await _context.Reports
+                    .Include(r => r.EquipmentSelections)
+                    .FirstOrDefaultAsync(r => r.UserId == user.Id && r.GymId == gym.GymId);
 
-                var report = new Report
+                if (report == null)
                 {
-                    UserId = user.Id,
-                    GymId = gym.GymId,
-                    GymName = gym.Name,
-                    GymLocation = gym.Location,
-                    EquipmentSelections = request.EquipmentIds.Select(eId => new EquipmentSelection { EquipmentId = eId }).ToList(),
-                };
-
-                _context.Reports.Add(report);
-                await _context.SaveChangesAsync();
+                    return NotFound(new { message = "Seleção de equipamentos não encontrada." });
+                }              
 
                 var equipmentNames = await _context.Equipments
-                    .Where(e => request.EquipmentIds.Contains(e.EquipmentId))
+                    .Where(e => report.EquipmentSelections.Select(s => s.EquipmentId).Contains(e.EquipmentId))
                     .Select(e => e.Name)
                     .ToListAsync();
 
@@ -154,7 +168,11 @@ namespace MinhaAcademiaTem.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "Erro ao enviar o relatório.", details = ex.Message });
+                return StatusCode(500, new
+                {
+                    message = "Erro ao enviar o relatório.",
+                    details = ex.InnerException?.Message ?? ex.Message
+                });
             }
         }
     }

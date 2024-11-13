@@ -12,19 +12,19 @@ namespace MinhaAcademiaTem.Models
         public int GymId { get; set; }
 
         [ForeignKey("GymId")]
-        public Gym Gym { get; set; } = new Gym();
+        public Gym? Gym { get; set; }
 
         [Required(ErrorMessage = "O ID do Usuário é obrigatório.")]
         public string UserId { get; set; } = string.Empty;
 
         [ForeignKey("UserId")]
-        public User User { get; set; } = new User();
+        public User? User { get; set; }
 
         [Required(ErrorMessage = "O ID do Equipamento é obrigatório.")]
         public int EquipmentId { get; set; }
 
         [ForeignKey("EquipmentId")]
-        public Equipment Equipment { get; set; } = new Equipment();
+        public Equipment? Equipment { get; set; }
 
         public bool IsAvailable { get; set; } = false;
     }

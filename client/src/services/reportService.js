@@ -2,33 +2,44 @@ import axios from "axios";
 import { API_URL } from "../utils/constants";
 import { getToken } from "./auth";
 
-export const submitReport = async (userEmail, gymName, equipmentsIds) => {   
+const createHeaders = () => ({
+    headers: {
+        Authorization: `Bearer ${getToken()}`,
+    }
+});
+
+export const submitReport = async (userEmail, gymName, equipmentIds) => {   
     const gymReport = {
         UserName: userEmail,
         GymName: gymName,
-        EquipmentIds: equipmentsIds,
+        EquipmentIds: equipmentIds,
     };
 
     try {
-        const token = getToken()
-
         await axios.post(
             `${API_URL}/api/v1/Report/send-gym-report`, 
             gymReport,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
+            createHeaders()
         );
-        alert('Relatório enviado com sucesso!');
 
         return true;     
 
     } catch (error) {
         console.error('Erro ao enviar o relatório:', error);
-        alert('Erro ao enviar o relatório.');
 
         return false;
     }
 };
+
+export const saveEquipmentSelection = async (equipmentIds) => {
+    try {    
+        await axios.post(
+        `${API_URL}/api/v1/Report/save-selection`,
+            { EquipmentIds: equipmentIds },
+            createHeaders()
+        );
+
+    } catch (error) {
+        console.error('Erro ao salvar o relatório:', error);
+    }
+}

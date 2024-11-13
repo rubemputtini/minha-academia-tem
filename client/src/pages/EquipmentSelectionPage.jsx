@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import EquipmentCard from '../components/EquipmentCard';
-import { submitReport } from '../services/reportService';
+import { submitReport, saveEquipmentSelection } from '../services/reportService';
 import { fetchEquipments } from '../services/equipmentService';
 import { getToken } from '../services/auth';
 import { fetchUserDetails } from '../services/userService';
+import SuccessDialog from '../components/SuccessDialog';
+import ConfirmationDialog from '../components/ConfirmationDialog';
 
 const EquipmentSelectionPage = () => {
     const [equipments, setEquipments] = useState([]);
@@ -14,25 +16,37 @@ const EquipmentSelectionPage = () => {
     const [showCheckmark, setShowCheckMark] = useState(false);
     const [gymName, setGymName] = useState('');
     const [userName, setUserName] = useState('');
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [reportSubmitted, setReportSubmitted] = useState(false);
+
+    const loadUserData = async () => {
+
+        try {
+            const userDetails = await fetchUserDetails(getToken());
+            setUserName(userDetails.email);
+            setGymName(userDetails.gymName);
+
+        } catch (error) {
+            console.error("Erro ao buscar detalhes do usuário:", error);
+        }
+    }
+
+    const loadEquipments = useCallback(async () => {
+
+        try {
+            const equipmentData = await fetchEquipments();
+            setEquipments(equipmentData);
+            setSelections(new Array(equipmentData.length).fill(false));
+            await loadUserData();
+
+        } catch (error) {
+            console.error("Erro ao buscar a lista de equipamentos:", error);
+        }
+    }, []);
 
     useEffect(() => {
-        const loadEquipments = async () => {
-            try {
-                const equipmentData = await fetchEquipments();
-                setEquipments(equipmentData);
-                setSelections(new Array(equipmentData.length).fill(false));
-
-                const token = getToken();
-                const userDetails = await fetchUserDetails(token);
-                setUserName(userDetails.email);
-                setGymName(userDetails.gymName);
-            } catch (error) {
-                console.error("Erro ao buscar a lista de equipamentos:", error);
-            }
-        };
-
         loadEquipments();
-    }, []);
+    }, [loadEquipments]);
 
     const handleSelection = (selected) => {
         const updatedSelections = [...selections];
@@ -46,11 +60,7 @@ const EquipmentSelectionPage = () => {
             if (currentIndex < equipments.length - 1) {
                 setCurrentIndex(currentIndex + 1);
             } else {
-                const selectedEquipmentIds = updatedSelections
-                    .map((isSelected, index) => isSelected ? equipments[index].equipmentId : null)
-                    .filter(id => id !== null);
-
-                submitReport(userName, gymName, selectedEquipmentIds);
+                setShowConfirmation(true);
             }
         }, 900);
     };
@@ -60,6 +70,24 @@ const EquipmentSelectionPage = () => {
             setCurrentIndex(currentIndex - 1);
         }
     };
+
+    const handleConfirmSaveAndSubmit = async () => {
+        const selectedEquipmentIds = selections
+            .map((isSelected, index) => isSelected ? equipments[index].equipmentId : null)
+            .filter(id => id !== null);
+
+        await saveEquipmentSelection(selectedEquipmentIds);
+        const success = await submitReport(userName, gymName, selectedEquipmentIds);
+
+        if (success) {
+            setReportSubmitted(true);
+        } else {
+            console.log("Falha ao enviar o relatório.");
+        }
+        setShowConfirmation(false);
+    }
+
+    const closeReportSubmission = () => setReportSubmitted(false);
 
     const currentEquipment = equipments[currentIndex];
     const currentSelection = selections[currentIndex];
@@ -84,6 +112,13 @@ const EquipmentSelectionPage = () => {
                     )}
                 </div>
             </div>
+            {showConfirmation && !reportSubmitted && (
+                <ConfirmationDialog
+                    onConfirm={handleConfirmSaveAndSubmit}
+                    onCancel={() => setShowConfirmation(false)}
+                />
+            )}
+            {reportSubmitted && <SuccessDialog onClose={closeReportSubmission} />}
             <Footer />
         </>
     );
