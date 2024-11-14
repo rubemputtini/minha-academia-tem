@@ -9,6 +9,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../services/authService';
+import { Divider } from '@mui/material';
 
 const Header = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -30,6 +31,11 @@ const Header = () => {
     const handleAccountClick = () => {
         handleClose();
         navigate("/conta");
+    };
+
+    const handleFeedbackClick = () => {
+        handleClose();
+        navigate("/obrigado");
     };
 
     const handleHomeClick = () => {
@@ -74,9 +80,52 @@ const Header = () => {
                         }}
                         open={Boolean(anchorEl)}
                         onClose={handleClose}
+                        sx={{
+                            '& .MuiPaper-root': {
+                                borderRadius: '10px',
+                                backgroundColor: '#323232',
+                                color: 'white',
+                                boxShadow: '0px 10px 15px rgba(0, 0, 0, 0.2)',
+                                width: '120px',
+                                minWidth: 'unset',
+                            },
+                        }}
                     >
-                        <MenuItem onClick={handleAccountClick}>Conta</MenuItem>
-                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                        <MenuItem
+                            onClick={handleAccountClick}
+                            sx={{
+                                padding: '10px 20px',
+                                '&:hover': {
+                                    backgroundColor: '#3b3b3b',
+                                },
+                            }}
+                        >
+                            Conta
+                        </MenuItem>
+                        <MenuItem
+                            onClick={handleFeedbackClick}
+                            sx={{
+                                padding: '10px 20px',
+                                '&:hover': {
+                                    backgroundColor: '#3b3b3b',
+                                },
+                            }}
+                        >
+                            Feedback
+                        </MenuItem>
+                        <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.2)' }} />
+                        <MenuItem
+                            onClick={handleLogout}
+                            sx={{
+                                padding: '10px 20px',
+                                '&:hover': {
+                                    backgroundColor: '#ff4d4d',
+                                    color: 'white',
+                                },
+                            }}
+                        >
+                            Logout
+                        </MenuItem>
                     </Menu>
                 </Toolbar>
             </AppBar>

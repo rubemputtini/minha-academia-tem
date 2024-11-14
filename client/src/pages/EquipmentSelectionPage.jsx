@@ -8,6 +8,7 @@ import { getToken } from '../services/auth';
 import { fetchUserDetails } from '../services/userService';
 import SuccessDialog from '../components/SuccessDialog';
 import ConfirmationDialog from '../components/ConfirmationDialog';
+import { useNavigate } from 'react-router-dom';
 
 const EquipmentSelectionPage = () => {
     const [equipments, setEquipments] = useState([]);
@@ -18,6 +19,8 @@ const EquipmentSelectionPage = () => {
     const [userName, setUserName] = useState('');
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [reportSubmitted, setReportSubmitted] = useState(false);
+
+    const navigate = useNavigate();
 
     const loadUserData = async () => {
 
@@ -90,7 +93,10 @@ const EquipmentSelectionPage = () => {
         setShowConfirmation(false);
     };
 
-    const closeReportSubmission = () => setReportSubmitted(false);
+    const handleSuccessDialogClose = () => {
+        setReportSubmitted(false);
+        navigate("/report-status");
+    };
 
     const currentEquipment = equipments[currentIndex];
     const currentSelection = selections[currentIndex];
@@ -121,7 +127,7 @@ const EquipmentSelectionPage = () => {
                     onCancel={() => setShowConfirmation(false)}
                 />
             )}
-            {reportSubmitted && <SuccessDialog onClose={closeReportSubmission} />}
+            {reportSubmitted && <SuccessDialog onClose={handleSuccessDialogClose} />}
             <Footer />
         </>
     );

@@ -4,6 +4,7 @@ import SignupPage from './pages/SignupPage';
 import EquipmentSelectionPage from './pages/EquipmentSelectionPage';
 import AccountPage from './pages/AccountPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import ThankYouPage from './pages/ThankYouPage';
 
 function App() {
     return (
@@ -34,6 +35,15 @@ function App() {
                             <EquipmentSelectionPage />
                         </ProtectedRoute>
                     } 
+                />
+
+                <Route
+                    path="/obrigado"
+                    element={
+                        <ProtectedRoute>
+                            <ThankYouPage />
+                        </ProtectedRoute>
+                    }
                 />
 
                 <Route
