@@ -68,6 +68,9 @@ const EquipmentSelectionPage = () => {
     const handleBack = () => {
         if (currentIndex > 0) {
             setCurrentIndex(currentIndex - 1);
+
+            setShowCheckMark(true);
+            setTimeout(() => setShowCheckMark(false), 900);
         }
     };
 

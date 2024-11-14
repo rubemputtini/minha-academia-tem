@@ -79,7 +79,7 @@ const AccountPage = () => {
                                     {groupedExercises[muscleGroup].map((exercise) => (
                                         <div key={exercise.equipmentId} className="bg-[#333333] p-4 rounded-lg shadow-md">
                                             <img
-                                                src={exercise.imageUrl}
+                                                src={exercise.photoUrl}
                                                 alt={exercise.name}
                                                 className="w-full h-32 object-cover rounded-md mb-4"
                                             />

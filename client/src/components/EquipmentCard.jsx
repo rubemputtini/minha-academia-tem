@@ -2,10 +2,10 @@ import ActionButton from './buttons/ActionButton';
 
 const EquipmentCard = ({ equipment, onSelection, onBack, showBackButton, currentSelection, showCheckmark }) => {
     return (
-        <div className="bg-[#1E1E1E] rounded-xl shadow-lg overflow-hidden p-6 h-[600px] flex flex-col justify-between items-center w-full md:max-w-xl mx-auto relative">
+        <div className="bg-[#1E1E1E] rounded-xl shadow-lg overflow-hidden p-6 h-full flex flex-col justify-between items-center w-full md:max-w-xl mx-auto relative">
             {showCheckmark && currentSelection !== undefined && (
                 <div
-                    className={`absolute inset-0 flex justify-center items-center text-6xl font-bold text-white ${currentSelection ? 'text-green-500' : 'text-red-500'
+                    className={`absolute inset-0 flex justify-center items-center text-9xl font-bold text-white ${currentSelection ? 'text-green-500' : 'text-red-500'
                         } animate-fade`}
                 >
                     {currentSelection ? '✔️' : '❌'}
