@@ -177,5 +177,53 @@ namespace MinhaAcademiaTem.Controllers
                 });
             }
         }
+
+        [Authorize]
+        [HttpPost("send-feedback")]
+        public async Task<IActionResult> SendFeedback([FromBody] FeedbackRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { message = "O feedback não pode estar vazio." });
+            }
+
+            try
+            {
+                var userName = User.Identity?.Name;
+
+                if (string.IsNullOrEmpty(userName))
+                {
+                    return Unauthorized(new { message = "Usuário não autenticado." });
+                }
+
+                var user = await _userManager.FindByEmailAsync(userName);
+
+                if (user == null)
+                {
+                    return NotFound(new { message = "Usuário não encontrado." });
+                }
+
+                var adminEmail = _configuration["AdminSettings:AdminEmail"];
+
+                var emailContent = $"O usuário {user.Name} enviou um feedback dizendo o seguinte:\n\n{request.Feedback}";
+
+                _emailService.Send(
+                    "Administrador",
+                    adminEmail!,
+                    $"Feedback de Equipamentos da Academia do {user.Name}",
+                    emailContent);
+
+                return Ok(new { message = "Feedback enviado com sucesso." });
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    message = "Erro ao enviar o feedback.",
+                    details = ex.InnerException?.Message ?? ex.Message
+                });
+            }
+        }
     }
 }

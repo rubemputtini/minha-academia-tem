@@ -34,12 +34,25 @@ export const submitReport = async (userEmail, gymName, equipmentIds) => {
 export const saveEquipmentSelection = async (equipmentIds) => {
     try {    
         await axios.post(
-        `${API_URL}/api/v1/Report/save-selection`,
+            `${API_URL}/api/v1/Report/save-selection`,
             { EquipmentIds: equipmentIds },
             createHeaders()
         );
 
     } catch (error) {
         console.error('Erro ao salvar o relatório:', error);
+    }
+}
+
+export const sendFeedback = async (feedback) => {
+    try {
+        await axios.post(
+            `${API_URL}/api/v1/Report/send-feedback`, 
+            { Feedback: feedback },
+            createHeaders()
+        );
+
+    } catch (error) {
+        console.error('Erro ao enviar o feedback:', error);
     }
 }
