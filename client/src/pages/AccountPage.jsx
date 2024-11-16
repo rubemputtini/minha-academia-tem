@@ -65,32 +65,34 @@ const AccountPage = () => {
                     )}
                 </div>
 
-                <div className="w-full max-w-4xl">
-                    <h3 className="text-2xl font-semibold text-white mb-6 text-center">Equipamentos Selecionados</h3>
-                    {Object.keys(groupedExercises).map((muscleGroup) => {
-                        const muscleGroupName = muscleGroupNames[muscleGroup] || muscleGroup;
-                        return (
-                            <div key={muscleGroup} className="mb-20">
-                                <div className="flex justify-center mb-4">
-                                    <h3 className="text-gray-200 text-2xl font-semibold">{muscleGroupName}</h3>
+                {userDetails?.selectedExercises?.length > 0 && (
+                    <div className="w-full max-w-4xl">
+                        <h3 className="text-2xl font-semibold text-white mb-6 text-center">Equipamentos Selecionados</h3>
+                        {Object.keys(groupedExercises).map((muscleGroup) => {
+                            const muscleGroupName = muscleGroupNames[muscleGroup] || muscleGroup;
+                            return (
+                                <div key={muscleGroup} className="mb-20">
+                                    <div className="flex justify-center mb-4">
+                                        <h3 className="text-gray-200 text-2xl font-semibold">{muscleGroupName}</h3>
+                                    </div>
+                                    <hr className="my-4 border-t-2 border-[#444]" />
+                                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                        {groupedExercises[muscleGroup].map((exercise) => (
+                                            <div key={exercise.equipmentId} className="bg-[#333333] p-4 rounded-lg shadow-md">
+                                                <img
+                                                    src={exercise.photoUrl}
+                                                    alt={exercise.name}
+                                                    className="w-full h-full object-cover rounded-md mb-4"
+                                                />
+                                                <p className="text-gray-200 text-md text-center font-thin">{exercise.name}</p>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                                <hr className="my-4 border-t-2 border-[#444]" />
-                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                    {groupedExercises[muscleGroup].map((exercise) => (
-                                        <div key={exercise.equipmentId} className="bg-[#333333] p-4 rounded-lg shadow-md">
-                                            <img
-                                                src={exercise.photoUrl}
-                                                alt={exercise.name}
-                                                className="w-full h-full object-cover rounded-md mb-4"
-                                            />
-                                            <p className="text-gray-200 text-md text-center font-thin">{exercise.name}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
+                            );
+                        })}
+                    </div>
+                )}
             </div>
             <Footer />
         </>

@@ -95,7 +95,7 @@ const EquipmentSelectionPage = () => {
 
     const handleSuccessDialogClose = () => {
         setReportSubmitted(false);
-        navigate("/report-status");
+        navigate("/obrigado");
     };
 
     const currentEquipment = equipments[currentIndex];

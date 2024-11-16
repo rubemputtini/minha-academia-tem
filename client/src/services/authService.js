@@ -18,9 +18,10 @@ export const login = async (email, password) => {
     }
 };
 
-export const register = async (email, password, gymName, gymLocation) => {
+export const register = async (name, email, password, gymName, gymLocation) => {
     try {
         const response = await axios.post(`${API_URL}/Account/register`, {
+          name,
           email,
           password,
           gymName,

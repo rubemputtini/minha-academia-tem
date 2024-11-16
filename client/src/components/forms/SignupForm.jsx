@@ -2,6 +2,8 @@ const SignupForm = ({
     title,
     buttonText,
     onSubmit,
+    userName,
+    setUserName,
     email,
     setEmail,
     password,
@@ -38,6 +40,16 @@ const SignupForm = ({
                         placeholder="Localização"
                         value={gymLocation}
                         onChange={(e) => setGymLocation(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="mb-4">
+                    <input
+                        className="shadow appearance-none border border-gray-600 rounded w-full py-2 px-3 text-gray-300 leading-tight focus:outline-none focus:ring-2 focus:ring-[#3B82F6] bg-[#2E2E2E] placeholder-gray-400"
+                        type="text"
+                        placeholder="Nome"
+                        value={userName}
+                        onChange={(e) => setUserName(e.target.value)}
                         required
                     />
                 </div>

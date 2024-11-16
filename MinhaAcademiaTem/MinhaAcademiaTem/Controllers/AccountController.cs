@@ -121,7 +121,7 @@ namespace MinhaAcademiaTem.Controllers
 
             var userDetails = new UserDetailsResponse
             {
-                Name = user.UserName!,
+                Name = user.Name,
                 Email = user.Email!,
                 GymName = gym!.Name,
                 GymLocation = gym.Location,
@@ -147,6 +147,7 @@ namespace MinhaAcademiaTem.Controllers
             
             var user = new User
             {
+                Name = request.Name,
                 UserName = request.Email,
                 Email = request.Email,
                 IsAdmin = request.Email == _configuration["AdminSettings:AdminEmail"]
@@ -184,7 +185,7 @@ namespace MinhaAcademiaTem.Controllers
                 "Administrador",
                 adminEmail!,
                 "Um novo usuário foi cadastrado!",
-                $"O usuário {user.Email} foi registrado no sistema."
+                $"O usuário {user.Name} foi registrado no sistema."
                 );
 
             var token = _tokenService.GenerateToken(user, role);

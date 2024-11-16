@@ -5,6 +5,7 @@ import SignupForm from '../components/forms/SignupForm';
 import { errorMessages } from '../utils/constants';
 
 const SignupPage = () => {
+    const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [gymName, setGymName] = useState('');
@@ -16,7 +17,7 @@ const SignupPage = () => {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            const { token } = await register(email, password, gymName, gymLocation);
+            const { token } = await register(userName, email, password, gymName, gymLocation);
 
             if (token) {
                 navigate("/equipamentos");
@@ -38,9 +39,11 @@ const SignupPage = () => {
     return (
         <>
             <SignupForm
-                title="Cadastro"
+                title="Crie sua conta"
                 buttonText="Registrar"
                 onSubmit={handleRegister}
+                userName={userName}
+                setUserName={setUserName}
                 email={email}
                 setEmail={setEmail}
                 password={password}
