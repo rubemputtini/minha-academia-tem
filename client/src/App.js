@@ -5,6 +5,8 @@ import EquipmentSelectionPage from './pages/EquipmentSelectionPage';
 import AccountPage from './pages/AccountPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import ThankYouPage from './pages/ThankYouPage';
+import AdminPage from './pages/AdminPage';
+import UserDetailsPage from './pages/UserDetailsPage';
 
 function App() {
     return (
@@ -36,7 +38,6 @@ function App() {
                         </ProtectedRoute>
                     } 
                 />
-
                 <Route
                     path="/obrigado"
                     element={
@@ -45,12 +46,27 @@ function App() {
                         </ProtectedRoute>
                     }
                 />
-
                 <Route
                     path="/conta"
                     element={
                         <ProtectedRoute>
                             <AccountPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/admin"
+                    element={
+                        <ProtectedRoute>
+                            <AdminPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/admin/users/:userId"
+                    element={
+                        <ProtectedRoute>
+                            <UserDetailsPage />
                         </ProtectedRoute>
                     }
                 />

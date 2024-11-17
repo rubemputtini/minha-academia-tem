@@ -61,33 +61,6 @@ namespace MinhaAcademiaTem.Controllers
             });
         }
 
-        [Authorize(Roles = "admin")]
-        [HttpGet("user")]
-        public IActionResult GetUser() => Ok(User.Identity!.Name);
-
-        [Authorize(Roles = "admin")]
-        [HttpGet("users")]
-        public async Task<IActionResult> GetUsers()
-        {
-            var users = await _userManager.Users.ToListAsync();
-
-            var userResponses = new List<UserResponse>();
-
-            foreach (var user in users)
-            {
-                var roles = await _userManager.GetRolesAsync(user);
-
-                userResponses.Add(new UserResponse
-                {
-                    Id = user.Id,
-                    Email = user.Email!,
-                    Role = roles.FirstOrDefault()!
-                });
-            }
-
-            return Ok(userResponses);
-        }
-
         [Authorize]
         [HttpGet("details")]
         public async Task<IActionResult> GetUserDetails()
@@ -130,10 +103,6 @@ namespace MinhaAcademiaTem.Controllers
 
             return Ok(userDetails);
         }
-
-        [Authorize(Roles = "admin")]
-        [HttpGet("admin")]
-        public IActionResult GetAdmin() => Ok(User.Identity!.Name);
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request, [FromServices] EmailService emailService)

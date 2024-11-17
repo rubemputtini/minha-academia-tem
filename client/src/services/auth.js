@@ -1,3 +1,5 @@
+import { jwtDecode } from 'jwt-decode';
+
 export const isLoggedIn = () => {
     return !!localStorage.getItem('token'); 
 };
@@ -12,4 +14,9 @@ export const clearToken = () => {
 
 export const setToken = (token) => {
     localStorage.setItem('token', token);
+};
+
+export const getUserRole = () => {
+    const decodedToken = jwtDecode(getToken());
+    return decodedToken.role;
 };

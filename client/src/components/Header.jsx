@@ -10,10 +10,12 @@ import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../services/authService';
 import { Divider } from '@mui/material';
+import { getUserRole } from '../services/auth';
 
 const Header = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const navigate = useNavigate();
+    const isAdmin = getUserRole() === 'admin';
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -36,6 +38,11 @@ const Header = () => {
     const handleFeedbackClick = () => {
         handleClose();
         navigate("/obrigado");
+    };
+
+    const handleSettingsClick = () => {
+        handleClose();
+        navigate("/admin");
     };
 
     const handleHomeClick = () => {
@@ -86,7 +93,7 @@ const Header = () => {
                                 backgroundColor: '#323232',
                                 color: 'white',
                                 boxShadow: '0px 10px 15px rgba(0, 0, 0, 0.2)',
-                                width: '120px',
+                                width: '150px',
                                 minWidth: 'unset',
                             },
                         }}
@@ -113,6 +120,19 @@ const Header = () => {
                         >
                             Feedback
                         </MenuItem>
+                        {isAdmin && (
+                            <MenuItem
+                                onClick={handleSettingsClick}
+                                sx={{
+                                    padding: '10px 20px',
+                                    '&:hover': {
+                                        backgroundColor: '#3b3b3b',
+                                    },
+                                }}
+                            >
+                                Configurações
+                            </MenuItem>
+                        )}
                         <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.2)' }} />
                         <MenuItem
                             onClick={handleLogout}
