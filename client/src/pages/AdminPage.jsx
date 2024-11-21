@@ -22,7 +22,6 @@ import { ArrowDropUp, ArrowDropDown, Search } from "@mui/icons-material";
 import { getUsers } from "../services/adminService";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import { getUserRole } from "../services/auth";
 
 const AdminPage = () => {
     const [users, setUsers] = useState([]);
@@ -30,7 +29,6 @@ const AdminPage = () => {
     const [error, setError] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
     const [sortOrder, setSortOrder] = useState("asc");
-    const isAdmin = getUserRole() === 'admin';
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -96,7 +94,7 @@ const AdminPage = () => {
                         variant="outlined"
                         placeholder="Pesquisar por nome"
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        InputProps={{
+                        slotProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
                                     <Search style={{ color: "#666" }} />

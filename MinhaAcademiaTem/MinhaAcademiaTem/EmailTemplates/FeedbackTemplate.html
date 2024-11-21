@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback de Equipamentos</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            line-height: 1.5;
+            background-color: #f4f4f4;
+            padding: 0;
+            margin: 0;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+        }
+
+            .header h1 {
+                color: #2c3e50;
+            }
+
+        .content {
+            margin: 20px 0;
+        }
+
+            .content p {
+                margin: 10px 0;
+            }
+
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>Feedback Recebido</h1>
+        </div>
+        <div class="content">
+            <p>Olá,</p>
+            <p>O usuário <strong>{{Name}}</strong> enviou o seguinte feedback sobre a academia:</p>
+            <p><i>"{{Feedback}}"</i></p>
+        </div>
+        <div class="footer">
+            <p>Este é um email automático. Por favor, não responda.</p>
+        </div>
+    </div>
+</body>
+</html>

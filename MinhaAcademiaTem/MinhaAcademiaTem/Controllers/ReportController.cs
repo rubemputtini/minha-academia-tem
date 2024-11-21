@@ -11,6 +11,7 @@ namespace MinhaAcademiaTem.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
+    [Authorize]
     public class ReportController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -26,7 +27,6 @@ namespace MinhaAcademiaTem.Controllers
             _userManager = userManager;
         }
 
-        [Authorize]
         [HttpPost("save-selection")]
         public async Task<IActionResult> SaveEquipmentSelection([FromBody] EquipmentSelectionRequest request)
         {
@@ -71,10 +71,10 @@ namespace MinhaAcademiaTem.Controllers
                         GymName = gym.Name,
                         GymLocation = gym.Location,
                         EquipmentSelections = request.EquipmentIds
-                            .Select(eId => new EquipmentSelection 
-                            { 
+                            .Select(eId => new EquipmentSelection
+                            {
                                 EquipmentId = eId,
-                                UserId = user.Id, 
+                                UserId = user.Id,
                                 GymId = gym.GymId,
                                 IsAvailable = true
                             })
@@ -88,10 +88,10 @@ namespace MinhaAcademiaTem.Controllers
                     _context.EquipmentSelections.RemoveRange(report.EquipmentSelections);
 
                     report.EquipmentSelections = request.EquipmentIds
-                        .Select(eId => new EquipmentSelection 
-                        { 
-                            EquipmentId = eId, 
-                            UserId = user.Id, 
+                        .Select(eId => new EquipmentSelection
+                        {
+                            EquipmentId = eId,
+                            UserId = user.Id,
                             GymId = gym.GymId,
                             IsAvailable = true
                         })
@@ -110,7 +110,6 @@ namespace MinhaAcademiaTem.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost("send-gym-report")]
         public async Task<IActionResult> SendGymReport([FromBody] GymReportRequest request)
         {
@@ -149,7 +148,7 @@ namespace MinhaAcademiaTem.Controllers
                 if (report == null)
                 {
                     return NotFound(new { message = "Seleção de equipamentos não encontrada." });
-                }              
+                }
 
                 var equipmentNames = await _context.Equipments
                     .Where(e => report.EquipmentSelections.Select(s => s.EquipmentId).Contains(e.EquipmentId))
@@ -157,14 +156,27 @@ namespace MinhaAcademiaTem.Controllers
                     .ToListAsync();
 
                 var equipmentList = string.Join(", ", equipmentNames);
-                var emailContent = $"A academia {gym.Name} cadastrada pelo usuário {request.UserName} possui os seguintes equipamentos: {equipmentList}";
+
+                var templateData = new Dictionary<string, string>
+                {
+                    { "Name", user.Name },
+                    { "GymName", gym.Name },
+                    { "EquipmentItems", string.Join("", equipmentNames.Select(e => $"<li>{e}</li>")) }
+
+                };
+
+                var emailContent = await _emailService.GetEmailTemplateAsync("GymReportTemplate");
+                emailContent = _emailService.FillTemplateWithData(emailContent, templateData);
+
                 var adminEmail = _configuration["AdminSettings:AdminEmail"];
 
-                _emailService.Send(
-                    "Administrador",
-                    adminEmail!,
-                    $"Relatório da Academia {gym.Name}",
-                    emailContent);
+                await _emailService.SendEmailAsync(
+                    toName: "Administrador",
+                    toEmail: adminEmail!,
+                    subject: "Relatório da Academia - Minha Academia TEM?",
+                    templateName: "GymReportTemplate",
+                    templateData: templateData
+                );
 
                 return Ok(new { message = "Relatório enviado com sucesso." });
             }
@@ -178,7 +190,6 @@ namespace MinhaAcademiaTem.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost("send-feedback")]
         public async Task<IActionResult> SendFeedback([FromBody] FeedbackRequest request)
         {
@@ -205,13 +216,18 @@ namespace MinhaAcademiaTem.Controllers
 
                 var adminEmail = _configuration["AdminSettings:AdminEmail"];
 
-                var emailContent = $"O usuário {user.Name} enviou um feedback dizendo o seguinte:\n\n{request.Feedback}";
+                var templateData = new Dictionary<string, string>
+                {
+                    { "Name", user.Name },
+                    { "Feedback", request.Feedback }
+                };
 
-                _emailService.Send(
-                    "Administrador",
-                    adminEmail!,
-                    $"Feedback de Equipamentos da Academia do {user.Name}",
-                    emailContent);
+                await _emailService.SendEmailAsync(
+                    toName: "Administrador",
+                    toEmail: adminEmail!,
+                    subject: "Novo Feedback Recebido - Minha Academia TEM?",
+                    templateName: "FeedbackTemplate",
+                    templateData: templateData);
 
                 return Ok(new { message = "Feedback enviado com sucesso." });
             }

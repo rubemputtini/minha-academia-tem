@@ -3,6 +3,7 @@ import { register } from '../services/authService';
 import { useNavigate } from 'react-router-dom';
 import SignupForm from '../components/forms/SignupForm';
 import { errorMessages } from '../utils/constants';
+import Footer from '../components/Footer';
 
 const SignupPage = () => {
     const [userName, setUserName] = useState('');
@@ -56,6 +57,7 @@ const SignupPage = () => {
                 errorDetails={errorDetails}
                 onLoginRedirect={handleLoginRedirect}
             />
+            <Footer />
         </>
     );
 };

@@ -16,8 +16,11 @@ namespace MinhaAcademiaTem.Services
             _smtpConfig = smtpOptions.Value;
         }
 
-        public bool Send(string toName, string toEmail, string subject, string body, string fromName = "Consultoria Rubem Puttini", string fromEmail = "consultoria@rubemputtini.com.br")
+        public async Task<bool> SendEmailAsync(string toName, string toEmail, string subject, string templateName, Dictionary<string, string> templateData, string fromName = "Consultoria Rubem Puttini", string fromEmail = "consultoria@rubemputtini.com.br")
         {
+            var body = await GetEmailTemplateAsync(templateName);
+            body = FillTemplateWithData(body, templateData);
+            
             var smtpClient = new SmtpClient(_smtpConfig.Host, _smtpConfig.Port)
             {
                 Credentials = new NetworkCredential(_smtpConfig.UserName, _smtpConfig.Password),
@@ -36,7 +39,7 @@ namespace MinhaAcademiaTem.Services
     
             try
             {
-                smtpClient.Send(mail);
+                await smtpClient.SendMailAsync(mail);
                 _logger.LogInformation("E-mail enviado com sucesso para {Email}", toEmail);
                 return true;
             }
@@ -45,6 +48,26 @@ namespace MinhaAcademiaTem.Services
                 _logger.LogError(ex, "Erro ao enviar e-mail para {Email}", toEmail);
                 return false;
             }
+        }
+        public async Task<string> GetEmailTemplateAsync(string templateName)
+        {
+            var templatePath = Path.Combine(Directory.GetCurrentDirectory(), "EmailTemplates", $"{templateName}.html");
+
+            if (!File.Exists(templatePath))
+            {
+                throw new FileNotFoundException($"Template {templateName} não encontrado.");
+            }
+
+            return await File.ReadAllTextAsync(templatePath);
+        }
+
+        public string FillTemplateWithData(string templateContent, Dictionary<string, string> data)
+        {
+            foreach (var item in data)
+            {
+                templateContent = templateContent.Replace($"{{{{{item.Key}}}}}", item.Value);
+            }
+            return templateContent;
         }
     }
 }

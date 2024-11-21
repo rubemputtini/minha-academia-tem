@@ -150,12 +150,20 @@ namespace MinhaAcademiaTem.Controllers
 
             var adminEmail = _configuration["AdminSettings:AdminEmail"];
 
-            emailService.Send(
-                "Administrador",
-                adminEmail!,
-                "Um novo usuário foi cadastrado!",
-                $"O usuário {user.Name} foi registrado no sistema."
-                );
+            var templateData = new Dictionary<string, string>
+                {
+                    { "Name", user.Name },
+                    { "UserEmail", user.Email },
+                    { "GymName", request.GymName },
+                    { "GymLocation", request.GymLocation },
+                };
+
+            await emailService.SendEmailAsync(
+                toName: "Administrador",
+                toEmail: adminEmail!,
+                subject: "Um novo usuário foi cadastrado - Minha Academia TEM?",
+                templateName: "UserRegistrationTemplate",
+                templateData: templateData);
 
             var token = _tokenService.GenerateToken(user, role);
 
