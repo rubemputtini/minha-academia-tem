@@ -165,9 +165,6 @@ namespace MinhaAcademiaTem.Controllers
 
                 };
 
-                var emailContent = await _emailService.GetEmailTemplateAsync("GymReportTemplate");
-                emailContent = _emailService.FillTemplateWithData(emailContent, templateData);
-
                 var adminEmail = _configuration["AdminSettings:AdminEmail"];
 
                 await _emailService.SendEmailAsync(

@@ -9,59 +9,110 @@
             font-family: 'Arial', sans-serif;
             color: #333;
             line-height: 1.5;
-            background-color: #f4f4f4;
-            padding: 0;
+            background-color: #f9f9f9;
             margin: 0;
+            padding: 0;
         }
 
         .email-container {
-            max-width: 600px;
+            max-width: 700px;
             margin: 30px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
 
         .header {
             text-align: center;
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e2e2;
+            padding: 20px 0;
         }
 
             .header h1 {
-                color: #2c3e50;
+                margin: 0;
+                font-size: 28px;
+                font-weight: bold;
+                color: #333;
             }
 
         .content {
-            margin: 20px 0;
+            padding: 20px;
+            font-size: 16px;
+            color: #555;
         }
 
             .content p {
-                margin: 10px 0;
+                margin: 15px 0;
+                line-height: 1.6;
+            }
+
+            .content strong {
+                color: #2c3e50;
+            }
+
+            .content i {
+                color: #7f8c8d;
+                font-style: italic;
             }
 
         .footer {
-            margin-top: 20px;
+            background-color: #323232;
+            color: #ffffff;
             text-align: center;
-            font-size: 12px;
-            color: #777;
+            padding: 20px;
+            font-size: 14px;
+        }
+
+            .footer h2 {
+                font-size: 18px;
+                margin-bottom: 10px;
+                font-weight: bold;
+            }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+            .social-icons a img {
+                width: 30px;
+                height: 30px;
+            }
+
+        .footer img {
+            max-height: 80px;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <div class="email-container">
         <div class="header">
-            <h1>Feedback Recebido</h1>
+            <h1>Feedback recebido</h1>
         </div>
+
         <div class="content">
-            <p>Olá,</p>
+            <p>Olá!</p>
             <p>O usuário <strong>{{Name}}</strong> enviou o seguinte feedback sobre a academia:</p>
             <p><i>"{{Feedback}}"</i></p>
-        </div>
-        <div class="footer">
             <p>Este é um email automático. Por favor, não responda.</p>
+        </div>
+
+        <div class="footer">
+            <h2>Minha Academia TEM?</h2>
+            <div class="social-icons">
+                <a href="https://www.instagram.com/rubemputtini/" target="_blank">
+                    <img src="https://i.imgur.com/sE6enTb.png" alt="Instagram">
+                </a>
+                <a href="https://www.youtube.com/channel/UCtd2KtLMi5YySEqpvWYl9ag?sub_confirmation=1" target="_blank">
+                    <img src="https://i.imgur.com/SAzu3ax.png" alt="YouTube">
+                </a>
+            </div>
+            <img src="https://i.imgur.com/eHysgzf.png" alt="Consultoria Fitness">
         </div>
     </div>
 </body>

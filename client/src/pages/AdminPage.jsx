@@ -180,8 +180,8 @@ const AdminPage = () => {
                                             "&:hover": { backgroundColor: "#333" },
                                         }}
                                     >
-                                        <TableCell className="text-xs sm:text-sm">{user.name}</TableCell>
-                                        <TableCell className="text-xs sm:text-sm">{user.email}</TableCell>
+                                        <TableCell sx={{ color: "#FFFFFF" }} className="text-xs sm:text-sm">{user.name}</TableCell>
+                                        <TableCell sx={{ color: "#FFFFFF" }} className="text-xs sm:text-sm">{user.email}</TableCell>
                                         <TableCell align="right">
                                             <Button
                                                 variant="contained"
