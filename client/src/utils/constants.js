@@ -1,7 +1,7 @@
 import instagram from "../assets/instagram.svg";
 import youtube from "../assets/youtube.svg";
 
-export const API_URL = process.env.REACT_APP_API_URL;
+export const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5069";
 
 export const socialMedia = [
     {
