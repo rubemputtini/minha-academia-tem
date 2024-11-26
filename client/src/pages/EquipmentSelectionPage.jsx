@@ -6,8 +6,8 @@ import { submitReport, saveEquipmentSelection } from '../services/reportService'
 import { fetchEquipments } from '../services/equipmentService';
 import { getToken } from '../services/auth';
 import { fetchUserDetails } from '../services/userService';
-import SuccessDialog from '../components/SuccessDialog';
-import ConfirmationDialog from '../components/ConfirmationDialog';
+import SuccessDialog from '../components/dialogs/SuccessDialog';
+import ConfirmationDialog from '../components/dialogs/ConfirmationDialog';
 import { useNavigate } from 'react-router-dom';
 
 const EquipmentSelectionPage = () => {
@@ -123,11 +123,15 @@ const EquipmentSelectionPage = () => {
             </div>
             {showConfirmation && !reportSubmitted && (
                 <ConfirmationDialog
+                    message={"Deseja salvar suas escolhas e enviar o relatório?"}
                     onConfirm={handleConfirmSaveAndSubmit}
                     onCancel={() => setShowConfirmation(false)}
                 />
             )}
-            {reportSubmitted && <SuccessDialog onClose={handleSuccessDialogClose} />}
+            {reportSubmitted &&
+                <SuccessDialog
+                    message={"Relatório enviado com sucesso!"}
+                    onClose={handleSuccessDialogClose} />}
             <Footer />
         </>
     );

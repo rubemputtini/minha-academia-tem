@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
     Table,
     TableBody,
@@ -5,70 +6,103 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Button,
     Paper,
+    IconButton,
     Box,
-    Typography,
 } from "@mui/material";
+import { ArrowDropUp, ArrowDropDown, Visibility, Edit, Delete } from "@mui/icons-material";
 
-const UserTable = ({ users, onUserClick }) => {
+const UserTable = ({ users, onViewClick, onEditClick, onDeleteClick }) => {
+    const [sortOrder, setSortOrder] = useState("asc");
+
+    const handleSort = () => {
+        const order = sortOrder === "asc" ? "desc" : "asc";
+        setSortOrder(order);
+    };
+
+    const sortedUsers = [...users].sort((a, b) => {
+        return sortOrder === "asc"
+            ? a.name.localeCompare(b.name)
+            : b.name.localeCompare(a.name);
+    });
+
     return (
         <Box sx={{ overflowX: "auto" }}>
             <TableContainer
                 component={Paper}
                 sx={{
-                    backgroundColor: "#1f1f1f",
-                    borderRadius: 2,
-                    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.5)",
+                    backgroundColor: "#222",
+                    color: "white",
+                    borderRadius: "10px",
+                    overflowX: "auto",
+                    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.5)",
                 }}
             >
-                <Table sx={{ minWidth: 320 }}>
-                    <TableHead>
+                <Table>
+                    <TableHead sx={{ backgroundColor: "#333" }}>
                         <TableRow>
-                            <TableCell sx={{ color: "yellow", fontWeight: "bold", fontSize: 18 }}>
+                            <TableCell sx={{ color: "#FFCD54", fontWeight: "bold" }} className="text-sm sm:text-base">
                                 Nome
+                                <IconButton onClick={handleSort} sx={{ ml: 1, color: "#FFD700" }}>
+                                    {sortOrder === "asc" ? <ArrowDropUp /> : <ArrowDropDown />}
+                                </IconButton>
                             </TableCell>
-                            <TableCell sx={{ color: "yellow", fontWeight: "bold", fontSize: 18 }}>
+                            <TableCell sx={{ color: "#FFCD54", fontWeight: "bold" }} className="text-sm sm:text-base">
                                 Email
                             </TableCell>
-                            <TableCell align="right">
-                                <Typography
-                                    sx={{ color: "yellow", fontWeight: "bold", fontSize: 18 }}
-                                >
-                                    Ações
-                                </Typography>
-                            </TableCell>
+                            <TableCell />
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {users.map((user) => (
+                        {sortedUsers.map((user) => (
                             <TableRow
                                 key={user.id}
                                 sx={{
-                                    "&:nth-of-type(odd)": { backgroundColor: "#2a2a2a" },
+                                    "&:nth-of-type(odd)": { backgroundColor: "#282828" },
+                                    "&:nth-of-type(even)": { backgroundColor: "#242424" },
                                     "&:hover": { backgroundColor: "#333" },
                                 }}
                             >
-                                <TableCell sx={{ color: "yellow", fontSize: 16 }}>
-                                    {user.name}
-                                </TableCell>
-                                <TableCell sx={{ color: "yellow", fontSize: 16 }}>
-                                    {user.email}
-                                </TableCell>
+                                <TableCell sx={{ color: "#FFFFFF" }} className="text-xs sm:text-sm">{user.name}</TableCell>
+                                <TableCell sx={{ color: "#FFFFFF" }} className="text-xs sm:text-sm">{user.email}</TableCell>
                                 <TableCell align="right">
-                                    <Button
-                                        variant="contained"
+                                    <IconButton
+                                        onClick={() => onViewClick(user.id)}
                                         sx={{
-                                            backgroundColor: "yellow",
-                                            color: "#000",
-                                            fontSize: "14px",
-                                            fontWeight: "bold",
-                                            "&:hover": { backgroundColor: "#ffd700" },
+                                            color: "#FFCD54", "&:hover": {
+                                                backgroundColor: "#444",
+                                                color: "#FFFFFF",
+                                            },
+                                            mr: 1,
                                         }}
-                                        onClick={() => onUserClick(user.id)}
                                     >
-                                        Detalhes
-                                    </Button>
+                                        <Visibility />
+                                    </IconButton>
+                                    <IconButton
+                                        onClick={() => onEditClick(user.id)}
+                                        sx={{
+                                            color: "#FFCD54",
+                                            "&:hover": {
+                                                backgroundColor: "#444",
+                                                color: "#FFFFFF",
+                                            },
+                                            mr: 1,
+                                        }}
+                                    >
+                                        <Edit />
+                                    </IconButton>
+                                    <IconButton
+                                        onClick={() => onDeleteClick(user.id)}
+                                        sx={{
+                                            color: "#FF6347",
+                                            "&:hover": {
+                                                backgroundColor: "#444",
+                                                color: "#FFFFFF",
+                                            },
+                                        }}
+                                    >
+                                        <Delete />
+                                    </IconButton>
                                 </TableCell>
                             </TableRow>
                         ))}

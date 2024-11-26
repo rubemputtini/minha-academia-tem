@@ -8,7 +8,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
-import { logout } from '../services/authService';
+import { logout } from '../services/accountService';
 import { Divider } from '@mui/material';
 import { getUserRole } from '../services/auth';
 

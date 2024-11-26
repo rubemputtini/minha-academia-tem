@@ -7,28 +7,25 @@ import {
     Box,
     InputAdornment,
     TextField,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Paper,
-    Button,
-    IconButton,
     Typography,
 } from "@mui/material";
-import { ArrowDropUp, ArrowDropDown, Search } from "@mui/icons-material";
+import { Search } from "@mui/icons-material";
 import { getUsers } from "../services/adminService";
+import { deleteUser } from "../services/accountService";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import UserTable from "../components/UserTable";
+import ConfirmationDialog from "../components/dialogs/ConfirmationDialog";
+import SuccessDialog from "../components/dialogs/SuccessDialog";
 
 const AdminPage = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
-    const [sortOrder, setSortOrder] = useState("asc");
+    const [showDialog, setShowDialog] = useState(false);
+    const [userToDelete, setUserToDelete] = useState(null);
+    const [userDeleted, setUserDeleted] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -46,21 +43,33 @@ const AdminPage = () => {
         fetchUsers();
     }, []);
 
-    const handleUserClick = (userId) => {
+    const handleViewClick = (userId) => {
         navigate(`/admin/users/${userId}`);
     };
 
-    const handleSort = () => {
-        const order = sortOrder === "asc" ? "desc" : "asc";
-        setSortOrder(order);
+    const handleEditClick = (userId) => {
+        navigate(`/admin/users/${userId}`);
+    };
 
-        const sortedUsers = [...users].sort((a, b) => {
-            return order === "asc"
-                ? a.name.localeCompare(b.name)
-                : b.name.localeCompare(a.name);
-        });
+    const handleDeleteClick = (userId) => {
+        setUserToDelete(userId);
+        setShowDialog(true);
+    };
 
-        setUsers(sortedUsers);
+    const handleDialogConfirm = () => {
+        deleteUser(userToDelete);
+        setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userToDelete));
+        setShowDialog(false);
+        setUserDeleted(true);
+        navigate("/admin");
+    };
+
+    const handleDialogCancel = () => {
+        setShowDialog(false);
+    };
+
+    const handleDialogClose = () => {
+        setUserDeleted(false);
     };
 
     const filteredUsers = users.filter((user) =>
@@ -145,69 +154,27 @@ const AdminPage = () => {
                         Nenhum usuário encontrado.
                     </Typography>
                 ) : (
-                    <TableContainer
-                        component={Paper}
-                        sx={{
-                            backgroundColor: "#222",
-                            color: "white",
-                            borderRadius: "10px",
-                            overflowX: "auto",
-                            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.5)",
-                        }}
-                    >
-                        <Table>
-                            <TableHead sx={{ backgroundColor: "#333" }}>
-                                <TableRow>
-                                    <TableCell sx={{ color: "#FFCD54", fontWeight: "bold" }} className="text-sm sm:text-base">
-                                        Nome
-                                        <IconButton onClick={handleSort} sx={{ ml: 1, color: "#FFD700" }}>
-                                            {sortOrder === "asc" ? <ArrowDropUp /> : <ArrowDropDown />}
-                                        </IconButton>
-                                    </TableCell>
-                                    <TableCell sx={{ color: "#FFCD54", fontWeight: "bold" }} className="text-sm sm:text-base">
-                                        Email
-                                    </TableCell>
-                                    <TableCell />
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {filteredUsers.map((user) => (
-                                    <TableRow
-                                        key={user.id}
-                                        sx={{
-                                            "&:nth-of-type(odd)": { backgroundColor: "#282828" },
-                                            "&:nth-of-type(even)": { backgroundColor: "#242424" },
-                                            "&:hover": { backgroundColor: "#333" },
-                                        }}
-                                    >
-                                        <TableCell sx={{ color: "#FFFFFF" }} className="text-xs sm:text-sm">{user.name}</TableCell>
-                                        <TableCell sx={{ color: "#FFFFFF" }} className="text-xs sm:text-sm">{user.email}</TableCell>
-                                        <TableCell align="right">
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={() => handleUserClick(user.id)}
-                                                sx={{
-                                                    textTransform: "none",
-                                                    fontWeight: "bold",
-                                                    backgroundColor: "#FFCD54",
-                                                    color: "black",
-                                                    "&:hover": {
-                                                        backgroundColor: "#FFC107",
-                                                    },
-                                                }}
-                                                className="text-xs sm:text-sm"
-                                            >
-                                                Detalhes
-                                            </Button>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                    <UserTable
+                        users={filteredUsers}
+                        onViewClick={handleViewClick}
+                        onEditClick={handleEditClick}
+                        onDeleteClick={handleDeleteClick}
+                    />
                 )}
             </Container>
+
+            {showDialog && (
+                <ConfirmationDialog
+                    message="Tem certeza de que deseja excluir este usuário?"
+                    onConfirm={handleDialogConfirm}
+                    onCancel={handleDialogCancel}
+                />
+            )}
+
+            {userDeleted &&
+                <SuccessDialog
+                    message={"Usuário excluído com sucesso!"}
+                    onClose={handleDialogClose} />}
             <Footer />
         </>
     );

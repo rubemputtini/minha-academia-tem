@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_URL } from '../utils/constants'
-import { clearToken, setToken } from './auth';
+import { clearToken, setToken, getToken } from './auth';
 
 export const login = async (email, password) => {
     try {
@@ -36,20 +36,37 @@ export const register = async (name, email, password, gymName, gymLocation) => {
 
         return { token, message };
 
-      } catch (error) {
-        const errorMessage = error.response?.data?.message || "Erro ao registrar usuário";
-        const details = error.response?.data?.details || [];
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || "Erro ao registrar usuário";
+      const details = error.response?.data?.details || [];
 
-        console.error("Erro ao registrar: ", errorMessage, details);
-         
-        const customError = new Error(errorMessage);
-        customError.details = details;
+      console.error("Erro ao registrar: ", errorMessage, details);
+        
+      const customError = new Error(errorMessage);
+      customError.details = details;
 
-        throw customError;
-      } 
+      throw customError;
+    } 
 };
 
 export const logout = () => {
     clearToken();
     console.log("Usuário deslogado");
+};
+
+export const deleteUser = async (userId) => {
+    try {
+        const response = await axios.delete(`${API_URL}/Account/delete-user/`, {
+          data: { id : userId },
+          headers: {
+            'Authorization': `Bearer ${getToken()}`,
+        },
+        });
+  
+        return response.data;
+
+    } catch (error) {
+        console.error("Erro ao excluir usuário: ", error.response?.data || error.message);
+        throw error;
+  }
 };

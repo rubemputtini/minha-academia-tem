@@ -15,12 +15,24 @@ namespace MinhaAcademiaTem.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder); 
-            
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Gym>()
                 .HasOne(g => g.User)
                 .WithMany()
                 .HasForeignKey(g => g.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Report>()
+                .HasOne(r => r.User)
+                .WithMany()
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<EquipmentSelection>()
+                .HasOne(es => es.User)
+                .WithMany()
+                .HasForeignKey(es => es.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

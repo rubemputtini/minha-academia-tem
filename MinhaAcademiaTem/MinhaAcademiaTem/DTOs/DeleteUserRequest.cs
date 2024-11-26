@@ -4,7 +4,7 @@ namespace MinhaAcademiaTem.DTOs
 {
     public class DeleteUserRequest
     {
-        [Required(ErrorMessage = "O E-mail do usuário é obrigatório.")]
-        public string Email { get; set; } = string.Empty;
+        [Required(ErrorMessage = "O ID do usuário é obrigatório.")]
+        public string Id { get; set; } = string.Empty;
     }
 }

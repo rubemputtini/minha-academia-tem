@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import FeedbackDialog from '../components/FeedbackDialog';
+import FeedbackDialog from '../components/dialogs/FeedbackDialog';
 
 const ThankYouPage = () => {
     const navigate = useNavigate();

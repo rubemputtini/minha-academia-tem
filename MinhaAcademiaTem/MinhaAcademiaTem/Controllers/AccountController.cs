@@ -174,21 +174,45 @@ namespace MinhaAcademiaTem.Controllers
         [HttpDelete("delete-user")]
         public async Task<IActionResult> DeleteUser([FromBody] DeleteUserRequest request)
         {
-            var user = await _userManager.FindByEmailAsync(request.Email);
+            using var transaction = await _dbContext.Database.BeginTransactionAsync();
 
-            if (user == null)
+            try
             {
-                return NotFound("Usuário não encontrado.");
+                var user = await _userManager.FindByIdAsync(request.Id);
+
+                if (user == null)
+                {
+                    return NotFound("Usuário não encontrado.");
+                }
+
+                var gyms = _dbContext.Gyms.Where(g => g.UserId == user.Id);
+                _dbContext.Gyms.RemoveRange(gyms);
+
+                var reports = _dbContext.Reports.Include(r => r.EquipmentSelections).Where(r => r.UserId == user.Id);
+                _dbContext.Reports.RemoveRange(reports);
+
+                var equipmentSelections = _dbContext.EquipmentSelections.Where(es => es.UserId == user.Id);
+                _dbContext.EquipmentSelections.RemoveRange(equipmentSelections);
+
+                await _dbContext.SaveChangesAsync();
+
+                var result = await _userManager.DeleteAsync(user);
+
+                if (!result.Succeeded)
+                {
+                    await transaction.RollbackAsync();
+                    return ApiResponseHelper.GenerateErrorResponse(result.Errors);
+                }
+
+                await transaction.CommitAsync();
+
+                return Ok("Usuário excluído com sucesso.");
             }
-
-            var result = await _userManager.DeleteAsync(user);
-
-            if (!result.Succeeded)
+            catch (Exception ex)
             {
-                return ApiResponseHelper.GenerateErrorResponse(result.Errors);
+                await transaction.RollbackAsync();
+                return StatusCode(500, $"Erro interno: {ex.Message}");
             }
-
-            return Ok("Usuário excluído com sucesso.");
         }
     }
 }
