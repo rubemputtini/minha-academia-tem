@@ -68,5 +68,5 @@ export const deleteUser = async (userId) => {
     } catch (error) {
         console.error("Erro ao excluir usuário: ", error.response?.data || error.message);
         throw error;
-  }
+    }
 };

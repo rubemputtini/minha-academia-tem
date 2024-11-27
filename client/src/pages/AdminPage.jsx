@@ -17,6 +17,9 @@ import Header from "../components/Header";
 import UserTable from "../components/UserTable";
 import ConfirmationDialog from "../components/dialogs/ConfirmationDialog";
 import SuccessDialog from "../components/dialogs/SuccessDialog";
+import EditUserDialog from "../components/dialogs/EditUserDialog";
+import { fetchUserDetails, updateUser } from "../services/userService";
+import { getToken } from "../services/auth";
 
 const AdminPage = () => {
     const [users, setUsers] = useState([]);
@@ -26,6 +29,7 @@ const AdminPage = () => {
     const [showDialog, setShowDialog] = useState(false);
     const [userToDelete, setUserToDelete] = useState(null);
     const [userDeleted, setUserDeleted] = useState(null);
+    const [editingUser, setEditingUser] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -47,8 +51,30 @@ const AdminPage = () => {
         navigate(`/admin/users/${userId}`);
     };
 
-    const handleEditClick = (userId) => {
-        navigate(`/admin/users/${userId}`);
+    const handleEditClick = async (userId) => {
+        try {
+            const userDetails = await fetchUserDetails(getToken(), userId);
+
+            setEditingUser(userDetails);
+        } catch (error) {
+            console.error("Error fetching user details:", error);
+            setError("Não foi possível carregar os detalhes da conta.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleUpdateUser = async (userId, updatedData) => {
+        try {
+            await updateUser(userId, updatedData);
+            setUsers((prevUsers) =>
+                prevUsers.map((user) =>
+                    user.id === userId ? { ...user, ...updatedData } : user
+                )
+            );
+        } catch (error) {
+            console.error("Erro ao atualizar usuário:", error);
+        }
     };
 
     const handleDeleteClick = (userId) => {
@@ -157,11 +183,19 @@ const AdminPage = () => {
                     <UserTable
                         users={filteredUsers}
                         onViewClick={handleViewClick}
-                        onEditClick={handleEditClick}
+                        onEditClick={(userId) => handleEditClick(userId)}
                         onDeleteClick={handleDeleteClick}
                     />
                 )}
             </Container>
+
+            {editingUser && (
+                <EditUserDialog
+                    user={editingUser}
+                    onClose={() => setEditingUser(null)}
+                    onUpdate={handleUpdateUser}
+                />
+            )}
 
             {showDialog && (
                 <ConfirmationDialog

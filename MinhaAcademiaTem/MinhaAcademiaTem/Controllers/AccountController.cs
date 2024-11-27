@@ -62,11 +62,12 @@ namespace MinhaAcademiaTem.Controllers
         }
 
         [Authorize]
-        [HttpGet("details")]
-        public async Task<IActionResult> GetUserDetails()
+        [HttpGet("details/{userId?}")]
+        public async Task<IActionResult> GetUserDetails(string? userId = null)
         {
-            var user = await _userManager.Users
-                .FirstOrDefaultAsync(u => u.Email == User.Identity!.Name);
+            var user = userId == null 
+                ? await _userManager.Users.FirstOrDefaultAsync(u => u.Email == User.Identity!.Name)
+                : await _userManager.FindByIdAsync(userId);
 
             if (user == null)
             {
@@ -94,6 +95,7 @@ namespace MinhaAcademiaTem.Controllers
 
             var userDetails = new UserDetailsResponse
             {
+                Id = user.Id,
                 Name = user.Name,
                 Email = user.Email!,
                 GymName = gym!.Name,
@@ -102,6 +104,46 @@ namespace MinhaAcademiaTem.Controllers
             };
 
             return Ok(userDetails);
+        }
+
+        [Authorize]
+        [HttpPut("edit-user/{userId}")]
+        public async Task<IActionResult> EditUser(string userId, [FromBody] EditUserRequest request)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                return BadRequest("ID do usuário não fornecido");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound("Usuário não encontrado.");
+            }
+
+            user.Name = request.Name ?? user.Name;
+            user.Email = request.Email ?? user.Email;
+            user.UserName = request.Email ?? user.Email;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                return ApiResponseHelper.GenerateErrorResponse(result.Errors);
+            }
+
+            var gym = await _dbContext.Gyms.FirstOrDefaultAsync(g => g.UserId == userId);
+
+            if (gym != null)
+            {
+                gym.Name = request.GymName ?? gym.Name;
+                gym.Location = request.GymLocation ?? gym.Location;
+
+                await _dbContext.SaveChangesAsync();
+            }
+
+            return Ok(new { message = "Usuário atualizado com sucesso." });
         }
 
         [HttpPost("register")]

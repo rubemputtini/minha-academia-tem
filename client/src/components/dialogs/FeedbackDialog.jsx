@@ -8,7 +8,6 @@ const FeedbackDialog = ({ onClose }) => {
         e.preventDefault();
         await sendFeedback(feedback);
 
-        console.log("Feedback enviado:", feedback);
         setFeedback('');
         onClose();
     };
