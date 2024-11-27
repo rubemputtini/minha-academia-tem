@@ -71,22 +71,10 @@
                 font-weight: bold;
             }
 
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 10px 0;
-        }
-
-            .social-icons a img {
-                width: 30px;
-                height: 30px;
+            .footer img {
+                max-height: 80px;
+                margin-top: 20px;
             }
-
-        .footer img {
-            max-height: 80px;
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
@@ -99,19 +87,27 @@
             <p>Olá!</p>
             <p>O usuário <strong>{{Name}}</strong> enviou o seguinte feedback sobre a academia:</p>
             <p><i>"{{Feedback}}"</i></p>
-            <p>Este é um email automático. Por favor, não responda.</p>
+            <p style="font-size: 12px; font-style: italic; text-align: center; color: #7f8c8d; margin-top: 20px;">
+                Este é um email automático. Por favor, não responda.
+            </p>
         </div>
 
         <div class="footer">
             <h2>Minha Academia TEM?</h2>
-            <div class="social-icons">
-                <a href="https://www.instagram.com/rubemputtini/" target="_blank">
-                    <img src="https://i.imgur.com/sE6enTb.png" alt="Instagram">
-                </a>
-                <a href="https://www.youtube.com/channel/UCtd2KtLMi5YySEqpvWYl9ag?sub_confirmation=1" target="_blank">
-                    <img src="https://i.imgur.com/SAzu3ax.png" alt="YouTube">
-                </a>
-            </div>
+            <table align="center" cellpadding="5">
+                <tr>
+                    <td>
+                        <a href="https://www.instagram.com/rubemputtini/" target="_blank">
+                            <img src="https://i.imgur.com/sE6enTb.png" alt="Instagram" width="30" height="30">
+                        </a>
+                    </td>
+                    <td>
+                        <a href="https://www.youtube.com/channel/UCtd2KtLMi5YySEqpvWYl9ag?sub_confirmation=1" target="_blank">
+                            <img src="https://i.imgur.com/SAzu3ax.png" alt="YouTube" width="30" height="30">
+                        </a>
+                    </td>
+                </tr>
+            </table>
             <img src="https://i.imgur.com/eHysgzf.png" alt="Consultoria Fitness">
         </div>
     </div>

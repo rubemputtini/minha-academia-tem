@@ -7,5 +7,6 @@
         public string PhotoUrl { get; set; } = string.Empty;
         public string VideoUrl { get; set; } = string.Empty;
         public string MuscleGroup { get; set; } = string.Empty;
+        public bool IsAvailable { get; set; } = false;
     }
 }

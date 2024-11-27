@@ -7,6 +7,9 @@ import { muscleGroupNames } from '../utils/constants';
 import EditUserDialog from "../components/dialogs/EditUserDialog";
 import EditIcon from "@mui/icons-material/Edit";
 import { Tooltip, IconButton } from "@mui/material";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+
 
 const AccountPage = () => {
     const [userDetails, setUserDetails] = useState(null);
@@ -60,6 +63,18 @@ const AccountPage = () => {
         return acc;
     }, {});
 
+    const handleSelectEquipment = (equipmentId) => {
+        setUserDetails((prevDetails) => {
+            const updatedExercises = prevDetails.selectedExercises.map((exercise) => {
+                if (exercise.equipmentId === equipmentId) {
+                    return { ...exercise, isSelected: !exercise.isSelected };
+                }
+                return exercise;
+            });
+            return { ...prevDetails, selectedExercises: updatedExercises };
+        });
+    };
+
     return (
         <>
             <Header />
@@ -68,7 +83,7 @@ const AccountPage = () => {
                     <h2 className="text-2xl md:text-3xl font-bold text-white flex items-center justify-center gap-2">
                         Minha Conta
                         <Tooltip title="Editar Conta">
-                            <IconButton onClick={() => setIsEditing(true)} sx={{ color: 'white', padding: 0 }}>
+                            <IconButton onClick={() => setIsEditing(true)} sx={{ color: '#FFCD54', padding: 0 }}>
                                 <EditIcon />
                             </IconButton>
                         </Tooltip>
@@ -101,12 +116,27 @@ const AccountPage = () => {
                                     <hr className="my-4 border-t-2 border-[#444]" />
                                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                         {groupedExercises[muscleGroup].map((exercise) => (
-                                            <div key={exercise.equipmentId} className="bg-[#333333] p-4 rounded-lg shadow-md">
+                                            <div key={exercise.equipmentId} className="bg-[#333333] p-4 rounded-lg shadow-md relative">
                                                 <img
                                                     src={exercise.photoUrl}
                                                     alt={exercise.name}
                                                     className="w-full h-full object-cover rounded-md mb-4"
+                                                    onClick={() => handleSelectEquipment(exercise.equipmentId)}
+
                                                 />
+
+                                                {exercise.isAvailable ? (
+                                                    <CheckCircleIcon
+                                                        className="absolute top-2 right-2 text-green-500"
+                                                        sx={{ fontSize: 50 }}
+                                                    />
+                                                ) : (
+                                                    <CancelIcon
+                                                        className="absolute top-2 right-2 text-red-500"
+                                                        sx={{ fontSize: 50 }}
+                                                    />
+                                                )}
+
                                                 <p className="text-gray-200 text-md text-center font-thin">{exercise.name}</p>
                                             </div>
                                         ))}

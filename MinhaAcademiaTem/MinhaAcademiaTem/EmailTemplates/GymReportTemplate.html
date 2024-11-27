@@ -62,6 +62,14 @@
                 color: #7f8c8d;
             }
 
+        .auto-message {
+            font-size: 13px;
+            font-style: italic;
+            text-align: center;
+            color: #7f8c8d;
+            margin-top: 20px;
+        }
+
         .footer {
             background-color: #323232;
             color: #ffffff;
@@ -70,20 +78,15 @@
             font-size: 14px;
         }
 
-            .footer h2 {
-                font-size: 18px;
-                margin-bottom: 10px;
-                font-weight: bold;
-            }
-
         .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
             margin: 10px 0;
         }
 
-            .social-icons a img {
+            .social-icons table {
+                margin: 0 auto;
+            }
+
+            .social-icons img {
                 width: 30px;
                 height: 30px;
             }
@@ -106,17 +109,17 @@
             <ul class="equipment-list">
                 {{EquipmentItems}}
             </ul>
-            <p>Este é um email automático. Por favor, não responda.</p>
+            <p class="auto-message">Este é um email automático. Por favor, não responda.</p>
         </div>
         <div class="footer">
             <h2>Minha Academia TEM?</h2>
             <div class="social-icons">
-                <a href="https://www.instagram.com/rubemputtini/" target="_blank">
-                    <img src="https://i.imgur.com/sE6enTb.png" alt="Instagram">
-                </a>
-                <a href="https://www.youtube.com/channel/UCtd2KtLMi5YySEqpvWYl9ag?sub_confirmation=1" target="_blank">
-                    <img src="https://i.imgur.com/SAzu3ax.png" alt="YouTube">
-                </a>
+                <table>
+                    <tr>
+                        <td><a href="https://www.instagram.com/rubemputtini/" target="_blank"><img src="https://i.imgur.com/sE6enTb.png" alt="Instagram"></a></td>
+                        <td><a href="https://www.youtube.com/channel/UCtd2KtLMi5YySEqpvWYl9ag?sub_confirmation=1" target="_blank"><img src="https://i.imgur.com/SAzu3ax.png" alt="YouTube"></a></td>
+                    </tr>
+                </table>
             </div>
             <img src="https://i.imgur.com/eHysgzf.png" alt="Consultoria Fitness">
         </div>

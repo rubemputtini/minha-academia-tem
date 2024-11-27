@@ -99,6 +99,7 @@ const UserTable = ({ users, onViewClick, onEditClick, onDeleteClick }) => {
                                                 backgroundColor: "#444",
                                                 color: "#FFFFFF",
                                             },
+                                            mr: 1,
                                         }}
                                     >
                                         <Delete />

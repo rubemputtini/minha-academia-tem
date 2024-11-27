@@ -62,6 +62,8 @@ namespace MinhaAcademiaTem.Controllers
                     .Include(r => r.EquipmentSelections)
                     .FirstOrDefaultAsync(r => r.UserId == user.Id && r.GymId == gym.GymId);
 
+                var allEquipmentIds = await _context.Equipments.Select(e => e.EquipmentId).ToListAsync();
+
                 if (report == null)
                 {
                     report = new Report
@@ -70,13 +72,13 @@ namespace MinhaAcademiaTem.Controllers
                         GymId = gym.GymId,
                         GymName = gym.Name,
                         GymLocation = gym.Location,
-                        EquipmentSelections = request.EquipmentIds
+                        EquipmentSelections = allEquipmentIds
                             .Select(eId => new EquipmentSelection
                             {
                                 EquipmentId = eId,
                                 UserId = user.Id,
                                 GymId = gym.GymId,
-                                IsAvailable = true
+                                IsAvailable = request.EquipmentIds.Contains(eId)
                             })
                             .ToList()
                     };
@@ -87,13 +89,13 @@ namespace MinhaAcademiaTem.Controllers
                 {
                     _context.EquipmentSelections.RemoveRange(report.EquipmentSelections);
 
-                    report.EquipmentSelections = request.EquipmentIds
+                    report.EquipmentSelections = allEquipmentIds
                         .Select(eId => new EquipmentSelection
                         {
                             EquipmentId = eId,
                             UserId = user.Id,
                             GymId = gym.GymId,
-                            IsAvailable = true
+                            IsAvailable = request.EquipmentIds.Contains(eId)
                         })
                         .ToList();
 
@@ -150,8 +152,13 @@ namespace MinhaAcademiaTem.Controllers
                     return NotFound(new { message = "Seleção de equipamentos não encontrada." });
                 }
 
+                var availableEquipmentIds = report.EquipmentSelections
+                    .Where(s => s.IsAvailable)
+                    .Select(s => s.EquipmentId)
+                    .ToList();
+
                 var equipmentNames = await _context.Equipments
-                    .Where(e => report.EquipmentSelections.Select(s => s.EquipmentId).Contains(e.EquipmentId))
+                    .Where(e => availableEquipmentIds.Contains(e.EquipmentId))
                     .Select(e => e.Name)
                     .ToListAsync();
 
@@ -234,6 +241,50 @@ namespace MinhaAcademiaTem.Controllers
                 return StatusCode(500, new
                 {
                     message = "Erro ao enviar o feedback.",
+                    details = ex.InnerException?.Message ?? ex.Message
+                });
+            }
+        }
+
+        [HttpGet("equipment-selections")]
+        public async Task<IActionResult> GetEquipmentSelections()
+        {
+            try
+            {
+                var userName = User.Identity?.Name;
+
+                if (string.IsNullOrEmpty(userName))
+                {
+                    return Unauthorized(new { message = "Usuário não autenticado." });
+                }
+
+                var user = await _userManager.FindByEmailAsync(userName);
+
+                if (user == null)
+                {
+                    return NotFound(new { message = "Usuário não encontrado." });
+                }
+
+                var equipmentSelections = await _context.EquipmentSelections
+                    .Where(es => es.UserId == user.Id)
+                    .Select(es => new
+                    {
+                        es.EquipmentId,
+                        es.IsAvailable,
+                        EquipmentName = _context.Equipments
+                            .Where(e => e.EquipmentId == es.EquipmentId)
+                            .Select(e => e.Name)
+                            .FirstOrDefault()
+                    })
+                    .ToListAsync();
+
+                return Ok(equipmentSelections);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    message = "Erro ao buscar seleções de equipamentos.",
                     details = ex.InnerException?.Message ?? ex.Message
                 });
             }

@@ -6,5 +6,6 @@ namespace MinhaAcademiaTem.DTOs
     {
         [Required(ErrorMessage = "Os IDs dos equipamentos selecionados são obrigatórios.")]
         public List<int> EquipmentIds { get; set; } = new List<int>();
+        public bool IsAvailable { get; set; } = false;
     }
 }

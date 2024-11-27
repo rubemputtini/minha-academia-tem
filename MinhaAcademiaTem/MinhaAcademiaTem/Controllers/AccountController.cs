@@ -89,7 +89,8 @@ namespace MinhaAcademiaTem.Controllers
                     Name = es.Equipment!.Name,
                     PhotoUrl = es.Equipment.PhotoUrl,
                     VideoUrl = es.Equipment.VideoUrl,
-                    MuscleGroup = es.Equipment.MuscleGroup.ToString()
+                    MuscleGroup = es.Equipment.MuscleGroup.ToString(),
+                    IsAvailable = es.IsAvailable
                 })
                 .ToList() ?? new List<EquipmentResponse>();
 
