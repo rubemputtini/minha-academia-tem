@@ -2,13 +2,17 @@ import { useEffect, useState } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { getToken } from '../services/auth';
-import { fetchUserDetails } from '../services/userService';
+import { fetchUserDetails, updateUser } from '../services/userService';
 import { muscleGroupNames } from '../utils/constants';
+import EditUserDialog from "../components/dialogs/EditUserDialog";
+import EditIcon from "@mui/icons-material/Edit";
+import { Tooltip, IconButton } from "@mui/material";
 
 const AccountPage = () => {
     const [userDetails, setUserDetails] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         const fetchDetails = async () => {
@@ -27,6 +31,18 @@ const AccountPage = () => {
 
         fetchDetails();
     }, []);
+
+    const handleUpdate = async (userId, userData) => {
+        try {
+            await updateUser(userId, userData);
+            setUserDetails((prev) => ({ ...prev, ...userData }));
+        } catch (error) {
+            console.error("Erro ao atualizar usuário:", error);
+            setError("Não foi possível atualizar os detalhes da conta.");
+        } finally {
+            setIsEditing(false);
+        }
+    };
 
     if (loading) {
         return <p className="text-white text-center">Carregando...</p>;
@@ -49,7 +65,14 @@ const AccountPage = () => {
             <Header />
             <div className="container mx-auto mt-8 flex flex-col items-center">
                 <div className="bg-[#1E1E1E] rounded-2xl shadow-lg p-6 w-full max-w-md mb-8 text-center">
-                    <h2 className="text-2xl md:text-3xl font-bold text-white">Minha Conta</h2>
+                    <h2 className="text-2xl md:text-3xl font-bold text-white flex items-center justify-center gap-2">
+                        Minha Conta
+                        <Tooltip title="Editar Conta">
+                            <IconButton onClick={() => setIsEditing(true)} sx={{ color: 'white', padding: 0 }}>
+                                <EditIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </h2>
                     <hr className="my-4 border-t-2 border-[#444]" />
                     {error ? (
                         <p className="text-red-500">{error}</p>
@@ -95,6 +118,14 @@ const AccountPage = () => {
                 )}
             </div>
             <Footer />
+
+            {isEditing && (
+                <EditUserDialog
+                    user={userDetails}
+                    onClose={() => setIsEditing(false)}
+                    onUpdate={handleUpdate}
+                />
+            )}
         </>
     );
 };
