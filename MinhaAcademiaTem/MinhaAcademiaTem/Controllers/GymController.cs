@@ -8,6 +8,7 @@ using System.Security.Claims;
 
 namespace MinhaAcademiaTem.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class GymController : ControllerBase
@@ -53,7 +54,6 @@ namespace MinhaAcademiaTem.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateGym([FromBody] Gym gym)
         {

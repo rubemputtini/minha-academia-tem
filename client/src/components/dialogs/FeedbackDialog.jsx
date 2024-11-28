@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { sendFeedback } from '../../services/reportService';
+import { sendFeedback } from '../../services/feedbackService';
 
 const FeedbackDialog = ({ onClose }) => {
     const [feedback, setFeedback] = useState('');

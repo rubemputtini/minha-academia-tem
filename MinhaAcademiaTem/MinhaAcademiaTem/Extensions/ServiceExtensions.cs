@@ -19,6 +19,7 @@ namespace MinhaAcademiaTem.Extensions
 
             services.AddTransient<TokenService>();
             services.AddTransient<EmailService>();
+            services.AddTransient<FeedbackService>();
 
             services.Configure<SmtpConfiguration>(configuration.GetSection("Smtp"));
 

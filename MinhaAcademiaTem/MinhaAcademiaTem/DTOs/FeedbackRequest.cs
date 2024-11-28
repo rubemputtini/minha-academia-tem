@@ -5,6 +5,6 @@ namespace MinhaAcademiaTem.DTOs
     public class FeedbackRequest
     {
         [Required]
-        public string Feedback { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
     }
 }

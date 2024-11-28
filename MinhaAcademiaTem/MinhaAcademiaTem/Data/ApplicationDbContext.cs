@@ -11,7 +11,8 @@ namespace MinhaAcademiaTem.Data
         public DbSet<Gym> Gyms { get; set; }
         public DbSet<Equipment> Equipments { get; set; }
         public DbSet<Report> Reports { get; set; }
-        public DbSet<EquipmentSelection> EquipmentSelections { get; set;}
+        public DbSet<EquipmentSelection> EquipmentSelections { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

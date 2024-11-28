@@ -1,16 +1,10 @@
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import FeedbackDialog from '../components/dialogs/FeedbackDialog';
 
 const ThankYouPage = () => {
-    const navigate = useNavigate();
     const [showFeedbackDialog, setShowFeedbackDialog] = useState(false);
-
-    const handleNewReport = () => {
-        navigate("/equipamentos");
-    };
 
     return (
         <>
@@ -31,12 +25,6 @@ const ThankYouPage = () => {
                             className="px-4 py-2 w-32 sm:w-auto bg-green-500 text-white rounded-xl shadow-lg transition duration-300 hover:bg-yellow-600 transform hover:scale-105"
                         >
                             FEEDBACK
-                        </button>
-                        <button
-                            onClick={handleNewReport}
-                            className="px-4 py-2 w-32 sm:w-auto bg-cyan-600 text-white rounded-xl shadow-lg transition duration-300 hover:bg-cyan-700 transform hover:scale-105"
-                        >
-                            NOVO
                         </button>
                     </div>
                 </div>

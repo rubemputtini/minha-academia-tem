@@ -112,7 +112,8 @@ const AdminPage = () => {
                         textAlign: "center",
                         color: "#FFCD54",
                         fontWeight: "bold",
-                        mb: 3,
+                        mb: 4,
+                        letterSpacing: 1.2,
                     }}
                 >
                     Gerenciador de Usuários
@@ -122,7 +123,7 @@ const AdminPage = () => {
                     sx={{
                         display: "flex",
                         justifyContent: "center",
-                        mb: 3,
+                        mb: 4,
                     }}
                 >
                     <TextField
@@ -175,6 +176,7 @@ const AdminPage = () => {
                             textAlign: "center",
                             mt: 4,
                             color: "#FFCD54",
+                            fontStyle: "italic",
                         }}
                     >
                         Nenhum usuário encontrado.

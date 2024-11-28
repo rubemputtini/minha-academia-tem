@@ -43,16 +43,3 @@ export const saveEquipmentSelection = async (equipmentIds) => {
         console.error('Erro ao salvar o relatório:', error);
     }
 }
-
-export const sendFeedback = async (feedback) => {
-    try {
-        await axios.post(
-            `${API_URL}/api/v1/Report/send-feedback`, 
-            { Feedback: feedback },
-            createHeaders()
-        );
-
-    } catch (error) {
-        console.error('Erro ao enviar o feedback:', error);
-    }
-}

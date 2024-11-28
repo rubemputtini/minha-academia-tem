@@ -18,10 +18,12 @@ import { ArrowBack } from "@mui/icons-material";
 import { getUserEquipments } from "../services/adminService";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import UserFeedbacks from "../components/UserFeedbacks";
 
 const UserDetailsPage = () => {
     const { userId } = useParams();
     const navigate = useNavigate();
+    const [equipments, setEquipments] = useState([]);
     const [filteredEquipments, setFilteredEquipments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -33,6 +35,7 @@ const UserDetailsPage = () => {
                 const equipmentData = await getUserEquipments(userId);
                 const availableEquipments = equipmentData.filter(equipment => equipment.isAvailable);
 
+                setEquipments(availableEquipments);
                 setFilteredEquipments(availableEquipments);
             } catch (err) {
                 setError("Erro ao carregar os dados do usuário ou equipamentos.");
@@ -44,16 +47,18 @@ const UserDetailsPage = () => {
         fetchDetails();
     }, [userId]);
 
-    const handleSearch = (event) => {
-        const query = event.target.value.toLowerCase();
-        setSearch(query);
+    useEffect(() => {
+        if (search === "") {
+            setFilteredEquipments(equipments);
 
-        const filtered = filteredEquipments.filter((equipment) =>
-            equipment.name.toLowerCase().includes(query)
-        );
+        } else {
+            const filtered = equipments.filter((equipment) =>
+                equipment.name.toLowerCase().includes(search.toLowerCase())
+            );
 
-        setFilteredEquipments(filtered);
-    };
+            setFilteredEquipments(filtered);
+        }
+    }, [search, equipments]);
 
     const groupEquipmentsByMuscle = () => {
         return filteredEquipments.reduce((groups, equipment) => {
@@ -67,6 +72,10 @@ const UserDetailsPage = () => {
     };
 
     const groupedEquipments = groupEquipmentsByMuscle();
+
+    const handleSearch = (event) => {
+        setSearch(event.target.value);
+    };
 
     return (
         <>
@@ -190,6 +199,7 @@ const UserDetailsPage = () => {
                         )}
                     </>
                 )}
+                <UserFeedbacks userId={userId} />
             </Container>
             <Footer />
         </>

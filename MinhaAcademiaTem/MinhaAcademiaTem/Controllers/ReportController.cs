@@ -194,58 +194,6 @@ namespace MinhaAcademiaTem.Controllers
             }
         }
 
-        [HttpPost("send-feedback")]
-        public async Task<IActionResult> SendFeedback([FromBody] FeedbackRequest request)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(new { message = "O feedback não pode estar vazio." });
-            }
-
-            try
-            {
-                var userName = User.Identity?.Name;
-
-                if (string.IsNullOrEmpty(userName))
-                {
-                    return Unauthorized(new { message = "Usuário não autenticado." });
-                }
-
-                var user = await _userManager.FindByEmailAsync(userName);
-
-                if (user == null)
-                {
-                    return NotFound(new { message = "Usuário não encontrado." });
-                }
-
-                var adminEmail = _configuration["AdminSettings:AdminEmail"];
-
-                var templateData = new Dictionary<string, string>
-                {
-                    { "Name", user.Name },
-                    { "Feedback", request.Feedback }
-                };
-
-                await _emailService.SendEmailAsync(
-                    toName: "Administrador",
-                    toEmail: adminEmail!,
-                    subject: "Novo Feedback Recebido - Minha Academia TEM?",
-                    templateName: "FeedbackTemplate",
-                    templateData: templateData);
-
-                return Ok(new { message = "Feedback enviado com sucesso." });
-            }
-
-            catch (Exception ex)
-            {
-                return StatusCode(500, new
-                {
-                    message = "Erro ao enviar o feedback.",
-                    details = ex.InnerException?.Message ?? ex.Message
-                });
-            }
-        }
-
         [HttpGet("equipment-selections")]
         public async Task<IActionResult> GetEquipmentSelections()
         {

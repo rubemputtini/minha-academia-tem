@@ -6,7 +6,7 @@ import { fetchUserDetails, updateUser } from '../services/userService';
 import { muscleGroupNames } from '../utils/constants';
 import EditUserDialog from "../components/dialogs/EditUserDialog";
 import EditIcon from "@mui/icons-material/Edit";
-import { Tooltip, IconButton } from "@mui/material";
+import { Tooltip, IconButton, CircularProgress } from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 
@@ -75,11 +75,19 @@ const AccountPage = () => {
         });
     };
 
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-screen bg-[#1E1E1E]">
+                <CircularProgress sx={{ color: "#FFCD54" }} />
+            </div>
+        );
+    }
+
     return (
         <>
             <Header />
-            <div className="container mx-auto mt-8 flex flex-col items-center">
-                <div className="bg-[#1E1E1E] rounded-2xl shadow-lg p-6 w-full max-w-md mb-8 text-center">
+            <div className="container mx-auto mt-8 flex flex-col items-center px-4">
+                <div className="bg-[#1E1E1E] rounded-2xl shadow-lg p-6 w-full max-w-lg mb-8 text-center">
                     <h2 className="text-2xl md:text-3xl font-bold text-white flex items-center justify-center gap-2">
                         Minha Conta
                         <Tooltip title="Editar Conta">
@@ -104,8 +112,8 @@ const AccountPage = () => {
                 </div>
 
                 {userDetails?.selectedExercises?.length > 0 && (
-                    <div className="w-full max-w-4xl">
-                        <h3 className="text-2xl font-semibold text-white mb-6 text-center">Equipamentos Selecionados</h3>
+                    <div className="w-full max-w-6xl mt-8">
+                        <h3 className="text-2xl md:text-3xl font-semibold text-[#FFCD54] mb-6 text-center">Equipamentos Selecionados</h3>
                         {Object.keys(groupedExercises).map((muscleGroup) => {
                             const muscleGroupName = muscleGroupNames[muscleGroup] || muscleGroup;
                             return (
@@ -114,9 +122,10 @@ const AccountPage = () => {
                                         <h3 className="text-gray-200 text-2xl font-semibold">{muscleGroupName}</h3>
                                     </div>
                                     <hr className="my-4 border-t-2 border-[#444]" />
-                                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                    <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
                                         {groupedExercises[muscleGroup].map((exercise) => (
-                                            <div key={exercise.equipmentId} className="bg-[#333333] p-4 rounded-lg shadow-md relative">
+                                            <div key={exercise.equipmentId} className="bg-[#252525] p-4 rounded-lg shadow-md hover:shadow-xl transition relative">
+
                                                 <img
                                                     src={exercise.photoUrl}
                                                     alt={exercise.name}
@@ -137,7 +146,7 @@ const AccountPage = () => {
                                                     />
                                                 )}
 
-                                                <p className="text-gray-200 text-md text-center font-thin">{exercise.name}</p>
+                                                <p className="text-gray-300 text-center font-medium">{exercise.name}</p>
                                             </div>
                                         ))}
                                     </div>
