@@ -16,17 +16,13 @@ import {
 } from "@mui/material";
 import { ArrowBack } from "@mui/icons-material";
 import { getUserEquipments } from "../services/adminService";
-import { fetchUserDetails } from "../services/userService";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import { getToken } from "../services/auth";
 
 const UserDetailsPage = () => {
     const { userId } = useParams();
     const navigate = useNavigate();
-    const [equipments, setEquipments] = useState([]);
     const [filteredEquipments, setFilteredEquipments] = useState([]);
-    const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [search, setSearch] = useState("");
@@ -34,12 +30,10 @@ const UserDetailsPage = () => {
     useEffect(() => {
         const fetchDetails = async () => {
             try {
-                const userData = await fetchUserDetails(getToken());
-                setUser(userData);
-
                 const equipmentData = await getUserEquipments(userId);
-                setEquipments(equipmentData);
-                setFilteredEquipments(equipmentData);
+                const availableEquipments = equipmentData.filter(equipment => equipment.isAvailable);
+
+                setFilteredEquipments(availableEquipments);
             } catch (err) {
                 setError("Erro ao carregar os dados do usuário ou equipamentos.");
             } finally {
@@ -54,7 +48,7 @@ const UserDetailsPage = () => {
         const query = event.target.value.toLowerCase();
         setSearch(query);
 
-        const filtered = equipments.filter((equipment) =>
+        const filtered = filteredEquipments.filter((equipment) =>
             equipment.name.toLowerCase().includes(query)
         );
 
