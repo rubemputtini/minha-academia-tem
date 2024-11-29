@@ -87,7 +87,7 @@ const AccountPage = () => {
         <>
             <Header />
             <div className="container mx-auto mt-8 flex flex-col items-center px-4">
-                <div className="bg-[#1E1E1E] rounded-2xl shadow-lg p-6 w-full max-w-lg mb-8 text-center">
+                <div className="bg-gray-900 rounded-2xl shadow-lg p-6 w-full max-w-lg mb-8 text-center">
                     <h2 className="text-2xl md:text-3xl font-bold text-white flex items-center justify-center gap-2">
                         Minha Conta
                         <Tooltip title="Editar Conta">
@@ -124,7 +124,7 @@ const AccountPage = () => {
                                     <hr className="my-4 border-t-2 border-[#444]" />
                                     <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
                                         {groupedExercises[muscleGroup].map((exercise) => (
-                                            <div key={exercise.equipmentId} className="bg-[#252525] p-4 rounded-lg shadow-md hover:shadow-xl transition relative">
+                                            <div key={exercise.equipmentId} className="bg-gray-900 p-4 rounded-lg shadow-md hover:shadow-xl transition relative">
 
                                                 <img
                                                     src={exercise.photoUrl}

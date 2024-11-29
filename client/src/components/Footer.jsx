@@ -5,7 +5,7 @@ const Footer = () => {
     const currentYear = new Date().getFullYear();
 
     return (
-        <section className="flex flex-col justify-center items-center py-8 mt-4">
+        <footer className="flex flex-col justify-center items-center py-8 mt-auto">
             <div className="flex flex-col md:flex-row mb-8 w-full items-center">
                 <div className="flex-1 flex flex-col md:flex-row w-full md:w-auto items-center">
                     <img
@@ -36,7 +36,7 @@ const Footer = () => {
                     ))}
                 </div>
             </div>
-        </section>
+        </footer>
     );
 }
 

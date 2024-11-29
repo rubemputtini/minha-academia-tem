@@ -3,9 +3,8 @@
 @tailwind utilities;
 
 body {
-  @apply bg-gray-100 text-gray-800;
+  @apply bg-gradient-to-b from-black to-gray-900;
   margin: 3vh;
-  background-color: black;
 }
 
 button {

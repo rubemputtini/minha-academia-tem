@@ -131,11 +131,13 @@ const AdminPage = () => {
                         placeholder="Pesquisar por nome"
                         onChange={(e) => setSearchQuery(e.target.value)}
                         slotProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <Search style={{ color: "#666" }} />
-                                </InputAdornment>
-                            ),
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <Search style={{ color: "#666" }} />
+                                    </InputAdornment>
+                                ),
+                            },
                         }}
                         sx={{
                             width: "100%",

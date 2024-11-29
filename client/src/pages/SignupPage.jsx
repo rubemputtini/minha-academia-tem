@@ -38,7 +38,14 @@ const SignupPage = () => {
     };
 
     return (
-        <>
+        <div className="min-h-screen flex flex-col">
+            <header className="flex justify-center py-6">
+                <h1 className="text-4xl font-bold text-center text-gray-300">
+                    <span className="inline-flex items-center space-x-2">
+                        <span>Minha Academia <span className="text-yellow-500">TEM?</span></span>
+                    </span>
+                </h1>
+            </header>
             <SignupForm
                 title="Crie sua conta"
                 buttonText="Registrar"
@@ -58,7 +65,7 @@ const SignupPage = () => {
                 onLoginRedirect={handleLoginRedirect}
             />
             <Footer />
-        </>
+        </div>
     );
 };
 

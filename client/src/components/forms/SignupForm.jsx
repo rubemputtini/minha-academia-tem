@@ -16,7 +16,7 @@ const SignupForm = ({
     errorDetails,
     onLoginRedirect
 }) => (
-    <div className="flex justify-center items-center h-screen bg-black">
+    <div className="flex-grow flex justify-center items-center">
         <div className="w-full max-w-xs">
             <form
                 onSubmit={onSubmit}
@@ -94,7 +94,7 @@ const SignupForm = ({
                     <p className="text-gray-400">Já tem uma conta?{' '}</p>
                     <button
                         onClick={onLoginRedirect}
-                        className="text-[#3B82F6] hover:underline font-bold ml-1"
+                        className="text-yellow-500 hover:underline font-bold ml-1"
                     >
                         Faça login
                     </button>

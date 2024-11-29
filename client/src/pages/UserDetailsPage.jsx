@@ -12,17 +12,21 @@ import {
     TextField,
     Typography,
     Divider,
-    IconButton
+    IconButton,
+    InputAdornment
 } from "@mui/material";
-import { ArrowBack } from "@mui/icons-material";
+import { ArrowBack, Search } from "@mui/icons-material";
 import { getUserEquipments } from "../services/adminService";
+import { fetchUserDetails } from "../services/userService";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import UserFeedbacks from "../components/UserFeedbacks";
+import { getToken } from "../services/auth";
 
 const UserDetailsPage = () => {
     const { userId } = useParams();
     const navigate = useNavigate();
+    const [userName, setUserName] = useState("");
     const [equipments, setEquipments] = useState([]);
     const [filteredEquipments, setFilteredEquipments] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -32,6 +36,9 @@ const UserDetailsPage = () => {
     useEffect(() => {
         const fetchDetails = async () => {
             try {
+                const userDetails = await fetchUserDetails(getToken(), userId);
+                setUserName(userDetails.name);
+
                 const equipmentData = await getUserEquipments(userId);
                 const availableEquipments = equipmentData.filter(equipment => equipment.isAvailable);
 
@@ -83,7 +90,7 @@ const UserDetailsPage = () => {
             <Container
                 maxWidth="lg"
                 sx={{
-                    backgroundColor: "#121212",
+                    background: "linear-gradient(to bottom, #000000, #1a1a1a)",
                     color: "white",
                     padding: "20px",
                     borderRadius: "8px",
@@ -115,6 +122,19 @@ const UserDetailsPage = () => {
                     Equipamentos da Academia
                 </Typography>
 
+                {userName && (
+                    <Typography
+                        variant="subtitle1"
+                        align="center"
+                        sx={{
+                            fontStyle: "italic",
+                            marginBottom: "20px",
+                        }}
+                    >
+                        {`Usuário: ${userName}`}
+                    </Typography>
+                )}
+
                 {loading ? (
                     <Box display="flex" justifyContent="center" mt={4}>
                         <CircularProgress color="primary" />
@@ -137,7 +157,13 @@ const UserDetailsPage = () => {
                                     label: { color: "#90caf9" },
                                 }}
                                 slotProps={{
-                                    style: { color: "white" },
+                                    input: {
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <Search style={{ color: "#666" }} />
+                                            </InputAdornment>
+                                        ),
+                                    },
                                 }}
                             />
                         </Box>

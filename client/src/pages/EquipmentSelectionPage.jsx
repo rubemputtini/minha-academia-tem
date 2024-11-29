@@ -105,7 +105,11 @@ const EquipmentSelectionPage = () => {
         <>
             <Header />
             <div className="container mx-auto flex flex-col items-center">
-                <h1 className="text-2xl font-bold mb-6">Minha Academia TEM?</h1>
+                <h2 className="text-2xl font-bold mb-6 text-center text-gray-300">
+                    <span className="inline-flex items-center space-x-2">
+                        <span>Minha Academia <span className="text-yellow-500">TEM?</span></span>
+                    </span>
+                </h2>
                 <div className="flex justify-center w-full">
                     {currentEquipment ? (
                         <EquipmentCard

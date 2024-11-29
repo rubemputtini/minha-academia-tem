@@ -40,8 +40,8 @@ const UserTable = ({ users, onViewClick, onEditClick, onDeleteClick }) => {
             >
                 <Table>
                     <TableHead sx={{
-                        backgroundColor: "#2A2A2A",
-                        borderBottom: "2px solid #333",
+                        backgroundColor: "linear-gradient(to bottom, #1A1A1A, #111111)",
+                        borderBottom: "2px solid #444",
                     }}>
                         <TableRow>
                             <TableCell sx={{
@@ -76,14 +76,14 @@ const UserTable = ({ users, onViewClick, onEditClick, onDeleteClick }) => {
                             <TableRow
                                 key={user.id}
                                 sx={{
-                                    backgroundColor: index % 2 === 0 ? "#242424" : "#1E1E1E",
-                                    "&:hover": { backgroundColor: "#333" },
+                                    backgroundColor: index % 2 === 0 ? "#1A1A1A" : "#232323",
+                                    "&:hover": { backgroundColor: "#3A3A3A" },
                                     transition: "background-color 0.3s ease",
                                 }}
                             >
                                 <TableCell
                                     sx={{
-                                        color: "#FFFFFF",
+                                        color: "#E0E0E0",
                                         fontSize: "0.9rem",
                                         letterSpacing: "0.03rem",
                                     }}
@@ -92,7 +92,7 @@ const UserTable = ({ users, onViewClick, onEditClick, onDeleteClick }) => {
                                 </TableCell>
                                 <TableCell
                                     sx={{
-                                        color: "#AAAAAA",
+                                        color: "#C0C0C0",
                                         fontSize: "0.9rem",
                                         letterSpacing: "0.03rem",
                                     }}
@@ -103,8 +103,8 @@ const UserTable = ({ users, onViewClick, onEditClick, onDeleteClick }) => {
                                     <IconButton
                                         onClick={() => onViewClick(user.id)}
                                         sx={{
-                                            color: "#5DADE2",
-                                            "&:hover": { color: "#85C1E9" },
+                                            color: "#4A90E2",
+                                            "&:hover": { color: "#6AAFE9" },
                                             transition: "color 0.2s ease",
                                         }}
                                     >
@@ -113,8 +113,8 @@ const UserTable = ({ users, onViewClick, onEditClick, onDeleteClick }) => {
                                     <IconButton
                                         onClick={() => onEditClick(user.id)}
                                         sx={{
-                                            color: "#58D68D",
-                                            "&:hover": { color: "#82E0AA" },
+                                            color: "#5CB85C",
+                                            "&:hover": { color: "#78D178" },
                                             transition: "color 0.2s ease",
                                         }}
                                     >
@@ -123,8 +123,8 @@ const UserTable = ({ users, onViewClick, onEditClick, onDeleteClick }) => {
                                     <IconButton
                                         onClick={() => onDeleteClick(user.id)}
                                         sx={{
-                                            color: "#EC7063",
-                                            "&:hover": { color: "#F5B7B1" },
+                                            color: "#D9534F",
+                                            "&:hover": { color: "#E57373" },
                                             transition: "color 0.2s ease",
                                         }}
                                     >
@@ -134,6 +134,7 @@ const UserTable = ({ users, onViewClick, onEditClick, onDeleteClick }) => {
                             </TableRow>
                         ))}
                     </TableBody>
+
                 </Table>
             </TableContainer>
         </Box>

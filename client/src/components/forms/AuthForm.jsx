@@ -8,7 +8,7 @@ const AuthForm = ({
     setPassword,
     errorMessage,
 }) => (
-    <div className="flex justify-center items-center h-screen bg-black">
+    <div className="flex-grow flex justify-center items-center">
         <div className="w-full max-w-xs">
             <form
                 onSubmit={onSubmit}
