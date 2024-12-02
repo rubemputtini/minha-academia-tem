@@ -54,15 +54,21 @@ jobs:
           Smtp__Password: ${{ secrets.Smtp__Password }}
 
       - name: Publish backend
-        run: dotnet publish -c Release -o ../backend-release
+        run: dotnet publish -c Release -o backend-release
         working-directory: MinhaAcademiaTem
 
+      - name: List files in backend-release
+        run: ls -R MinhaAcademiaTem/backend-release
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: backend-app
-          path: ../backend-release
+          path: MinhaAcademiaTem/backend-release
+          
+      - name: Debug upload path
+        run: echo "Uploaded artifact: MinhaAcademiaTem/backend-release"
+
 
   deploy:
     runs-on: ubuntu-latest
@@ -78,6 +84,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: backend-app
+          
+      - name: List downloaded files
+        run: ls -R
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -85,7 +94,10 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_74FB58242C4F4CF68E4E99366A921BFB }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D70E7898434748F9908475195D5CD572 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_0F616208FDB34A308D629576261A31B2 }}
-          
+      
+      - name: Debug package path
+        run: echo "Package path: backend-release"
+      
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
