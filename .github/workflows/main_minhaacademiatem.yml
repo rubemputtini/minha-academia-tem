@@ -65,9 +65,6 @@ jobs:
         with:
           name: backend-app
           path: MinhaAcademiaTem/backend-release
-          
-      - name: Debug upload path
-        run: echo "Uploaded artifact: MinhaAcademiaTem/backend-release"
 
 
   deploy:
