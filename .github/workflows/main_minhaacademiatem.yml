@@ -38,9 +38,11 @@ jobs:
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
+        working-directory: MinhaAcademiaTem
       
       - name: Update database
-        run: dotnet ef database update --project ./MinhaAcademiaTem/MinhaAcademiaTem.csproj
+        run: dotnet ef database update --project MinhaAcademiaTem.csproj
+        working-directory: MinhaAcademiaTem
         env:
           ConnectionStrings__DefaultConnection: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
           StorageConnectionString: ${{ secrets.StorageConnectionString }}
@@ -51,14 +53,16 @@ jobs:
           Smtp__UserName: ${{ secrets.Smtp__UserName }}
           Smtp__Password: ${{ secrets.Smtp__Password }}
 
-      - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      - name: Publish backend
+        run: dotnet publish -c Release -o ../backend-release
+        working-directory: MinhaAcademiaTem
+
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
-          name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          name: backend-app
+          path: backend-release
 
   deploy:
     runs-on: ubuntu-latest
@@ -73,7 +77,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: .net-app
+          name: backend-app
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -88,5 +92,6 @@ jobs:
         with:
           app-name: 'minhaacademiatem'
           slot-name: 'Production'
-          package: .
+          package: backend-release
+.
           
