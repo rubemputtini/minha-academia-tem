@@ -2,6 +2,7 @@ using MinhaAcademiaTem.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddEnvironmentVariables();
 builder.Services.ConfigureServices(builder.Configuration);
 builder.Services.ConfigureAuthentication(builder.Configuration);
 builder.Services.ConfigureCors(builder.Configuration);
