@@ -83,7 +83,7 @@ jobs:
           name: backend-app
           
       - name: List downloaded files
-        run: ls -R
+        run: ls -R ./MinhaAcademiaTem/backend-release
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -98,5 +98,5 @@ jobs:
         with:
           app-name: 'minhaacademiatem'
           slot-name: 'Production'
-          package: backend-release
+          package: ./MinhaAcademiaTem/backend-release
           
