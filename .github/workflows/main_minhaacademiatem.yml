@@ -90,10 +90,7 @@ jobs:
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_74FB58242C4F4CF68E4E99366A921BFB }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D70E7898434748F9908475195D5CD572 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_0F616208FDB34A308D629576261A31B2 }}
-      
-      - name: Debug package path
-        run: echo "Package path: backend-release"
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_0F616208FDB34A308D629576261A31B2 }}     
       
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
