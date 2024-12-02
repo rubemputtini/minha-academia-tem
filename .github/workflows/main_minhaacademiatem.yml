@@ -93,5 +93,4 @@ jobs:
           app-name: 'minhaacademiatem'
           slot-name: 'Production'
           package: backend-release
-.
           
