@@ -83,7 +83,7 @@ jobs:
           name: backend-app
           
       - name: List downloaded files
-        run: ls -R MinhaAcademiaTem/backend-release
+        run: ls -R
       
       - name: Login to Azure
         uses: azure/login@v2
