@@ -13,6 +13,7 @@
                         policy.WithOrigins(allowedOrigins!)
                               .AllowAnyHeader()
                               .AllowAnyMethod()
+                              .SetIsOriginAllowedToAllowWildcardSubdomains()
                               .AllowCredentials();
                     });
             });
