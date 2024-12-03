@@ -98,5 +98,5 @@ jobs:
         with:
           app-name: 'minhaacademiatem'
           slot-name: 'Production'
-          package: '/backend-release'
+          package: '/MinhaAcademiaTem'
           
