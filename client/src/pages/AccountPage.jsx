@@ -3,19 +3,21 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { getToken } from '../services/auth';
 import { fetchUserDetails, updateUser } from '../services/userService';
+import { saveEquipmentSelection } from '../services/reportService';
 import { muscleGroupNames } from '../utils/constants';
 import EditUserDialog from "../components/dialogs/EditUserDialog";
 import EditIcon from "@mui/icons-material/Edit";
-import { Tooltip, IconButton, CircularProgress, Box } from "@mui/material";
+import { Tooltip, IconButton, CircularProgress, Box, Typography, Divider, Button, Grid2, Card, CardMedia } from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-
 
 const AccountPage = () => {
     const [userDetails, setUserDetails] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [isEditing, setIsEditing] = useState(false);
+    const [isEditingUser, setIsEditingUser] = useState(false);
+    const [isEditingEquipments, setIsEditingEquipments] = useState(false);
+    const [updatedEquipments, setUpdatedEquipments] = useState(null);
 
     useEffect(() => {
         const fetchDetails = async () => {
@@ -24,6 +26,7 @@ const AccountPage = () => {
             try {
                 const data = await fetchUserDetails(token);
                 setUserDetails(data);
+                setUpdatedEquipments(data?.selectedExercises || []);
             } catch (error) {
                 console.error("Error fetching user details:", error);
                 setError("Não foi possível carregar os detalhes da conta.");
@@ -35,7 +38,7 @@ const AccountPage = () => {
         fetchDetails();
     }, []);
 
-    const handleUpdate = async (userId, userData) => {
+    const handleUpdateUser = async (userId, userData) => {
         try {
             await updateUser(userId, userData);
             setUserDetails((prev) => ({ ...prev, ...userData }));
@@ -43,8 +46,30 @@ const AccountPage = () => {
             console.error("Erro ao atualizar usuário:", error);
             setError("Não foi possível atualizar os detalhes da conta.");
         } finally {
-            setIsEditing(false);
+            setIsEditingUser(false);
         }
+    };
+
+    const handleToggleEquipment = (equipmentId) => {
+        setUpdatedEquipments((prev) =>
+            prev.map((exercise) =>
+                exercise.equipmentId === equipmentId
+                    ? { ...exercise, isAvailable: !exercise.isAvailable }
+                    : exercise
+            )
+        );
+    };
+
+    const handleSaveEquipments = async () => {
+        setLoading(true);
+
+        const selectedEquipmentIds = updatedEquipments
+            .filter((exercise) => exercise.isAvailable)
+            .map((exercise) => exercise.equipmentId);
+
+        await saveEquipmentSelection(selectedEquipmentIds);
+        setLoading(false);
+        setIsEditingEquipments(false);
     };
 
     const groupedExercises = userDetails?.selectedExercises.reduce((acc, exercise) => {
@@ -58,18 +83,6 @@ const AccountPage = () => {
 
         return acc;
     }, {});
-
-    const handleSelectEquipment = (equipmentId) => {
-        setUserDetails((prevDetails) => {
-            const updatedExercises = prevDetails.selectedExercises.map((exercise) => {
-                if (exercise.equipmentId === equipmentId) {
-                    return { ...exercise, isSelected: !exercise.isSelected };
-                }
-                return exercise;
-            });
-            return { ...prevDetails, selectedExercises: updatedExercises };
-        });
-    };
 
     if (loading) {
         return (
@@ -87,7 +100,7 @@ const AccountPage = () => {
                     <h2 className="text-2xl md:text-3xl font-bold text-white flex items-center justify-center gap-2">
                         Minha Conta
                         <Tooltip title="Editar Conta">
-                            <IconButton onClick={() => setIsEditing(true)} sx={{ color: '#FFCD54', padding: 0 }}>
+                            <IconButton onClick={() => setIsEditingUser(true)} sx={{ color: '#FFCD54', padding: 0 }}>
                                 <EditIcon />
                             </IconButton>
                         </Tooltip>
@@ -108,59 +121,152 @@ const AccountPage = () => {
                 </div>
 
                 {userDetails?.selectedExercises?.length > 0 && (
-                    <div className="w-full max-w-6xl mt-8">
-                        <h3 className="text-2xl md:text-3xl font-semibold text-[#FFCD54] mb-6 text-center">Equipamentos Selecionados</h3>
-                        {Object.keys(groupedExercises).map((muscleGroup) => {
-                            const muscleGroupName = muscleGroupNames[muscleGroup] || muscleGroup;
-                            return (
-                                <div key={muscleGroup} className="mb-20">
-                                    <div className="flex justify-center mb-4">
-                                        <h3 className="text-gray-200 text-2xl font-semibold">{muscleGroupName}</h3>
-                                    </div>
-                                    <hr className="my-4 border-t-2 border-[#444]" />
-                                    <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
+                    <div className="w-full max-w-6xl mt-8 text-center">
+                        <h3 className="text-xl md:text-3xl font-semibold text-white flex items-center justify-center gap-2 mb-8">
+                            Equipamentos Selecionados
+                            <Tooltip title="Editar Equipamentos">
+                                <IconButton onClick={() => setIsEditingEquipments(true)} sx={{ color: '#FFCD54', padding: 0 }}>
+                                    <EditIcon />
+                                </IconButton>
+                            </Tooltip>
+                        </h3>
+                        {Object.keys(groupedExercises).length > 0 ? (
+                            Object.keys(groupedExercises).map((muscleGroup) => (
+                                <div key={muscleGroup} className="mb-20 text-gray-200">
+                                    <Typography
+                                        variant="h5"
+                                        sx={{
+                                            marginBottom: "15px",
+                                            fontWeight: "bold",
+                                            color: "#FFCD54",
+                                            textTransform: "uppercase",
+                                        }}
+                                    >
+                                        {muscleGroupNames[muscleGroup] || muscleGroup}
+                                    </Typography>
+                                    <Divider sx={{ marginY: "1em", borderTop: "2px solid #444" }} />
+                                    <Grid2 container spacing={2} justifyContent="center">
                                         {groupedExercises[muscleGroup].map((exercise) => (
-                                            <div key={exercise.equipmentId} className="bg-gray-900 p-4 rounded-lg shadow-md hover:shadow-xl transition relative">
-
-                                                <img
-                                                    src={exercise.photoUrl}
-                                                    alt={exercise.name}
-                                                    className="w-full h-full object-cover rounded-md mb-4"
-                                                    onClick={() => handleSelectEquipment(exercise.equipmentId)}
-
-                                                />
-
-                                                {exercise.isAvailable ? (
-                                                    <CheckCircleIcon
-                                                        className="absolute top-2 right-2 text-green-500"
-                                                        sx={{ fontSize: 50 }}
+                                            <Grid2
+                                                item
+                                                xs={6}
+                                                sm={4}
+                                                md={3}
+                                                lg={2}
+                                                key={exercise.equipmentId}
+                                                onClick={() =>
+                                                    isEditingEquipments && handleToggleEquipment(exercise.equipmentId)
+                                                }
+                                            >
+                                                <Card
+                                                    sx={{
+                                                        backgroundColor: "#111827",
+                                                        color: "white",
+                                                        borderRadius: "10px",
+                                                        boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                                                        width: 150,
+                                                        position: "relative",
+                                                    }}
+                                                >
+                                                    <CardMedia
+                                                        component="img"
+                                                        image={exercise.photoUrl}
+                                                        alt={exercise.name}
+                                                        sx={{
+                                                            height: 150,
+                                                            objectFit: "cover",
+                                                            borderTopLeftRadius: "10px",
+                                                            borderTopRightRadius: "10px",
+                                                            border: "2px solid #FFCD54",
+                                                        }}
                                                     />
-                                                ) : (
-                                                    <CancelIcon
-                                                        className="absolute top-2 right-2 text-red-500"
-                                                        sx={{ fontSize: 50 }}
-                                                    />
-                                                )}
-
-                                                <p className="text-gray-300 text-center font-medium">{exercise.name}</p>
-                                            </div>
+                                                    <Typography
+                                                        variant="body1"
+                                                        sx={{
+                                                            fontWeight: "bold",
+                                                            fontSize: "14px",
+                                                            marginTop: "10px",
+                                                            color: "white",
+                                                            marginBottom: "20px",
+                                                            paddingLeft: "8px",
+                                                            paddingRight: "8px",
+                                                        }}
+                                                    >
+                                                        {exercise.name}
+                                                    </Typography>
+                                                    <div className="absolute top-2 right-2">
+                                                        {isEditingEquipments ? (
+                                                            exercise.isAvailable ? (
+                                                                <CheckCircleIcon
+                                                                    onClick={() => handleToggleEquipment(exercise.equipmentId)}
+                                                                    className="text-green-500"
+                                                                    sx={{ fontSize: 40 }}
+                                                                />
+                                                            ) : (
+                                                                <CancelIcon
+                                                                    onClick={() => handleToggleEquipment(exercise.equipmentId)}
+                                                                    className="text-red-500"
+                                                                    sx={{ fontSize: 40 }}
+                                                                />
+                                                            )
+                                                        ) : exercise.isAvailable ? (
+                                                            <CheckCircleIcon
+                                                                className="text-green-500"
+                                                                sx={{ fontSize: 40 }}
+                                                            />
+                                                        ) : (
+                                                            <CancelIcon
+                                                                className="text-red-500"
+                                                                sx={{ fontSize: 40 }}
+                                                            />
+                                                        )}
+                                                    </div>
+                                                </Card>
+                                            </Grid2>
                                         ))}
-                                    </div>
+                                    </Grid2>
                                 </div>
-                            );
-                        })}
+                            ))
+                        ) : (
+                            <Typography variant="body1" sx={{ color: "white", textAlign: "center" }}>
+                                Nenhum equipamento selecionado.
+                            </Typography>
+                        )}
                     </div>
                 )}
-            </div>
+                {isEditingEquipments && (
+                    <div className="fixed bottom-10 left-0 right-0 flex justify-center gap-4 mb-4">
+                        <Button
+                            variant="contained"
+                            color="success"
+                            sx={{ padding: "10px 30px" }}
+                            onClick={handleSaveEquipments}
+                        >
+                            Salvar
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            color="error"
+                            sx={{ padding: "10px 30px" }}
+                            onClick={() => setIsEditingEquipments(false)}
+                        >
+                            Cancelar
+                        </Button>
+                    </div>
+                )}
+            </div >
             <Footer />
 
-            {isEditing && (
-                <EditUserDialog
-                    user={userDetails}
-                    onClose={() => setIsEditing(false)}
-                    onUpdate={handleUpdate}
-                />
-            )}
+            {
+                isEditingUser && (
+                    <EditUserDialog
+                        user={userDetails}
+                        onClose={() => setIsEditingUser(false)}
+                        onUpdate={handleUpdateUser}
+                    />
+                )
+            }
+
         </>
     );
 };
