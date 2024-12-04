@@ -44,7 +44,7 @@ const UserFeedbacks = ({ userId }) => {
             </Typography>
             <Divider sx={{ marginBottom: "20px", backgroundColor: "#333" }} />
             {loading ? (
-                <Box display="flex" justifyContent="center">
+                <Box my={22} display="flex" justifyContent="center">
                     <CircularProgress color="primary" />
                 </Box>
             ) : error ? (

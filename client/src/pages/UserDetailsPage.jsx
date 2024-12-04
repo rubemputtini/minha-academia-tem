@@ -136,7 +136,7 @@ const UserDetailsPage = () => {
                 )}
 
                 {loading ? (
-                    <Box display="flex" justifyContent="center" mt={4}>
+                    <Box display="flex" justifyContent="center" my={22}>
                         <CircularProgress color="primary" />
                     </Box>
                 ) : error ? (
@@ -192,6 +192,7 @@ const UserDetailsPage = () => {
                                                         color: "white",
                                                         borderRadius: "10px",
                                                         boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                                                        width: 150,
                                                     }}
                                                 >
                                                     <CardMedia
@@ -199,17 +200,23 @@ const UserDetailsPage = () => {
                                                         image={equipment.photoUrl}
                                                         alt={equipment.name}
                                                         sx={{
-                                                            height: 140,
+                                                            height: 150,
                                                             objectFit: "cover",
                                                             borderTopLeftRadius: "10px",
                                                             borderTopRightRadius: "10px",
                                                         }}
                                                     />
-                                                    <CardContent>
+                                                    <CardContent sx={{ padding: "8px" }}>
                                                         <Typography
                                                             variant="body1"
                                                             align="center"
-                                                            sx={{ fontWeight: "bold" }}
+                                                            sx={{
+                                                                fontWeight: "bold",
+                                                                fontSize: "14px",
+                                                                overflow: "hidden",
+                                                                textOverflow: "ellipsis",
+                                                                whiteSpace: "nowrap",
+                                                            }}
                                                         >
                                                             {equipment.name}
                                                         </Typography>

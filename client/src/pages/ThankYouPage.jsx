@@ -2,9 +2,23 @@ import { useState } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import FeedbackDialog from '../components/dialogs/FeedbackDialog';
+import SuccessDialog from '../components/dialogs/SuccessDialog';
+import { useNavigate } from 'react-router-dom';
 
 const ThankYouPage = () => {
     const [showFeedbackDialog, setShowFeedbackDialog] = useState(false);
+    const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+    const navigate = useNavigate();
+
+    const handleFeedbackSuccess = () => {
+        setFeedbackSubmitted(true);
+        setShowFeedbackDialog(false);
+    };
+
+    const handleSuccessDialogClose = () => {
+        setFeedbackSubmitted(false);
+        navigate('/conta');
+    };
 
     return (
         <>
@@ -29,9 +43,14 @@ const ThankYouPage = () => {
                     </div>
                 </div>
 
-                {showFeedbackDialog && (
-                    <FeedbackDialog onClose={() => setShowFeedbackDialog(false)} />
+                {showFeedbackDialog && !feedbackSubmitted && (
+                    <FeedbackDialog onClose={() => setShowFeedbackDialog(false)} onSubmit={handleFeedbackSuccess} />
                 )}
+
+                {feedbackSubmitted &&
+                    <SuccessDialog
+                        message={"Feedback enviado com sucesso!"}
+                        onClose={handleSuccessDialogClose} />}
             </div>
             <Footer />
         </>

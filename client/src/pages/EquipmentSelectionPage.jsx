@@ -9,6 +9,7 @@ import { fetchUserDetails } from '../services/userService';
 import SuccessDialog from '../components/dialogs/SuccessDialog';
 import ConfirmationDialog from '../components/dialogs/ConfirmationDialog';
 import { useNavigate } from 'react-router-dom';
+import { Box, CircularProgress } from '@mui/material';
 
 const EquipmentSelectionPage = () => {
     const [equipments, setEquipments] = useState([]);
@@ -121,7 +122,9 @@ const EquipmentSelectionPage = () => {
                             showCheckmark={showCheckmark}
                         />
                     ) : (
-                        <p>Carregando...</p>
+                        <Box my={22} display="flex" flexDirection="column" alignItems="center">
+                            <CircularProgress color="primary" />
+                        </Box>
                     )}
                 </div>
             </div>

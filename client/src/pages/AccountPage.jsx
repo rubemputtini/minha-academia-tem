@@ -6,7 +6,7 @@ import { fetchUserDetails, updateUser } from '../services/userService';
 import { muscleGroupNames } from '../utils/constants';
 import EditUserDialog from "../components/dialogs/EditUserDialog";
 import EditIcon from "@mui/icons-material/Edit";
-import { Tooltip, IconButton, CircularProgress } from "@mui/material";
+import { Tooltip, IconButton, CircularProgress, Box } from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 
@@ -47,10 +47,6 @@ const AccountPage = () => {
         }
     };
 
-    if (loading) {
-        return <p className="text-white text-center">Carregando...</p>;
-    }
-
     const groupedExercises = userDetails?.selectedExercises.reduce((acc, exercise) => {
 
         const muscleGroup = exercise.muscleGroup;
@@ -77,9 +73,9 @@ const AccountPage = () => {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center h-screen bg-[#1E1E1E]">
-                <CircularProgress sx={{ color: "#FFCD54" }} />
-            </div>
+            <Box my={22} display="flex" flexDirection="column" alignItems="center">
+                <CircularProgress color="primary" />
+            </Box>
         );
     }
 

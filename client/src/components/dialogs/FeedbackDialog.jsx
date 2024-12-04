@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { sendFeedback } from '../../services/feedbackService';
 
-const FeedbackDialog = ({ onClose }) => {
+const FeedbackDialog = ({ onClose, onSubmit }) => {
     const [feedback, setFeedback] = useState('');
 
     const handleFeedbackSubmit = async (e) => {
@@ -9,7 +9,7 @@ const FeedbackDialog = ({ onClose }) => {
         await sendFeedback(feedback);
 
         setFeedback('');
-        onClose();
+        onSubmit();
     };
 
     return (
@@ -34,6 +34,7 @@ const FeedbackDialog = ({ onClose }) => {
                         Enviar
                     </button>
                     <button
+                        type="button"
                         onClick={onClose}
                         className="px-6 py-3 bg-gray-500 text-white text-lg font-semibold rounded-xl transition duration-300 hover:bg-gray-600 transform hover:scale-105"
                     >

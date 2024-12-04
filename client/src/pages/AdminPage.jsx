@@ -166,7 +166,7 @@ const AdminPage = () => {
                 )}
 
                 {loading ? (
-                    <Box display="flex" justifyContent="center">
+                    <Box my={22} display="flex" justifyContent="center">
                         <CircularProgress />
                     </Box>
                 ) : error ? (

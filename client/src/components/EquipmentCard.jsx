@@ -24,7 +24,7 @@ const EquipmentCard = ({ equipment, onSelection, onBack, showBackButton, current
                 className="w-full h-full object-cover mb-6 rounded-lg shadow-md"
             />
             <div className="flex items-center justify-center gap-2 mb-6">
-                <h2 className="font-bold text-3xl text-center text-gray-200">{equipment.name}</h2>
+                <h2 className="font-bold text-xl md:text-2xl text-center text-gray-200">{equipment.name}</h2>
                 <button
                     onClick={openVideoModal}
                     className="text-xl text-blue-500 hover:text-blue-700 transition-colors"

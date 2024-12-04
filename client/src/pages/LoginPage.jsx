@@ -4,15 +4,19 @@ import { useNavigate } from 'react-router-dom';
 import AuthForm from '../components/forms/AuthForm';
 import Footer from '../components/Footer';
 import { setToken } from '../services/auth';
+import { Box, CircularProgress } from '@mui/material';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setLoading(true);
+
         try {
             const { token, role } = await login(email, password);
             console.log('Login com sucesso:', { email, role });
@@ -23,6 +27,8 @@ const LoginPage = () => {
         } catch (error) {
             const errorMsg = error.response?.data || 'Erro ao fazer login, tente novamente.';
             setErrorMessage(errorMsg);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -35,16 +41,23 @@ const LoginPage = () => {
                     </span>
                 </h1>
             </header>
-            <AuthForm
-                title="Login"
-                buttonText="Entrar"
-                onSubmit={handleLogin}
-                email={email}
-                setEmail={setEmail}
-                password={password}
-                setPassword={setPassword}
-                errorMessage={errorMessage}
-            />
+            {loading ? (
+                <Box my={22} display="flex" flexDirection="column" alignItems="center">
+                    <CircularProgress color="primary" />
+                </Box>
+            ) : (
+                <AuthForm
+                    title="Login"
+                    buttonText="Entrar"
+                    onSubmit={handleLogin}
+                    email={email}
+                    setEmail={setEmail}
+                    password={password}
+                    setPassword={setPassword}
+                    errorMessage={errorMessage}
+                    disableSubmit={loading}
+                />
+            )}
             <Footer />
         </div>
     );

@@ -14,7 +14,8 @@ const SignupForm = ({
     setGymLocation,
     errorMessage,
     errorDetails,
-    onLoginRedirect
+    onLoginRedirect,
+    disableSubmit
 }) => (
     <div className="flex-grow flex justify-center items-center">
         <div className="w-full max-w-xs">
@@ -85,7 +86,7 @@ const SignupForm = ({
                 <div className="flex items-center justify-center">
                     <button
                         className="bg-[#3B82F6] hover:bg-[#2563EB] text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-[#3B82F6] transition duration-300"
-                        type="submit"
+                        type="submit" disabled={disableSubmit}
                     >
                         {buttonText}
                     </button>

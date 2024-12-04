@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import SignupForm from '../components/forms/SignupForm';
 import { errorMessages } from '../utils/constants';
 import Footer from '../components/Footer';
+import { Box, CircularProgress } from "@mui/material";
 
 const SignupPage = () => {
     const [userName, setUserName] = useState('');
@@ -13,10 +14,13 @@ const SignupPage = () => {
     const [gymLocation, setGymLocation] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [errorDetails, setErrorDetails] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
+        setLoading(true);
+
         try {
             const { token } = await register(userName, email, password, gymName, gymLocation);
 
@@ -46,24 +50,31 @@ const SignupPage = () => {
                     </span>
                 </h1>
             </header>
-            <SignupForm
-                title="Crie sua conta"
-                buttonText="Registrar"
-                onSubmit={handleRegister}
-                userName={userName}
-                setUserName={setUserName}
-                email={email}
-                setEmail={setEmail}
-                password={password}
-                setPassword={setPassword}
-                gymName={gymName}
-                setGymName={setGymName}
-                gymLocation={gymLocation}
-                setGymLocation={setGymLocation}
-                errorMessage={errorMessage}
-                errorDetails={errorDetails}
-                onLoginRedirect={handleLoginRedirect}
-            />
+            {loading ? (
+                <Box my={22} display="flex" flexDirection="column" alignItems="center">
+                    <CircularProgress color="primary" />
+                </Box>
+            ) : (
+                <SignupForm
+                    title="Crie sua conta"
+                    buttonText="Registrar"
+                    onSubmit={handleRegister}
+                    userName={userName}
+                    setUserName={setUserName}
+                    email={email}
+                    setEmail={setEmail}
+                    password={password}
+                    setPassword={setPassword}
+                    gymName={gymName}
+                    setGymName={setGymName}
+                    gymLocation={gymLocation}
+                    setGymLocation={setGymLocation}
+                    errorMessage={errorMessage}
+                    errorDetails={errorDetails}
+                    onLoginRedirect={handleLoginRedirect}
+                    disableSubmit={loading}
+                />
+            )}
             <Footer />
         </div>
     );
