@@ -3,7 +3,7 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { getToken } from '../services/auth';
 import { fetchUserDetails, updateUser } from '../services/userService';
-import { saveEquipmentSelection } from '../services/reportService';
+import { saveEquipmentSelection, submitReport } from '../services/reportService';
 import { muscleGroupNames } from '../utils/constants';
 import EditUserDialog from "../components/dialogs/EditUserDialog";
 import EditIcon from "@mui/icons-material/Edit";
@@ -13,10 +13,14 @@ import CancelIcon from '@mui/icons-material/Cancel';
 
 const AccountPage = () => {
     const [userDetails, setUserDetails] = useState(null);
+    const [gymName, setGymName] = useState('');
+    const [userName, setUserName] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isEditingUser, setIsEditingUser] = useState(false);
     const [isEditingEquipments, setIsEditingEquipments] = useState(false);
+    const [isSavingUser, setIsSavingUser] = useState(false);
+    const [isSavingEquipments, setIsSavingEquipments] = useState(false);
     const [updatedEquipments, setUpdatedEquipments] = useState(null);
 
     const fetchDetails = async () => {
@@ -25,6 +29,8 @@ const AccountPage = () => {
         try {
             const data = await fetchUserDetails(token);
             setUserDetails(data);
+            setUserName(userDetails.email);
+            setGymName(userDetails.gymName);
             setUpdatedEquipments(data?.selectedExercises || []);
         } catch (error) {
             console.error("Error fetching user details:", error);
@@ -39,6 +45,8 @@ const AccountPage = () => {
     }, []);
 
     const handleUpdateUser = async (userId, userData) => {
+        setIsSavingUser(true);
+
         try {
             await updateUser(userId, userData);
             setUserDetails((prev) => ({ ...prev, ...userData }));
@@ -46,6 +54,7 @@ const AccountPage = () => {
             console.error("Erro ao atualizar usuário:", error);
             setError("Não foi possível atualizar os detalhes da conta.");
         } finally {
+            setIsSavingUser(false);
             setIsEditingUser(false);
         }
     };
@@ -62,16 +71,17 @@ const AccountPage = () => {
     };
 
     const handleSaveEquipments = async () => {
-        setLoading(true);
+        setIsSavingEquipments(true);
 
         const selectedEquipmentIds = updatedEquipments
             .filter((exercise) => exercise.isAvailable)
             .map((exercise) => exercise.equipmentId);
 
         await saveEquipmentSelection(selectedEquipmentIds);
+        await submitReport(userName, gymName, selectedEquipmentIds);
         await fetchDetails();
 
-        setLoading(false);
+        setIsSavingEquipments(false);
         setIsEditingEquipments(false);
     };
 
@@ -173,8 +183,8 @@ const AccountPage = () => {
                                                         borderRadius: "10px",
                                                         boxShadow: isEditingEquipments
                                                             ? updatedEquipments.find((e) => e.equipmentId === exercise.equipmentId)?.isAvailable
-                                                                ? "0 0 10px 0.5px #4CAF50"
-                                                                : "0 0 10px 0.5px #F44336"
+                                                                ? "0 0 10px 2px #4CAF50"
+                                                                : "0 0 10px 2px #F44336"
                                                             : "0 4px 8px rgba(0,0,0,0.2)",
                                                         width: 250,
                                                         position: "relative",
@@ -269,14 +279,16 @@ const AccountPage = () => {
 
                         <div className="fixed bottom-10 flex justify-center gap-4 z-[100]">
                             <button
-                                className="px-4 py-2 bg-green-500 text-white rounded-xl w-full sm:w-auto shadow-lg"
+                                className={`px-4 py-2 bg-green-500 text-white rounded-xl w-full sm:w-auto shadow-lg ${isSavingEquipments ? 'opacity-50' : ''}`}
                                 onClick={handleSaveEquipments}
+                                disabled={isSavingEquipments}
                             >
-                                SALVAR
+                                {isSavingEquipments ? <CircularProgress size={20} color="inherit" /> : "SALVAR"}
                             </button>
                             <button
                                 className="px-4 py-2 bg-gray-500 text-white rounded-xl w-full sm:w-auto shadow-lg"
                                 onClick={handleCancelEquipments}
+                                disabled={isSavingEquipments}
                             >
                                 CANCELAR
                             </button>
@@ -292,6 +304,7 @@ const AccountPage = () => {
                         user={userDetails}
                         onClose={() => setIsEditingUser(false)}
                         onUpdate={handleUpdateUser}
+                        isSavingUser={isSavingUser}
                     />
                 )
             }

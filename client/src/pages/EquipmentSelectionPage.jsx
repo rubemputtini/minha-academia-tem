@@ -20,6 +20,7 @@ const EquipmentSelectionPage = () => {
     const [userName, setUserName] = useState('');
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [reportSubmitted, setReportSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -79,19 +80,18 @@ const EquipmentSelectionPage = () => {
     };
 
     const handleConfirmSaveAndSubmit = async () => {
+        setLoading(true);
+
         const selectedEquipmentIds = selections
             .map((isSelected, index) => isSelected ? equipments[index].equipmentId : null)
             .filter(id => id !== null);
 
         await saveEquipmentSelection(selectedEquipmentIds);
-        const success = await submitReport(userName, gymName, selectedEquipmentIds);
+        await submitReport(userName, gymName, selectedEquipmentIds);
 
-        if (success) {
-            setReportSubmitted(true);
-        } else {
-            console.log("Falha ao enviar o relatório.");
-        }
+        setReportSubmitted(true);
         setShowConfirmation(false);
+        setLoading(false);
     };
 
     const handleSuccessDialogClose = () => {
@@ -133,6 +133,7 @@ const EquipmentSelectionPage = () => {
                     message={"Deseja salvar suas escolhas e enviar o relatório?"}
                     onConfirm={handleConfirmSaveAndSubmit}
                     onCancel={() => setShowConfirmation(false)}
+                    isLoading={loading}
                 />
             )}
             {reportSubmitted &&

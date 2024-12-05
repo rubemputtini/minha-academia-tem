@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { updateUser } from '../../services/userService';
+import { CircularProgress } from '@mui/material';
 
-const EditUserDialog = ({ user, onClose, onUpdate }) => {
+const EditUserDialog = ({ user, onClose, onUpdate, isSavingUser }) => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -90,15 +91,17 @@ const EditUserDialog = ({ user, onClose, onUpdate }) => {
                 <div className="flex mt-4 justify-center gap-3">
                     <button
                         type="submit"
-                        className="px-5 py-2 bg-green-500 text-white text-lg font-semibold rounded-xl transition duration-300 hover:bg-green-600 transform hover:scale-105"
+                        className={`px-5 py-2 bg-green-500 text-white text-lg font-semibold rounded-xl transition duration-300 hover:bg-green-600 transform hover:scale-105 ${isSavingUser ? 'opacity-50' : ''}`}
+                        disabled={isSavingUser}
                     >
-                        Salvar
+                        {isSavingUser ? <CircularProgress size={20} color="inherit" /> : "SALVAR"}
                     </button>
                     <button
                         onClick={onClose}
                         className="px-5 py-2 bg-gray-500 text-white text-lg font-semibold rounded-xl transition duration-300 hover:bg-gray-600 transform hover:scale-105"
+                        disabled={isSavingUser}
                     >
-                        Cancelar
+                        CANCELAR
                     </button>
                 </div>
             </form>

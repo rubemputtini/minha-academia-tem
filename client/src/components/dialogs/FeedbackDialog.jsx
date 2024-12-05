@@ -1,15 +1,20 @@
 import { useState } from 'react';
 import { sendFeedback } from '../../services/feedbackService';
+import { CircularProgress } from '@mui/material';
 
 const FeedbackDialog = ({ onClose, onSubmit }) => {
     const [feedback, setFeedback] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleFeedbackSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
+
         await sendFeedback(feedback);
 
         setFeedback('');
         onSubmit();
+        setLoading(false);
     };
 
     return (
@@ -29,16 +34,19 @@ const FeedbackDialog = ({ onClose, onSubmit }) => {
                 <div className="flex justify-center gap-4">
                     <button
                         type="submit"
-                        className="px-6 py-3 bg-green-500 text-white text-lg font-semibold rounded-xl transition duration-300 hover:bg-green-600 transform hover:scale-105"
+                        className={`px-6 py-3 text-white text-lg font-semibold rounded-xl transition duration-300 transform hover:scale-105 ${loading ? 'bg-green-300 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600'
+                            }`}
+                        disabled={loading}
                     >
-                        Enviar
+                        {loading ? <CircularProgress size={24} color="inherit" /> : 'ENVIAR'}
                     </button>
                     <button
                         type="button"
                         onClick={onClose}
                         className="px-6 py-3 bg-gray-500 text-white text-lg font-semibold rounded-xl transition duration-300 hover:bg-gray-600 transform hover:scale-105"
+                        disabled={loading}
                     >
-                        Cancelar
+                        CANCELAR
                     </button>
                 </div>
             </form>
