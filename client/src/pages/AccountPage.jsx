@@ -7,7 +7,7 @@ import { saveEquipmentSelection } from '../services/reportService';
 import { muscleGroupNames } from '../utils/constants';
 import EditUserDialog from "../components/dialogs/EditUserDialog";
 import EditIcon from "@mui/icons-material/Edit";
-import { Tooltip, IconButton, CircularProgress, Box, Typography, Divider, Button, Grid2, Card, CardMedia } from "@mui/material";
+import { Tooltip, IconButton, CircularProgress, Box, Typography, Divider, Grid2, Card, CardMedia } from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 
@@ -19,22 +19,22 @@ const AccountPage = () => {
     const [isEditingEquipments, setIsEditingEquipments] = useState(false);
     const [updatedEquipments, setUpdatedEquipments] = useState(null);
 
+    const fetchDetails = async () => {
+        const token = getToken();
+
+        try {
+            const data = await fetchUserDetails(token);
+            setUserDetails(data);
+            setUpdatedEquipments(data?.selectedExercises || []);
+        } catch (error) {
+            console.error("Error fetching user details:", error);
+            setError("Não foi possível carregar os detalhes da conta.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchDetails = async () => {
-            const token = getToken();
-
-            try {
-                const data = await fetchUserDetails(token);
-                setUserDetails(data);
-                setUpdatedEquipments(data?.selectedExercises || []);
-            } catch (error) {
-                console.error("Error fetching user details:", error);
-                setError("Não foi possível carregar os detalhes da conta.");
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchDetails();
     }, []);
 
@@ -51,13 +51,14 @@ const AccountPage = () => {
     };
 
     const handleToggleEquipment = (equipmentId) => {
-        setUpdatedEquipments((prev) =>
-            prev.map((exercise) =>
+        setUpdatedEquipments((prev) => {
+            const updated = prev.map((exercise) =>
                 exercise.equipmentId === equipmentId
                     ? { ...exercise, isAvailable: !exercise.isAvailable }
                     : exercise
-            )
-        );
+            );
+            return updated;
+        });
     };
 
     const handleSaveEquipments = async () => {
@@ -68,7 +69,14 @@ const AccountPage = () => {
             .map((exercise) => exercise.equipmentId);
 
         await saveEquipmentSelection(selectedEquipmentIds);
+        await fetchDetails();
+
         setLoading(false);
+        setIsEditingEquipments(false);
+    };
+
+    const handleCancelEquipments = () => {
+        setUpdatedEquipments(userDetails.selectedExercises);
         setIsEditingEquipments(false);
     };
 
@@ -93,9 +101,9 @@ const AccountPage = () => {
     }
 
     return (
-        <>
+        <div className="relative">
             <Header />
-            <div className="container mx-auto mt-8 flex flex-col items-center px-4">
+            <div className="container mx-auto mt-8 flex flex-col items-center px-4 relative z-10">
                 <div className="bg-gray-900 rounded-2xl shadow-lg p-6 w-full max-w-lg mb-8 text-center">
                     <h2 className="text-2xl md:text-3xl font-bold text-white flex items-center justify-center gap-2">
                         Minha Conta
@@ -163,17 +171,26 @@ const AccountPage = () => {
                                                         backgroundColor: "#111827",
                                                         color: "white",
                                                         borderRadius: "10px",
-                                                        boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
-                                                        width: 150,
+                                                        boxShadow: isEditingEquipments
+                                                            ? updatedEquipments.find((e) => e.equipmentId === exercise.equipmentId)?.isAvailable
+                                                                ? "0 0 10px 0.5px #4CAF50"
+                                                                : "0 0 10px 0.5px #F44336"
+                                                            : "0 4px 8px rgba(0,0,0,0.2)",
+                                                        width: 250,
                                                         position: "relative",
+                                                        transition: "box-shadow 0.3s ease",
+                                                        cursor: isEditingEquipments ? "pointer" : "default",
+                                                        zIndex: 10,
                                                     }}
+                                                    onClick={() => isEditingEquipments && handleToggleEquipment(exercise.equipmentId)}
                                                 >
+
                                                     <CardMedia
                                                         component="img"
                                                         image={exercise.photoUrl}
                                                         alt={exercise.name}
                                                         sx={{
-                                                            height: 150,
+                                                            height: 250,
                                                             objectFit: "cover",
                                                             borderTopLeftRadius: "10px",
                                                             borderTopRightRadius: "10px",
@@ -184,7 +201,7 @@ const AccountPage = () => {
                                                         variant="body1"
                                                         sx={{
                                                             fontWeight: "bold",
-                                                            fontSize: "14px",
+                                                            fontSize: "16px",
                                                             marginTop: "10px",
                                                             color: "white",
                                                             marginBottom: "20px",
@@ -196,28 +213,33 @@ const AccountPage = () => {
                                                     </Typography>
                                                     <div className="absolute top-2 right-2">
                                                         {isEditingEquipments ? (
-                                                            exercise.isAvailable ? (
-                                                                <CheckCircleIcon
-                                                                    onClick={() => handleToggleEquipment(exercise.equipmentId)}
-                                                                    className="text-green-500"
-                                                                    sx={{ fontSize: 40 }}
-                                                                />
-                                                            ) : (
-                                                                <CancelIcon
-                                                                    onClick={() => handleToggleEquipment(exercise.equipmentId)}
-                                                                    className="text-red-500"
-                                                                    sx={{ fontSize: 40 }}
-                                                                />
-                                                            )
+                                                            (() => {
+                                                                const equipment = updatedEquipments.find(
+                                                                    (e) => e.equipmentId === exercise.equipmentId
+                                                                );
+                                                                return equipment?.isAvailable ? (
+                                                                    <CheckCircleIcon
+                                                                        onClick={() => handleToggleEquipment(exercise.equipmentId)}
+                                                                        className="text-green-500"
+                                                                        sx={{ fontSize: 60, cursor: 'pointer' }}
+                                                                    />
+                                                                ) : (
+                                                                    <CancelIcon
+                                                                        onClick={() => handleToggleEquipment(exercise.equipmentId)}
+                                                                        className="text-red-500"
+                                                                        sx={{ fontSize: 60, cursor: 'pointer' }}
+                                                                    />
+                                                                );
+                                                            })()
                                                         ) : exercise.isAvailable ? (
                                                             <CheckCircleIcon
                                                                 className="text-green-500"
-                                                                sx={{ fontSize: 40 }}
+                                                                sx={{ fontSize: 60 }}
                                                             />
                                                         ) : (
                                                             <CancelIcon
                                                                 className="text-red-500"
-                                                                sx={{ fontSize: 40 }}
+                                                                sx={{ fontSize: 60 }}
                                                             />
                                                         )}
                                                     </div>
@@ -235,24 +257,31 @@ const AccountPage = () => {
                     </div>
                 )}
                 {isEditingEquipments && (
-                    <div className="fixed bottom-10 left-0 right-0 flex justify-center gap-4 mb-4">
-                        <Button
-                            variant="contained"
-                            color="success"
-                            sx={{ padding: "10px 30px" }}
-                            onClick={handleSaveEquipments}
-                        >
-                            Salvar
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            color="error"
-                            sx={{ padding: "10px 30px" }}
-                            onClick={() => setIsEditingEquipments(false)}
-                        >
-                            Cancelar
-                        </Button>
-                    </div>
+                    <>
+                        <div
+                            className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent z-50"
+                            style={{
+                                height: "20vh",
+                                marginLeft: "-1rem",
+                                marginRight: "-1rem",
+                            }}
+                        />
+
+                        <div className="fixed bottom-10 flex justify-center gap-4 z-[100]">
+                            <button
+                                className="px-4 py-2 bg-green-500 text-white rounded-xl w-full sm:w-auto shadow-lg"
+                                onClick={handleSaveEquipments}
+                            >
+                                SALVAR
+                            </button>
+                            <button
+                                className="px-4 py-2 bg-gray-500 text-white rounded-xl w-full sm:w-auto shadow-lg"
+                                onClick={handleCancelEquipments}
+                            >
+                                CANCELAR
+                            </button>
+                        </div>
+                    </>
                 )}
             </div >
             <Footer />
@@ -267,7 +296,7 @@ const AccountPage = () => {
                 )
             }
 
-        </>
+        </div>
     );
 };
 
