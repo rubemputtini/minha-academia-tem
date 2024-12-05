@@ -29,8 +29,8 @@ const AccountPage = () => {
         try {
             const data = await fetchUserDetails(token);
             setUserDetails(data);
-            setUserName(userDetails.email);
-            setGymName(userDetails.gymName);
+            setUserName(data.email);
+            setGymName(data.gymName);
             setUpdatedEquipments(data?.selectedExercises || []);
         } catch (error) {
             console.error("Error fetching user details:", error);
