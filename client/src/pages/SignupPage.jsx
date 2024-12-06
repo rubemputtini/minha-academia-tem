@@ -34,6 +34,8 @@ const SignupPage = () => {
 
             setErrorMessage(errorMsg);
             setErrorDetails(details);
+        } finally {
+            setLoading(false);
         }
     };
 

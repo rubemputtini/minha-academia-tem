@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MinhaAcademiaTem.Data;
 using MinhaAcademiaTem.DTOs;
@@ -9,6 +10,7 @@ namespace MinhaAcademiaTem.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
+    [Authorize]
     public class EquipmentController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -63,6 +65,7 @@ namespace MinhaAcademiaTem.Controllers
             }
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> CreateEquipment([FromBody] Equipment equipment)
         {            
@@ -87,6 +90,7 @@ namespace MinhaAcademiaTem.Controllers
             }
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateEquipment(int id, [FromBody] Equipment equipment)
         {
@@ -125,6 +129,7 @@ namespace MinhaAcademiaTem.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEquipment(int id)
         {

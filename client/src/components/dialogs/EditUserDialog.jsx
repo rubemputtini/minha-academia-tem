@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { updateUser } from '../../services/userService';
 import { CircularProgress } from '@mui/material';
 
-const EditUserDialog = ({ user, onClose, onUpdate, isSavingUser }) => {
+const EditUserDialog = ({ user, onClose, onUpdate }) => {
+    const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -31,12 +32,16 @@ const EditUserDialog = ({ user, onClose, onUpdate, isSavingUser }) => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
+
         try {
             await updateUser(user.id, formData);
             onUpdate(user.id, formData);
             onClose();
         } catch (error) {
             console.error('Erro ao atualizar usuário:', error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -91,15 +96,15 @@ const EditUserDialog = ({ user, onClose, onUpdate, isSavingUser }) => {
                 <div className="flex mt-4 justify-center gap-3">
                     <button
                         type="submit"
-                        className={`px-5 py-2 bg-green-500 text-white text-lg font-semibold rounded-xl transition duration-300 hover:bg-green-600 transform hover:scale-105 ${isSavingUser ? 'opacity-50' : ''}`}
-                        disabled={isSavingUser}
+                        className={`px-5 py-2 bg-green-500 text-white text-lg font-semibold rounded-xl transition duration-300 hover:bg-green-600 transform hover:scale-105 ${isLoading ? 'opacity-50' : ''}`}
+                        disabled={isLoading}
                     >
-                        {isSavingUser ? <CircularProgress size={20} color="inherit" /> : "SALVAR"}
+                        {isLoading ? <CircularProgress size={20} color="inherit" /> : "SALVAR"}
                     </button>
                     <button
                         onClick={onClose}
                         className="px-5 py-2 bg-gray-500 text-white text-lg font-semibold rounded-xl transition duration-300 hover:bg-gray-600 transform hover:scale-105"
-                        disabled={isSavingUser}
+                        disabled={isLoading}
                     >
                         CANCELAR
                     </button>

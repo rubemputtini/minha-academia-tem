@@ -1,3 +1,5 @@
+import { CircularProgress } from "@mui/material";
+
 const AuthForm = ({
     title,
     buttonText,
@@ -41,10 +43,11 @@ const AuthForm = ({
                 )}
                 <div className="flex items-center justify-center">
                     <button
-                        className="bg-[#3B82F6] hover:bg-[#2563EB] text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-[#3B82F6] transition duration-300"
-                        type="submit" disabled={disableSubmit}
+                        className={`bg-[#3B82F6] hover:bg-[#2563EB] text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-[#3B82F6] transition duration-300 ${disableSubmit ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        type="submit"
+                        disabled={disableSubmit}
                     >
-                        {buttonText}
+                        {disableSubmit ? <CircularProgress size={20} color="inherit" /> : buttonText}
                     </button>
                 </div>
             </form>

@@ -19,7 +19,6 @@ const AccountPage = () => {
     const [error, setError] = useState(null);
     const [isEditingUser, setIsEditingUser] = useState(false);
     const [isEditingEquipments, setIsEditingEquipments] = useState(false);
-    const [isSavingUser, setIsSavingUser] = useState(false);
     const [isSavingEquipments, setIsSavingEquipments] = useState(false);
     const [updatedEquipments, setUpdatedEquipments] = useState(null);
 
@@ -45,7 +44,7 @@ const AccountPage = () => {
     }, []);
 
     const handleUpdateUser = async (userId, userData) => {
-        setIsSavingUser(true);
+        setIsEditingUser(true);
 
         try {
             await updateUser(userId, userData);
@@ -54,7 +53,6 @@ const AccountPage = () => {
             console.error("Erro ao atualizar usuário:", error);
             setError("Não foi possível atualizar os detalhes da conta.");
         } finally {
-            setIsSavingUser(false);
             setIsEditingUser(false);
         }
     };
@@ -304,7 +302,6 @@ const AccountPage = () => {
                         user={userDetails}
                         onClose={() => setIsEditingUser(false)}
                         onUpdate={handleUpdateUser}
-                        isSavingUser={isSavingUser}
                     />
                 )
             }
