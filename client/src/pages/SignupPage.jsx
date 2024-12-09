@@ -15,6 +15,7 @@ const SignupPage = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [errorDetails, setErrorDetails] = useState('');
     const [loading, setLoading] = useState(false);
+    const [passwordStrength, setPasswordStrength] = useState(0);
     const navigate = useNavigate();
 
     const handleRegister = async (e) => {
@@ -37,6 +38,16 @@ const SignupPage = () => {
         } finally {
             setLoading(false);
         }
+    };
+
+    const calculatePasswordStrength = (password) => {
+        let strength = 0;
+        if (password.length >= 8) strength += 30;
+        if (/[A-Z]/.test(password)) strength += 20;
+        if (/[a-z]/.test(password)) strength += 20;
+        if (/[0-9]/.test(password)) strength += 20;
+        if (/[^A-Za-z0-9]/.test(password)) strength += 10;
+        setPasswordStrength(Math.min(strength, 100));
     };
 
     const handleLoginRedirect = () => {
@@ -66,7 +77,10 @@ const SignupPage = () => {
                     email={email}
                     setEmail={setEmail}
                     password={password}
-                    setPassword={setPassword}
+                    setPassword={(val) => {
+                        setPassword(val);
+                        calculatePasswordStrength(val);
+                    }}
                     gymName={gymName}
                     setGymName={setGymName}
                     gymLocation={gymLocation}
@@ -75,6 +89,7 @@ const SignupPage = () => {
                     errorDetails={errorDetails}
                     onLoginRedirect={handleLoginRedirect}
                     disableSubmit={loading}
+                    passwordStrength={passwordStrength}
                 />
             )}
             <Footer />

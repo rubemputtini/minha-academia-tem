@@ -1,4 +1,4 @@
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, LinearProgress } from "@mui/material";
 
 const SignupForm = ({
     title,
@@ -17,7 +17,8 @@ const SignupForm = ({
     errorMessage,
     errorDetails,
     onLoginRedirect,
-    disableSubmit
+    disableSubmit,
+    passwordStrength
 }) => (
     <div className="flex-grow flex justify-center items-center">
         <div className="w-full max-w-xs">
@@ -75,6 +76,32 @@ const SignupForm = ({
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
+                    {password && (
+                        <div className="mt-3">
+                            <LinearProgress
+                                variant="determinate"
+                                value={passwordStrength}
+                                className={`rounded ${passwordStrength < 40
+                                    ? 'bg-red-500'
+                                    : passwordStrength < 80
+                                        ? 'bg-yellow-500'
+                                        : 'bg-green-500'
+                                    }`}
+                            />
+                            <p className={`text-xs mt-1 ${passwordStrength < 40
+                                ? 'text-red-500'
+                                : passwordStrength < 80
+                                    ? 'text-yellow-500'
+                                    : 'text-green-500'
+                                }`}>
+                                {passwordStrength < 40
+                                    ? 'Senha Fraca'
+                                    : passwordStrength < 80
+                                        ? 'Senha Média'
+                                        : 'Senha Forte'}
+                            </p>
+                        </div>
+                    )}
                 </div>
                 {errorDetails && errorDetails.length > 0 ? (
                     <ul className="text-red-500 text-xs italic mb-4 list-disc list-inside">
