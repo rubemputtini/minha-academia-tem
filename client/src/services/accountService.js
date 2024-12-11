@@ -44,6 +44,12 @@ export const logout = () => {
     clearToken();
     localStorage.removeItem('userDetailsCache');
     localStorage.removeItem('equipmentsCache');
+    localStorage.removeItem('usersCache');
+
+    Object.keys(localStorage)
+        .filter(key => key.startsWith('userDetails_'))
+        .forEach(key => localStorage.removeItem(key));
+
     console.log("Usuário deslogado");
 };
 

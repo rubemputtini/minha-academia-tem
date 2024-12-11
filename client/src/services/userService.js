@@ -2,9 +2,10 @@ import api from './api';
 
 export const fetchUserDetails = async (userId = null, forceRefresh = false) => {
     const url = userId ? `/Account/details/${userId}` : `/Account/details`;
+    const cacheKey = userId ? `userDetails_${userId}` : 'userDetailsCache';
 
     if (!forceRefresh) {
-        const cachedUserDetails = localStorage.getItem('userDetailsCache');
+        const cachedUserDetails = localStorage.getItem(cacheKey);
 
         if (cachedUserDetails) {
             return JSON.parse(cachedUserDetails);
@@ -13,7 +14,7 @@ export const fetchUserDetails = async (userId = null, forceRefresh = false) => {
    
     try {
         const response = await api.get(url);
-        localStorage.setItem('userDetailsCache', JSON.stringify(response.data));
+        localStorage.setItem(cacheKey, JSON.stringify(response.data));
 
         return response.data;
 

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using MinhaAcademiaTem.Data;
 using MinhaAcademiaTem.DTOs;
 using MinhaAcademiaTem.Models;
@@ -26,26 +27,54 @@ namespace MinhaAcademiaTem.Controllers
         public IActionResult GetUser() => Ok(User.Identity!.Name);
 
         [HttpGet("users")]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetUsers(
+            [FromServices] IMemoryCache memoryCache,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 6)
         {
-            var users = await _userManager.Users.ToListAsync();
+            var cacheKey = $"usersCache_page{page}_size{pageSize}";
 
-            var userResponses = new List<UserResponse>();
-
-            foreach (var user in users)
+            if (!memoryCache.TryGetValue(cacheKey, out List<UserResponse> userResponses))
             {
-                var roles = await _userManager.GetRolesAsync(user);
+                var query = _userManager.Users.AsQueryable();
 
-                userResponses.Add(new UserResponse
+                var users = await query
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+                
+                userResponses = new List<UserResponse>();
+
+                foreach (var user in users)
                 {
-                    Id = user.Id,
-                    Name = user.Name,
-                    Email = user.Email!,
-                    Role = roles.FirstOrDefault()!
-                });
+                    var roles = await _userManager.GetRolesAsync(user);
+
+                    userResponses.Add(new UserResponse
+                    {
+                        Id = user.Id,
+                        Name = user.Name,
+                        Email = user.Email!,
+                        Role = roles.FirstOrDefault()!
+                    });
+                }
+
+                var cacheOptions = new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1)
+                };
+
+                memoryCache.Set(cacheKey, userResponses, cacheOptions);
             }
 
-            return Ok(userResponses);
+            var totalCount = await _userManager.Users.CountAsync();
+
+            return Ok(new
+            {
+                TotalCount = totalCount,
+                Page = page,
+                PageSize = pageSize,
+                Users = userResponses
+            });
         }
 
         [HttpGet("admin")]

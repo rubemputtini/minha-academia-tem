@@ -163,6 +163,9 @@ namespace MinhaAcademiaTem.Controllers
                 await _dbContext.SaveChangesAsync();
             }
 
+            var cacheKey = $"userDetails_{userId}";
+            _cache.Remove(cacheKey);
+
             return Ok(new { message = "Usuário atualizado com sucesso." });
         }
 

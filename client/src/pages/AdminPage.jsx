@@ -8,6 +8,7 @@ import {
     InputAdornment,
     TextField,
     Typography,
+    Pagination
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { getUsers } from "../services/adminService";
@@ -29,13 +30,19 @@ const AdminPage = () => {
     const [userToDelete, setUserToDelete] = useState(null);
     const [userDeleted, setUserDeleted] = useState(null);
     const [editingUser, setEditingUser] = useState(null);
+    const [page, setPage] = useState(1);
+    const [pageSize] = useState(6);
+    const [totalUsers, setTotalUsers] = useState(0);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const data = await getUsers();
-                setUsers(data);
+                setLoading(true);
+                const data = await getUsers(page, pageSize);
+
+                setUsers(data.users);
+                setTotalUsers(data.totalCount)
             } catch (err) {
                 setError("Erro ao carregar usuários.");
             } finally {
@@ -44,7 +51,11 @@ const AdminPage = () => {
         };
 
         fetchUsers();
-    }, []);
+    }, [page, pageSize]);
+
+    const handlePageChange = (event, value) => {
+        setPage(value);
+    };
 
     const handleViewClick = (userId) => {
         navigate(`/admin/users/${userId}`);
@@ -66,11 +77,8 @@ const AdminPage = () => {
     const handleUpdateUser = async (userId, updatedData) => {
         try {
             await updateUser(userId, updatedData);
-            setUsers((prevUsers) =>
-                prevUsers.map((user) =>
-                    user.id === userId ? { ...user, ...updatedData } : user
-                )
-            );
+            const refreshedUsers = await getUsers();
+            setUsers(refreshedUsers);
         } catch (error) {
             console.error("Erro ao atualizar usuário:", error);
         }
@@ -160,7 +168,7 @@ const AdminPage = () => {
                         variant="subtitle1"
                         sx={{ textAlign: "center", mb: 2, fontStyle: "italic" }}
                     >
-                        {filteredUsers.length} usuário(s) encontrado(s)
+                        {totalUsers} usuário(s) encontrado(s)
                     </Typography>
                 )}
 
@@ -170,7 +178,7 @@ const AdminPage = () => {
                     </Box>
                 ) : error ? (
                     <Alert severity="error">{error}</Alert>
-                ) : filteredUsers.length === 0 ? (
+                ) : totalUsers === 0 ? (
                     <Typography
                         variant="h6"
                         sx={{
@@ -183,12 +191,42 @@ const AdminPage = () => {
                         Nenhum usuário encontrado.
                     </Typography>
                 ) : (
-                    <UserTable
-                        users={filteredUsers}
-                        onViewClick={handleViewClick}
-                        onEditClick={(userId) => handleEditClick(userId)}
-                        onDeleteClick={handleDeleteClick}
-                    />
+                    <>
+                        <UserTable
+                            users={filteredUsers}
+                            onViewClick={handleViewClick}
+                            onEditClick={(userId) => handleEditClick(userId)}
+                            onDeleteClick={handleDeleteClick}
+                        />
+                        <Box display="flex" justifyContent="center" mt={4}>
+                            <Pagination
+                                count={Math.ceil(totalUsers / pageSize)}
+                                page={page}
+                                onChange={handlePageChange}
+                                color="primary"
+                                sx={{
+                                    '& .MuiPaginationItem-root': {
+                                        color: 'white',
+                                        backgroundColor: 'transparent',
+                                        '&.Mui-selected': {
+                                            backgroundColor: '#FFCD54',
+                                            color: 'white',
+                                        },
+                                        '&:hover': {
+                                            backgroundColor: '#FFCD54',
+                                            color: 'white',
+                                        },
+                                    },
+                                    '& .MuiPaginationItem-ellipsis': {
+                                        color: 'white',
+                                    },
+                                    '& .MuiPaginationItem-icon': {
+                                        color: '#FFCD54',
+                                    },
+                                }}
+                            />
+                        </Box>
+                    </>
                 )}
             </Container>
 

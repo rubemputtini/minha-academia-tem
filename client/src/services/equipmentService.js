@@ -10,5 +10,6 @@ export const fetchEquipments = async (token) => {
     const response = await api.get('/api/v1/Equipment');
 
     localStorage.setItem("equipmentsCache", JSON.stringify(response.data));
+    
     return response.data;
 };
