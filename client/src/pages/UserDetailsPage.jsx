@@ -21,7 +21,6 @@ import { fetchUserDetails } from "../services/userService";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import UserFeedbacks from "../components/UserFeedbacks";
-import { getToken } from "../services/auth";
 
 const UserDetailsPage = () => {
     const { userId } = useParams();
@@ -36,7 +35,7 @@ const UserDetailsPage = () => {
     useEffect(() => {
         const fetchDetails = async () => {
             try {
-                const userDetails = await fetchUserDetails(getToken(), userId);
+                const userDetails = await fetchUserDetails(userId);
                 setUserName(userDetails.name);
 
                 const equipmentData = await getUserEquipments(userId);

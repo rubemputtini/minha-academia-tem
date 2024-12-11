@@ -5,6 +5,7 @@ import SignupForm from '../components/forms/SignupForm';
 import { errorMessages } from '../utils/constants';
 import Footer from '../components/Footer';
 import { Box, CircularProgress } from "@mui/material";
+import { setToken } from '../services/auth';
 
 const SignupPage = () => {
     const [userName, setUserName] = useState('');
@@ -26,8 +27,10 @@ const SignupPage = () => {
             const { token } = await register(userName, email, password, gymName, gymLocation);
 
             if (token) {
-                navigate("/equipamentos");
+                setToken(token);
             }
+
+            navigate("/equipamentos");
 
         } catch (error) {
             const errorMsg = error.message || 'Erro ao cadastrar, tente novamente.';

@@ -1,12 +1,14 @@
-import axios from 'axios';
-import { API_URL } from '../utils/constants';
-import { getToken } from './auth';
+import api from './api';
 
 export const fetchEquipments = async (token) => {
-    const response = await axios.get(`${API_URL}/api/v1/Equipment`, {
-        headers:{
-            Authorization: `Bearer ${getToken()}`,
-        }
-    });
+    const cachedEquipments = localStorage.getItem('equipmentsCache');
+
+    if (cachedEquipments) {
+        return JSON.parse(cachedEquipments);
+    }
+
+    const response = await api.get('/api/v1/Equipment');
+
+    localStorage.setItem("equipmentsCache", JSON.stringify(response.data));
     return response.data;
 };

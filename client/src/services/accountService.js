@@ -1,16 +1,11 @@
-import axios from 'axios';
-import { API_URL } from '../utils/constants'
-import { clearToken, setToken, getToken } from './auth';
+import { clearToken} from './auth';
+import api from './api';
 
 export const login = async (email, password) => {
     try {
-        const response = await axios.post(
-          `${API_URL}/Account/login`, 
-          { email, password },
-          { withCredentials: true }
-        );
+      const response = await api.post('/Account/login', { email, password });
 
-        return response.data;
+      return response.data;
 
     } catch (error) {
         console.error("Erro ao fazer login: ", error.response?.data || error.message);
@@ -20,7 +15,7 @@ export const login = async (email, password) => {
 
 export const register = async (name, email, password, gymName, gymLocation) => {
     try {
-        const response = await axios.post(`${API_URL}/Account/register`, {
+        const response = await api.post('/Account/register', {
           name,
           email,
           password,
@@ -29,10 +24,6 @@ export const register = async (name, email, password, gymName, gymLocation) => {
         });
 
         const { token, message } = response.data;
-
-        if (token) {
-          setToken(token);
-        }
 
         return { token, message };
 
@@ -51,16 +42,15 @@ export const register = async (name, email, password, gymName, gymLocation) => {
 
 export const logout = () => {
     clearToken();
+    localStorage.removeItem('userDetailsCache');
+    localStorage.removeItem('equipmentsCache');
     console.log("Usuário deslogado");
 };
 
 export const deleteUser = async (userId) => {
     try {
-        const response = await axios.delete(`${API_URL}/Account/delete-user/`, {
+        const response = await api.delete('/Account/delete-user/', {
           data: { id : userId },
-          headers: {
-            'Authorization': `Bearer ${getToken()}`,
-        },
         });
   
         return response.data;

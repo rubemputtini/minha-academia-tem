@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import { getToken } from '../services/auth';
 import { fetchUserDetails, updateUser } from '../services/userService';
 import { saveEquipmentSelection, submitReport } from '../services/reportService';
 import { muscleGroupNames } from '../utils/constants';
@@ -22,11 +21,10 @@ const AccountPage = () => {
     const [isSavingEquipments, setIsSavingEquipments] = useState(false);
     const [updatedEquipments, setUpdatedEquipments] = useState(null);
 
-    const fetchDetails = async () => {
-        const token = getToken();
+    const fetchDetails = async (forceRefresh = false) => {
 
         try {
-            const data = await fetchUserDetails(token);
+            const data = await fetchUserDetails(null, forceRefresh);
             setUserDetails(data);
             setUserName(data.email);
             setGymName(data.gymName);

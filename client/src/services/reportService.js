@@ -1,12 +1,4 @@
-import axios from "axios";
-import { API_URL } from "../utils/constants";
-import { getToken } from "./auth";
-
-const createHeaders = () => ({
-    headers: {
-        Authorization: `Bearer ${getToken()}`,
-    }
-});
+import api from "./api";
 
 export const submitReport = async (userEmail, gymName, equipmentIds) => {   
     const gymReport = {
@@ -16,10 +8,9 @@ export const submitReport = async (userEmail, gymName, equipmentIds) => {
     };
 
     try {
-        await axios.post(
-            `${API_URL}/api/v1/Report/send-gym-report`, 
+        await api.post(
+            '/api/v1/Report/send-gym-report', 
             gymReport,
-            createHeaders()
         );
 
         return true;     
@@ -33,10 +24,9 @@ export const submitReport = async (userEmail, gymName, equipmentIds) => {
 
 export const saveEquipmentSelection = async (equipmentIds) => {
     try {    
-        await axios.post(
-            `${API_URL}/api/v1/Report/save-selection`,
+        await api.post(
+            '/api/v1/Report/save-selection',
             { EquipmentIds: equipmentIds },
-            createHeaders()
         );
 
     } catch (error) {

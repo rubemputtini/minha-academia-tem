@@ -4,7 +4,6 @@ import Header from '../components/Header';
 import EquipmentCard from '../components/EquipmentCard';
 import { submitReport, saveEquipmentSelection } from '../services/reportService';
 import { fetchEquipments } from '../services/equipmentService';
-import { getToken } from '../services/auth';
 import { fetchUserDetails } from '../services/userService';
 import SuccessDialog from '../components/dialogs/SuccessDialog';
 import ConfirmationDialog from '../components/dialogs/ConfirmationDialog';
@@ -27,7 +26,7 @@ const EquipmentSelectionPage = () => {
     const loadUserData = async () => {
 
         try {
-            const userDetails = await fetchUserDetails(getToken());
+            const userDetails = await fetchUserDetails();
             setUserName(userDetails.email);
             setGymName(userDetails.gymName);
 
@@ -42,7 +41,6 @@ const EquipmentSelectionPage = () => {
             const equipmentData = await fetchEquipments();
             setEquipments(equipmentData);
             setSelections(new Array(equipmentData.length).fill(false));
-            await loadUserData();
 
         } catch (error) {
             console.error("Erro ao buscar a lista de equipamentos:", error);
@@ -52,6 +50,10 @@ const EquipmentSelectionPage = () => {
     useEffect(() => {
         loadEquipments();
     }, [loadEquipments]);
+
+    useEffect(() => {
+        loadUserData();
+    }, []);
 
     const handleSelection = (selected) => {
         const updatedSelections = [...selections];

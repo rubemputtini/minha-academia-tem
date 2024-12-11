@@ -1,23 +1,13 @@
-import axios from "axios";
-import { API_URL } from "../utils/constants";
-import { getToken } from "./auth";
+import api from "./api";
 
 export const getUsers = async () => {
-  const response = await axios.get(`${API_URL}/admin/users`, {
-    headers: {
-        'Authorization': `Bearer ${getToken()}`,
-    },
-});
+  const response = await api.get('/admin/users');
 
   return response.data;
 };
 
 export const getUserEquipments = async (userId) => {
-  const response = await axios.get(`${API_URL}/admin/GetUserEquipments/${userId}`, {
-    headers: {
-        'Authorization': `Bearer ${getToken()}`,
-    },
-});
+  const response = await api.get(`admin/GetUserEquipments/${userId}`);
 
   return response.data;
 };

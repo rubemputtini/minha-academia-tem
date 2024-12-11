@@ -6,6 +6,7 @@ builder.Configuration.AddEnvironmentVariables();
 builder.Services.ConfigureServices(builder.Configuration);
 builder.Services.ConfigureAuthentication(builder.Configuration);
 builder.Services.ConfigureCors(builder.Configuration);
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 

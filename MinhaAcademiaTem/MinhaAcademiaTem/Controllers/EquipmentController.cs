@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using MinhaAcademiaTem.Data;
 using MinhaAcademiaTem.DTOs;
 using MinhaAcademiaTem.Helpers;
@@ -14,10 +15,12 @@ namespace MinhaAcademiaTem.Controllers
     public class EquipmentController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMemoryCache _cache;
 
-        public EquipmentController(ApplicationDbContext context)
+        public EquipmentController(ApplicationDbContext context, IMemoryCache cache)
         {
             _context = context;
+            _cache = cache;
         }
 
         [HttpGet]
@@ -25,18 +28,28 @@ namespace MinhaAcademiaTem.Controllers
         {
             try
             {
-                var equipments = await _context.Equipments
-                    .Select(e => new EquipmentResponse
-                    {
-                        EquipmentId = e.EquipmentId,
-                        Name = e.Name,
-                        PhotoUrl = e.PhotoUrl,
-                        VideoUrl = e.VideoUrl,
-                        MuscleGroup = e.MuscleGroup.ToString()
-                    })
-                    .ToListAsync();
+                var cacheKey = "equipmentsCache";
 
+                if (!_cache.TryGetValue(cacheKey, out List<EquipmentResponse> equipments)) 
+                {
+                    equipments = await _context.Equipments
+                        .Select(e => new EquipmentResponse
+                        {
+                            EquipmentId = e.EquipmentId,
+                            Name = e.Name,
+                            PhotoUrl = e.PhotoUrl,
+                            VideoUrl = e.VideoUrl,
+                            MuscleGroup = e.MuscleGroup.ToString()
+                        })
+                        .ToListAsync();
+
+                    var cacheOptions = new MemoryCacheEntryOptions()
+                        .SetAbsoluteExpiration(TimeSpan.FromHours(24));
+                    _cache.Set(cacheKey, equipments, cacheOptions);
+                }
+                
                 return Ok(equipments);
+                
             }
             catch (Exception ex)
             {

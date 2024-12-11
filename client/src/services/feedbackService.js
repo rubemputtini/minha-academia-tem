@@ -1,19 +1,9 @@
-import axios from "axios";
-import { API_URL } from "../utils/constants";
-import { getToken } from "./auth";
-
-const createHeaders = () => ({
-    headers: {
-        Authorization: `Bearer ${getToken()}`,
-    }
-});
+import api from "./api";
 
 export const sendFeedback = async (feedback) => {
     try {
-        await axios.post(
-            `${API_URL}/api/v1/Feedback/send-feedback`, 
+        await api.post('/api/v1/Feedback/send-feedback', 
             { Message: feedback },
-            createHeaders()
         );
 
     } catch (error) {
@@ -23,9 +13,8 @@ export const sendFeedback = async (feedback) => {
 
 export const getUserFeedbacks = async (userId) => {
     try {
-        const response = await axios.get(
-            `${API_URL}/api/v1/Feedback/user-feedbacks/${userId}`,
-            createHeaders() 
+        const response = await api.get(
+            `/api/v1/Feedback/user-feedbacks/${userId}`
         );
 
         return response.data;

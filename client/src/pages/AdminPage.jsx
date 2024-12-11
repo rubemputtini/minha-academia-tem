@@ -19,7 +19,6 @@ import ConfirmationDialog from "../components/dialogs/ConfirmationDialog";
 import SuccessDialog from "../components/dialogs/SuccessDialog";
 import EditUserDialog from "../components/dialogs/EditUserDialog";
 import { fetchUserDetails, updateUser } from "../services/userService";
-import { getToken } from "../services/auth";
 
 const AdminPage = () => {
     const [users, setUsers] = useState([]);
@@ -53,7 +52,7 @@ const AdminPage = () => {
 
     const handleEditClick = async (userId) => {
         try {
-            const userDetails = await fetchUserDetails(getToken(), userId);
+            const userDetails = await fetchUserDetails(userId);
 
             setEditingUser(userDetails);
         } catch (error) {
