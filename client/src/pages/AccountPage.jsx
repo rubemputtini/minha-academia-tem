@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Footer from '../components/Footer';
-import Header from '../components/Header';
+import Nav from '../components/Nav';
 import { fetchUserDetails, updateUser } from '../services/userService';
 import { saveEquipmentSelection, submitReport } from '../services/reportService';
 import { muscleGroupNames } from '../utils/constants';
@@ -108,7 +108,7 @@ const AccountPage = () => {
 
     return (
         <div className="relative">
-            <Header />
+            <Nav />
             <div className="container mx-auto mt-8 flex flex-col items-center px-4 relative z-10">
                 <div className="bg-gray-900 rounded-2xl shadow-lg p-6 w-full max-w-lg mb-8 text-center">
                     <h2 className="text-2xl md:text-3xl font-bold text-white flex items-center justify-center gap-2">

@@ -7,6 +7,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import ThankYouPage from './pages/ThankYouPage';
 import AdminPage from './pages/AdminPage';
 import UserDetailsPage from './pages/UserDetailsPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 
 function App() {
     return (
@@ -70,6 +72,8 @@ function App() {
                         </ProtectedRoute>
                     }
                 />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                <Route path="/reset-password" element={<ResetPasswordPage />} />
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
         </Router>

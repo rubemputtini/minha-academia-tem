@@ -11,7 +11,8 @@ const AuthForm = ({
     password,
     setPassword,
     errorMessage,
-    disableSubmit
+    disableSubmit,
+    onForgotPassword,
 }) => {
     const [showPassword, setShowPassword] = useState(false);
 
@@ -66,6 +67,14 @@ const AuthForm = ({
                             disabled={disableSubmit}
                         >
                             {disableSubmit ? <CircularProgress size={20} color="inherit" /> : buttonText}
+                        </button>
+                    </div>
+                    <div className="flex items-center justify-center mt-4">
+                        <button
+                            onClick={onForgotPassword}
+                            className="text-yellow-500 hover:underline font-bold ml-1"
+                        >
+                            Esqueceu sua senha?
                         </button>
                     </div>
                 </form>

@@ -53,6 +53,36 @@ export const logout = () => {
     console.log("Usuário deslogado");
 };
 
+export const forgotPassword = async (email) => {
+    try {
+        const response = await api.post('/Account/forgot-password', { email });
+
+        return response.message;
+    } catch (error) {
+        const errorMessage = error.response?.data?.message || "Erro ao solicitar recuperação de senha.";
+
+        console.error("Erro ao solicitar recuperação de senha:", errorMessage);
+
+        throw new Error(errorMessage);
+    }
+}
+
+export const resetPassword = async ({ email, token, newPassword }) => {
+    try {
+        const response = await api.post('/Account/reset-password', { 
+            email, 
+            token, 
+            newPassword 
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error("Erro ao redefinir a senha:", error.response?.data || error.message);
+
+        throw error.response?.data;
+    }
+}
+
 export const deleteUser = async (userId) => {
     try {
         const response = await api.delete('/Account/delete-user/', {

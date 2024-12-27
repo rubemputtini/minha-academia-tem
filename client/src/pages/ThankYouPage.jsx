@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Footer from '../components/Footer';
-import Header from '../components/Header';
+import Nav from '../components/Nav';
 import FeedbackDialog from '../components/dialogs/FeedbackDialog';
 import SuccessDialog from '../components/dialogs/SuccessDialog';
 import { useNavigate } from 'react-router-dom';
@@ -22,7 +22,7 @@ const ThankYouPage = () => {
 
     return (
         <>
-            <Header />
+            <Nav />
             <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-gray-900 to-gray-500 text-white">
                 <div className="text-center max-w-lg mx-4 md:mx-8">
                     <h2 className="text-2xl md:text-3xl font-bold mb-12">Obrigado por compartilhar quais equipamentos a sua academia TEM! 💪</h2>

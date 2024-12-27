@@ -21,4 +21,8 @@
     <Content Include="EmailTemplates\**\*" CopyToPublishDirectory="Always" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="EmailTemplates\PasswordResetTemplate.html" />
+  </ItemGroup>
+
 </Project>

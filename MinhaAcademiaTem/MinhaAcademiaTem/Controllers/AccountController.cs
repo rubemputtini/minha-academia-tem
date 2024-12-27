@@ -235,6 +235,70 @@ namespace MinhaAcademiaTem.Controllers
             return Ok(new { message = "Usuário registrado com sucesso.", token });
         }
 
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request, [FromServices] EmailService emailService)
+        {
+            var user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (user == null)
+            {
+                return BadRequest(new { message = "E-mail não encontrado." });
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var encodedToken = Uri.EscapeDataString(token);
+            var resetLink = $"{_configuration["AppSettings:FrontendUrl"]}/reset-password?token={encodedToken}&email={request.Email}";
+
+            var templateData = new Dictionary<string, string>
+            {
+                { "Name", user.Name },
+                { "ResetLink", resetLink },
+            };
+
+            await emailService.SendEmailAsync(
+               toName: user.Name,
+               toEmail: user.Email!,
+               subject: "Recuperação de Senha - Minha Academia TEM?",
+               templateName: "PasswordResetTemplate",
+               templateData: templateData
+            );
+
+            return Ok(new { message = "Link de recuperação enviado para seu e-mail." });
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+        {
+            if (string.IsNullOrEmpty(request.Token) || string.IsNullOrEmpty(request.NewPassword))
+            {
+                return BadRequest("Token ou nova senha não fornecidos.");
+            }
+
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(request.Email);
+
+                if (user == null)
+                {
+                    return BadRequest("Usuário não encontrado.");
+                }
+
+                var decodedToken = Uri.UnescapeDataString(request.Token);
+                var result = await _userManager.ResetPasswordAsync(user, decodedToken, request.NewPassword);
+
+                if (!result.Succeeded)
+                {
+                    return ApiResponseHelper.GenerateErrorResponse(result.Errors);
+                }
+
+                return Ok(new { message = "Senha redefinida com sucesso." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Erro ao processar solicitação.", details = ex.Message });
+            }
+        }
+
         [Authorize(Roles = "admin")]
         [HttpDelete("delete-user")]
         public async Task<IActionResult> DeleteUser([FromBody] DeleteUserRequest request)

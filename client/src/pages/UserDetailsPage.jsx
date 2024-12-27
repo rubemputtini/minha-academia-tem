@@ -19,7 +19,7 @@ import { ArrowBack, Search } from "@mui/icons-material";
 import { getUserEquipments } from "../services/adminService";
 import { fetchUserDetails } from "../services/userService";
 import Footer from "../components/Footer";
-import Header from "../components/Header";
+import Nav from "../components/Nav";
 import UserFeedbacks from "../components/UserFeedbacks";
 
 const UserDetailsPage = () => {
@@ -85,7 +85,7 @@ const UserDetailsPage = () => {
 
     return (
         <>
-            <Header />
+            <Nav />
             <Container
                 maxWidth="lg"
                 sx={{

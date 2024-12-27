@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import Footer from '../components/Footer';
-import Header from '../components/Header';
+import Nav from '../components/Nav';
 import EquipmentCard from '../components/EquipmentCard';
 import { submitReport, saveEquipmentSelection } from '../services/reportService';
 import { fetchEquipments } from '../services/equipmentService';
@@ -106,7 +106,7 @@ const EquipmentSelectionPage = () => {
 
     return (
         <>
-            <Header />
+            <Nav />
             <div className="container mx-auto flex flex-col items-center">
                 <h2 className="text-2xl font-bold mb-6 text-center text-gray-300">
                     <span className="inline-flex items-center space-x-2">

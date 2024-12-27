@@ -3,6 +3,7 @@ import { login } from '../services/accountService';
 import { useNavigate } from 'react-router-dom';
 import AuthForm from '../components/forms/AuthForm';
 import Footer from '../components/Footer';
+import Header from '../components/Header';
 import { setToken } from '../services/auth';
 import { Box, CircularProgress } from '@mui/material';
 
@@ -32,15 +33,13 @@ const LoginPage = () => {
         }
     };
 
+    const handleForgotPassword = () => {
+        navigate("/forgot-password");
+    };
+
     return (
         <div className="min-h-screen flex flex-col">
-            <header className="flex justify-center py-6">
-                <h1 className="text-4xl font-bold text-center text-gray-300">
-                    <span className="inline-flex items-center space-x-2">
-                        <span>Minha Academia <span className="text-yellow-500">TEM?</span></span>
-                    </span>
-                </h1>
-            </header>
+            <Header />
             {loading ? (
                 <Box my={22} display="flex" flexDirection="column" alignItems="center">
                     <CircularProgress color="primary" />
@@ -56,6 +55,7 @@ const LoginPage = () => {
                     setPassword={setPassword}
                     errorMessage={errorMessage}
                     disableSubmit={loading}
+                    onForgotPassword={handleForgotPassword}
                 />
             )}
             <Footer />

@@ -6,6 +6,7 @@ import { errorMessages } from '../utils/constants';
 import Footer from '../components/Footer';
 import { Box, CircularProgress } from "@mui/material";
 import { setToken } from '../services/auth';
+import Header from '../components/Header';
 
 const SignupPage = () => {
     const [userName, setUserName] = useState('');
@@ -59,13 +60,7 @@ const SignupPage = () => {
 
     return (
         <div className="min-h-screen flex flex-col">
-            <header className="flex justify-center py-6">
-                <h1 className="text-4xl font-bold text-center text-gray-300">
-                    <span className="inline-flex items-center space-x-2">
-                        <span>Minha Academia <span className="text-yellow-500">TEM?</span></span>
-                    </span>
-                </h1>
-            </header>
+            <Header />
             {loading ? (
                 <Box my={22} display="flex" flexDirection="column" alignItems="center">
                     <CircularProgress color="primary" />

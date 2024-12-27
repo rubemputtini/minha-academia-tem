@@ -14,7 +14,7 @@ import { Search } from "@mui/icons-material";
 import { getUsers } from "../services/adminService";
 import { deleteUser } from "../services/accountService";
 import Footer from "../components/Footer";
-import Header from "../components/Header";
+import Nav from "../components/Nav";
 import UserTable from "../components/UserTable";
 import ConfirmationDialog from "../components/dialogs/ConfirmationDialog";
 import SuccessDialog from "../components/dialogs/SuccessDialog";
@@ -111,7 +111,7 @@ const AdminPage = () => {
 
     return (
         <>
-            <Header />
+            <Nav />
             <Container maxWidth="lg" sx={{ mt: 4, color: "white" }}>
                 <Typography
                     variant="h4"
