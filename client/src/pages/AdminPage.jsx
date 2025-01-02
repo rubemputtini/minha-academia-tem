@@ -40,7 +40,6 @@ const AdminPage = () => {
             try {
                 setLoading(true);
                 const data = await getUsers(page, pageSize);
-
                 setUsers(data.users);
                 setTotalUsers(data.totalCount)
             } catch (err) {
@@ -77,8 +76,9 @@ const AdminPage = () => {
     const handleUpdateUser = async (userId, updatedData) => {
         try {
             await updateUser(userId, updatedData);
-            const refreshedUsers = await getUsers();
-            setUsers(refreshedUsers);
+            const refreshedUsers = await getUsers(page, pageSize);
+            setUsers(refreshedUsers.users);
+            setTotalUsers(refreshedUsers.totalCount);
         } catch (error) {
             console.error("Erro ao atualizar usuário:", error);
         }

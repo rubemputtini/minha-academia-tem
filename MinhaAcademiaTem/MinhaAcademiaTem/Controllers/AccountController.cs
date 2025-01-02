@@ -166,6 +166,37 @@ namespace MinhaAcademiaTem.Controllers
             var cacheKey = $"userDetails_{userId}";
             _cache.Remove(cacheKey);
 
+            var report = await _dbContext.Reports
+                    .Include(r => r.EquipmentSelections)
+                    .ThenInclude(es => es.Equipment)
+                    .FirstOrDefaultAsync(r => r.UserId == user.Id);
+
+            var selectedExercises = report?.EquipmentSelections
+                .Select(es => new EquipmentResponse
+                {
+                    EquipmentId = es.EquipmentId,
+                    Name = es.Equipment!.Name,
+                    PhotoUrl = es.Equipment.PhotoUrl,
+                    VideoUrl = es.Equipment.VideoUrl,
+                    MuscleGroup = es.Equipment.MuscleGroup.ToString(),
+                    IsAvailable = es.IsAvailable
+                })
+                .ToList() ?? new List<EquipmentResponse>();
+
+            var updatedUserDetails = new UserDetailsResponse
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email!,
+                GymName = gym!.Name,
+                GymLocation = gym!.Location,
+                SelectedExercises = selectedExercises
+            };
+
+            var cacheOptions = new MemoryCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromHours(2));
+            _cache.Set(cacheKey, updatedUserDetails, cacheOptions);
+
             return Ok(new { message = "Usuário atualizado com sucesso." });
         }
 
