@@ -66,7 +66,7 @@ namespace MinhaAcademiaTem.Controllers
 
         [Authorize]
         [HttpGet("details/{userId?}")]
-        public async Task<IActionResult> GetUserDetails(string? userId = null)
+        public async Task<IActionResult> GetUserDetails(string? userId = null, bool forceRefresh = false)
         {
             var currentUserId = userId ?? User.Identity!.Name;
 
@@ -77,7 +77,7 @@ namespace MinhaAcademiaTem.Controllers
 
             var cacheKey = $"userDetails_{currentUserId}";
 
-            if (!_cache.TryGetValue(cacheKey, out UserDetailsResponse? userDetails))
+            if (forceRefresh || !_cache.TryGetValue(cacheKey, out UserDetailsResponse? userDetails))
             {
                 var user = userId == null
                 ? await _userManager.Users.FirstOrDefaultAsync(u => u.Email == User.Identity!.Name)
