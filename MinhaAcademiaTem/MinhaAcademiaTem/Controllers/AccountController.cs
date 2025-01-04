@@ -21,9 +21,8 @@ namespace MinhaAcademiaTem.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _dbContext;
-        private readonly IMemoryCache _cache;
 
-        public AccountController(SignInManager<User> signInManager, UserManager<User> userManager, TokenService tokenService, RoleManager<IdentityRole> roleManager, IConfiguration configuration, ApplicationDbContext dbContext, IMemoryCache cache)
+        public AccountController(SignInManager<User> signInManager, UserManager<User> userManager, TokenService tokenService, RoleManager<IdentityRole> roleManager, IConfiguration configuration, ApplicationDbContext dbContext)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -31,7 +30,6 @@ namespace MinhaAcademiaTem.Controllers
             _roleManager = roleManager;
             _configuration = configuration;
             _dbContext = dbContext;
-            _cache = cache;
         }
 
         [HttpPost("login")]
@@ -66,7 +64,7 @@ namespace MinhaAcademiaTem.Controllers
 
         [Authorize]
         [HttpGet("details/{userId?}")]
-        public async Task<IActionResult> GetUserDetails(string? userId = null, bool forceRefresh = false)
+        public async Task<IActionResult> GetUserDetails(string? userId = null)
         {
             var currentUserId = userId ?? User.Identity!.Name;
 
@@ -75,54 +73,45 @@ namespace MinhaAcademiaTem.Controllers
                 return BadRequest("ID do Usuário é inválido.");
             }
 
-            var cacheKey = $"userDetails_{currentUserId}";
-
-            if (forceRefresh || !_cache.TryGetValue(cacheKey, out UserDetailsResponse? userDetails))
-            {
-                var user = userId == null
+            var user = userId == null
                 ? await _userManager.Users.FirstOrDefaultAsync(u => u.Email == User.Identity!.Name)
                 : await _userManager.FindByIdAsync(userId);
 
-                if (user == null)
-                {
-                    return NotFound("Usuário não encontrado.");
-                }
-
-                var gym = await _dbContext.Gyms
-                    .FirstOrDefaultAsync(g => g.UserId == user.Id);
-
-                var report = await _dbContext.Reports
-                    .Include(r => r.EquipmentSelections)
-                    .ThenInclude(es => es.Equipment)
-                    .FirstOrDefaultAsync(r => r.UserId == user.Id);
-
-                var selectedExercises = report?.EquipmentSelections
-                    .Select(es => new EquipmentResponse
-                    {
-                        EquipmentId = es.EquipmentId,
-                        Name = es.Equipment!.Name,
-                        PhotoUrl = es.Equipment.PhotoUrl,
-                        VideoUrl = es.Equipment.VideoUrl,
-                        MuscleGroup = es.Equipment.MuscleGroup.ToString(),
-                        IsAvailable = es.IsAvailable
-                    })
-                    .ToList() ?? new List<EquipmentResponse>();
-
-                userDetails = new UserDetailsResponse
-                {
-                    Id = user.Id,
-                    Name = user.Name,
-                    Email = user.Email!,
-                    GymName = gym!.Name,
-                    GymLocation = gym.Location,
-                    SelectedExercises = selectedExercises
-                };
-
-                var cacheOptions = new MemoryCacheEntryOptions()
-                    .SetAbsoluteExpiration(TimeSpan.FromHours(2));
-                _cache.Set(cacheKey, userDetails, cacheOptions);
+            if (user == null)
+            {
+                return NotFound("Usuário não encontrado.");
             }
-        
+
+            var gym = await _dbContext.Gyms
+                .FirstOrDefaultAsync(g => g.UserId == user.Id);
+
+            var report = await _dbContext.Reports
+                .Include(r => r.EquipmentSelections)
+                .ThenInclude(es => es.Equipment)
+                .FirstOrDefaultAsync(r => r.UserId == user.Id);
+
+            var selectedExercises = report?.EquipmentSelections
+                .Select(es => new EquipmentResponse
+                {
+                    EquipmentId = es.EquipmentId,
+                    Name = es.Equipment!.Name,
+                    PhotoUrl = es.Equipment.PhotoUrl,
+                    VideoUrl = es.Equipment.VideoUrl,
+                    MuscleGroup = es.Equipment.MuscleGroup.ToString(),
+                    IsAvailable = es.IsAvailable
+                })
+                .ToList() ?? new List<EquipmentResponse>();
+
+            var userDetails = new UserDetailsResponse
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email!,
+                GymName = gym!.Name,
+                GymLocation = gym.Location,
+                SelectedExercises = selectedExercises
+            };
+       
             return Ok(userDetails);
         }
 
@@ -162,40 +151,6 @@ namespace MinhaAcademiaTem.Controllers
 
                 await _dbContext.SaveChangesAsync();
             }
-
-            var cacheKey = $"userDetails_{userId}";
-            _cache.Remove(cacheKey);
-
-            var report = await _dbContext.Reports
-                    .Include(r => r.EquipmentSelections)
-                    .ThenInclude(es => es.Equipment)
-                    .FirstOrDefaultAsync(r => r.UserId == user.Id);
-
-            var selectedExercises = report?.EquipmentSelections
-                .Select(es => new EquipmentResponse
-                {
-                    EquipmentId = es.EquipmentId,
-                    Name = es.Equipment!.Name,
-                    PhotoUrl = es.Equipment.PhotoUrl,
-                    VideoUrl = es.Equipment.VideoUrl,
-                    MuscleGroup = es.Equipment.MuscleGroup.ToString(),
-                    IsAvailable = es.IsAvailable
-                })
-                .ToList() ?? new List<EquipmentResponse>();
-
-            var updatedUserDetails = new UserDetailsResponse
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Email = user.Email!,
-                GymName = gym!.Name,
-                GymLocation = gym!.Location,
-                SelectedExercises = selectedExercises
-            };
-
-            var cacheOptions = new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromHours(2));
-            _cache.Set(cacheKey, updatedUserDetails, cacheOptions);
 
             return Ok(new { message = "Usuário atualizado com sucesso." });
         }

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 using MinhaAcademiaTem.Data;
 using MinhaAcademiaTem.DTOs;
 using MinhaAcademiaTem.Models;
@@ -19,15 +18,13 @@ namespace MinhaAcademiaTem.Controllers
         private readonly EmailService _emailService;
         private readonly IConfiguration _configuration;
         private readonly UserManager<User> _userManager;
-        private readonly IMemoryCache _cache;
 
-        public ReportController(ApplicationDbContext context, EmailService emailService, IConfiguration configuration, UserManager<User> userManager, IMemoryCache cache)
+        public ReportController(ApplicationDbContext context, EmailService emailService, IConfiguration configuration, UserManager<User> userManager)
         {
             _context = context;
             _emailService = emailService;
             _configuration = configuration;
             _userManager = userManager;
-            _cache = cache;
         }
 
         [HttpPost("save-selection")]
@@ -40,14 +37,14 @@ namespace MinhaAcademiaTem.Controllers
 
             try
             {
-                var userId = User.Identity!.Name;
+                var userName = User.Identity?.Name;
 
-                if (string.IsNullOrEmpty(userId))
+                if (string.IsNullOrEmpty(userName))
                 {
                     return Unauthorized(new { message = "Usuário não autenticado." });
                 }
 
-                var user = await _userManager.FindByEmailAsync(userId);
+                var user = await _userManager.FindByEmailAsync(userName);
 
                 if (user == null)
                 {
@@ -106,32 +103,6 @@ namespace MinhaAcademiaTem.Controllers
                 }
 
                 await _context.SaveChangesAsync();
-
-                var cacheKey = $"userDetails_{userId}";
-
-                var updatedUserDetails = new UserDetailsResponse
-                {
-                    Id = user.Id,
-                    Name = user.Name,
-                    Email = user.Email!,
-                    GymName = gym.Name,
-                    GymLocation = gym.Location,
-                    SelectedExercises = report.EquipmentSelections
-                        .Select(es => new EquipmentResponse
-                        {
-                            EquipmentId = es.EquipmentId,
-                            Name = es.Equipment!.Name,
-                            PhotoUrl = es.Equipment.PhotoUrl,
-                            VideoUrl = es.Equipment.VideoUrl,
-                            MuscleGroup = es.Equipment.MuscleGroup.ToString(),
-                            IsAvailable = es.IsAvailable
-                        })
-                        .ToList()
-                };
-
-                var cacheOptions = new MemoryCacheEntryOptions()
-                    .SetAbsoluteExpiration(TimeSpan.FromHours(2));
-                _cache.Set(cacheKey, updatedUserDetails, cacheOptions);
 
                 return Ok(new { message = "Seleção de equipamentos salva com sucesso." });
             }
