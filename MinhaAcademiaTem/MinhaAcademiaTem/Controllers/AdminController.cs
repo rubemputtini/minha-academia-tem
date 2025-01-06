@@ -30,26 +30,23 @@ namespace MinhaAcademiaTem.Controllers
         public async Task<IActionResult> GetUsers(
             [FromServices] IMemoryCache memoryCache,
             [FromQuery] int page = 1,
-            [FromQuery] int pageSize = 6)
+            [FromQuery] int pageSize = 6,
+            [FromQuery] string sortOrder = "asc",
+            [FromQuery] string searchQuery = "")
         {
-            var cacheKey = $"usersCache_page{page}_size{pageSize}";
+            const string cacheKey = "AllUsers";
 
-            if (!memoryCache.TryGetValue(cacheKey, out List<UserResponse> userResponses))
+            if (!memoryCache.TryGetValue(cacheKey, out List<UserResponse> allUsers))
             {
-                var query = _userManager.Users.AsQueryable();
-
-                var users = await query
-                    .Skip((page - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToListAsync();
+                var users = await _userManager.Users.ToListAsync();
                 
-                userResponses = new List<UserResponse>();
+                allUsers = new List<UserResponse>();
 
                 foreach (var user in users)
                 {
                     var roles = await _userManager.GetRolesAsync(user);
 
-                    userResponses.Add(new UserResponse
+                    allUsers.Add(new UserResponse
                     {
                         Id = user.Id,
                         Name = user.Name,
@@ -60,20 +57,36 @@ namespace MinhaAcademiaTem.Controllers
 
                 var cacheOptions = new MemoryCacheEntryOptions
                 {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1)
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30)
                 };
 
-                memoryCache.Set(cacheKey, userResponses, cacheOptions);
+                memoryCache.Set(cacheKey, allUsers, cacheOptions);
             }
 
-            var totalCount = await _userManager.Users.CountAsync();
+            var query = allUsers.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                query = query.Where(u => u.Name.Contains(searchQuery, StringComparison.OrdinalIgnoreCase));
+            }
+
+            query = sortOrder.ToLower() == "desc"
+                ? query.OrderByDescending(u => u.Name)
+                : query.OrderBy(u => u.Name);
+
+            var totalCount = query.Count();
+            
+            var paginatedUsers = query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
 
             return Ok(new
             {
                 TotalCount = totalCount,
                 Page = page,
                 PageSize = pageSize,
-                Users = userResponses
+                Users = paginatedUsers
             });
         }
 

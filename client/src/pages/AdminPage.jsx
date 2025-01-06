@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
     Container,
     CircularProgress,
@@ -32,29 +32,46 @@ const AdminPage = () => {
     const [editingUser, setEditingUser] = useState(null);
     const [page, setPage] = useState(1);
     const [pageSize] = useState(6);
+    const [sortOrder] = useState("asc");
     const [totalUsers, setTotalUsers] = useState(0);
     const navigate = useNavigate();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const initialPage = parseInt(queryParams.get("page")) || 1;
+
+    const fetchUsers = async (page, sortOrder, searchQuery) => {
+        try {
+            setLoading(true);
+            const data = await getUsers(page, pageSize, sortOrder, searchQuery);
+            setUsers(data.users);
+            setTotalUsers(data.totalCount)
+        } catch (err) {
+            setError("Erro ao carregar usuários.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                setLoading(true);
-                const data = await getUsers(page, pageSize);
-                setUsers(data.users);
-                setTotalUsers(data.totalCount)
-            } catch (err) {
-                setError("Erro ao carregar usuários.");
-            } finally {
-                setLoading(false);
-            }
-        };
+        fetchUsers(initialPage, sortOrder, searchQuery);
+        setPage(initialPage);
+    }, [initialPage, sortOrder, searchQuery]);
 
-        fetchUsers();
-    }, [page, pageSize]);
+    const handlePageChange = (event, newPage) => {
+        const searchParams = new URLSearchParams(window.location.search);
+        searchParams.set("page", newPage);
 
-    const handlePageChange = (event, value) => {
-        setPage(value);
+        window.history.pushState(null, "", `?${searchParams.toString()}`);
+        setPage(newPage);
+        fetchUsers(newPage, sortOrder, searchQuery);
     };
+
+    const handleSearch = (event) => {
+        const query = event.target.value;
+        setSearchQuery(query);
+        setPage(1);
+        fetchUsers(1, sortOrder, query);
+    }
 
     const handleViewClick = (userId) => {
         navigate(`/admin/users/${userId}`);
@@ -105,10 +122,6 @@ const AdminPage = () => {
         setUserDeleted(false);
     };
 
-    const filteredUsers = users.filter((user) =>
-        user.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
     return (
         <>
             <Nav />
@@ -136,7 +149,7 @@ const AdminPage = () => {
                     <TextField
                         variant="outlined"
                         placeholder="Pesquisar por nome"
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onChange={handleSearch}
                         slotProps={{
                             input: {
                                 startAdornment: (
@@ -193,7 +206,7 @@ const AdminPage = () => {
                 ) : (
                     <>
                         <UserTable
-                            users={filteredUsers}
+                            users={users}
                             onViewClick={handleViewClick}
                             onEditClick={(userId) => handleEditClick(userId)}
                             onDeleteClick={handleDeleteClick}
