@@ -11,12 +11,12 @@ Through this platform, clients can indicate all the equipment their gym has, all
 - **Frontend:** React, JavaScript, Tailwind CSS, Material UI
 - **Backend:** .NET, C#, Entity Framework
 - **Authentication:** Identity
-- **Email Service:** SendGrid
+- **Email Service:** SendGrid/SMTP2GO
 - **Database Hosting:** Azure
 
-## Access
+## Preview
 
-This project is currently under development and not yet publicly accessible. If you're interested in contributing or learning more, please feel free to contact me at: rubem.staciariniputtini@gmail.com.
+https://github.com/user-attachments/assets/3f8381f5-68a3-4b5b-a4db-50bfb69f8ea5
 
 **Note: This system is exclusively designed for the Minha Academia TEM? community and partners. It is focused on end-user needs, allowing only the visualization of pre-configured data by the administrator.**
 
