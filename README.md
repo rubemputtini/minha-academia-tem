@@ -11,7 +11,7 @@ Through this platform, clients can indicate all the equipment their gym has, all
 - **Frontend:** React, JavaScript, Tailwind CSS, Material UI
 - **Backend:** .NET, C#, Entity Framework
 - **Authentication:** Identity
-- **Email Service:** SendGrid
+- **Email Service:** SendGrid/SMTP2GO
 - **Database Hosting:** Azure
 
 ## Preview
