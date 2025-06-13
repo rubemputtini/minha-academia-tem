@@ -16,7 +16,7 @@ namespace MinhaAcademiaTem.Services
             _smtpConfig = smtpOptions.Value;
         }
 
-        public async Task<bool> SendEmailAsync(string toName, string toEmail, string subject, string templateName, Dictionary<string, string> templateData, string fromName = "Consultoria Rubem Puttini", string fromEmail = "consultoria@rubemputtini.com.br")
+        public async Task<bool> SendEmailAsync(string toName, string toEmail, string subject, string templateName, Dictionary<string, string> templateData, string fromName = "Consultoria Rubem Puttini", string fromEmail = "contato@rubemputtini.com.br")
         {
             var body = await GetEmailTemplateAsync(templateName);
             body = FillTemplateWithData(body, templateData);
